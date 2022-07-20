@@ -1,0 +1,2 @@
+# JourneyGo
+NCCU Travel Recommendation
