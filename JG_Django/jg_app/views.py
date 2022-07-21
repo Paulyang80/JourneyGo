@@ -1,7 +1,6 @@
 from cgi import test
 from django.shortcuts import render
 from pymongo import MongoClient
-from django.http import HttpResponse
 import datetime
 import random
 import math
@@ -28,16 +27,17 @@ def result(request):
 
 def friends(request):
     collection = db['User_account']
-    # friend = collection.find_one({"_id": 0}) #Paul
-    # friend2 = collection.find_one({"_id": 1}) #Thomas
-
     friends = []
     for i in range(6):
-        friends.append(collection.find_one({"_id": i}))
+        friends.append(collection.find_one({"_id": i}))    
+    
+    # user_id = "https://www.instagram.com/cy.tang/?__a=1"
+    # api = "https://i.instagram.com/api/v1/users/"+user_id+"/info/"
 
     context = {
         'friends': friends,
         'rows': range(math.ceil(len(friends)/3))
+        # 'ig_pic': api
     }
     return render(request, 'friends.html', context)
 
@@ -63,10 +63,6 @@ def searchRec(request):
 
 
 def startDropDown(request):
-
-    n = None
-    t = None
-    tr = None
 
     # 出遊人數
     max_num = 7
@@ -94,9 +90,6 @@ def startDropDown(request):
 
 
     # SAVE ROOM_RECORDS
-    # Build MongoDB connection
-    mongo_conn_str = "mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority"
-    cluster = MongoClient(mongo_conn_str, connect=False)
     db = cluster["test"]
     collection = db["records_test"]
 
@@ -129,3 +122,12 @@ def startDropDown(request):
     }
     return render(request, 'start.html', context)
 
+
+def setting(request):
+    collection = db['User_account']
+    user = collection.find_one({"_id": 0})
+
+    context = {
+        'user': user
+    }
+    return render(request, 'setting.html', context)

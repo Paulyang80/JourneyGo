@@ -26,4 +26,5 @@ urlpatterns = [
     path('friends/', views.friends),
     path('searchPage/',views.searchRec),
     path('start/',views.startDropDown),
+    path('setting/', views.setting),
 ]

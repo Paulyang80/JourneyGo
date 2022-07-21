@@ -76,7 +76,7 @@
         friend</button>
     </div>
 
-    {% for i in rows %}
+    
     <div class="row">
       <!-- card -->
       {% for f in friends %}
@@ -86,70 +86,32 @@
             <h3>{{ f.firstName }}</h3>
           </div>
           <div class="card-body">
-            <img class="photo" src="{% static "images/cat-5.png" %}" alt="">
+            <img class="photo" src={{ f.pic }} alt="">
             <p>#{{ f.hashtag }}</p>
-            <button class="btn bnt-lg btn-block btn-outline-dark" type="button"><i class="fa-solid fa-id-card"></i>
-              Profile</button>
+            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-id-card"></i>
+              Profile
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ f.firstName }} {{ f.lastName }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>E-mail: {{ f.email }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button class="btn bnt-lg btn-block btn-dark" type="button"><i class="fa-solid fa-user-xmark"></i>
-              Unfriend</button>
+              Unfriend
+            </button>
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
-    {% endfor %}
-
-    {% comment %} <div class="row">
-        <!-- card4 -->
-        <div class="friend-col col-lg-4 col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3>Peter</h3>
-            </div>
-            <div class="card-body">
-              <img class="photo" src="{% static "images/cat.png" %}" alt="">
-              <p>#Pop music</p>
-              <button class="btn bnt-lg btn-block btn-outline-dark" type="button"><i class="fa-solid fa-id-card"></i>
-                Profile</button>
-              <button class="btn bnt-lg btn-block btn-dark" type="button"><i class="fa-solid fa-user-xmark"></i>
-                Unfriend</button>
-            </div>
-          </div>
-        </div>
-        <!-- card5 -->
-        <div class="friend-col col-lg-4 col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3>{{ friends.1.firstName }}</h3>
-            </div>
-            <div class="card-body">
-              <img class="photo" src="{% static "images/cat-2.png" %}" alt="">
-              <p># {{ friends.1.hashtag }}</p>
-              <button class="btn bnt-lg btn-block btn-outline-dark" type="button"><i class="fa-solid fa-id-card"></i>
-                Profile</button>
-              <button class="btn bnt-lg btn-block btn-dark" type="button"><i class="fa-solid fa-user-xmark"></i>
-                Unfriend</button>
-            </div>
-          </div>
-        </div>
-        <!-- card6 -->
-        <div class="friend-col col-lg-4 col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3>Irene</h3>
-            </div>
-            <div class="card-body">
-              <img class="photo" src="{% static "images/cat6.png" %}" alt="">
-              <p>#Sea #Camping</p>
-              <button class="btn bnt-lg btn-block btn-outline-dark" type="button"><i class="fa-solid fa-id-card"></i>
-                Profile</button>
-              <button class="btn bnt-lg btn-block btn-dark" type="button"><i class="fa-solid fa-user-xmark"></i>
-                Unfriend</button>
-            </div>
-          </div>
-        </div>
-
-    </div> {% endcomment %}
 
   </section>
 </body>

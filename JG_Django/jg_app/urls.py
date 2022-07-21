@@ -9,5 +9,6 @@ urlpatterns = [
     path('',views.friends,name='friends'),
     path('',views.searchRec,name='searchRec'),
     path('',views.startDropDown,name='startDropDown'),
+    path('',views.setting,name='setting'),
 ]
 
