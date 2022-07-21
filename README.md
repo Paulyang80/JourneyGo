@@ -1,2 +1,2 @@
 # JourneyGo
-NCCU Travel Recommendation
+NCCU MIS Capstone: JourneyGo - Group Travel Recommender System
