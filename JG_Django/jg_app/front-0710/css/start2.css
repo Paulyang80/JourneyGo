@@ -1,0 +1,46 @@
+html {
+    background-color: #eaf2f4;
+    font-family: 'Tinos', serif;
+  }
+
+body {
+    width: 1000px;
+    margin: 0 auto;
+    background-color: #eaf2f4;
+    padding: 0 20px 20px 20px;
+    /* border: 2px solid black; */
+  }
+
+p, li, h1 {
+    color: rgba(27, 55, 105, 0.897);
+  }
+
+p, li {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+  }
+
+img {
+    display: block;
+    margin: 0 auto;
+  }
+
+.hover {
+    width: auto;
+    height: auto;
+    background-color: #eaf2f4;
+    margin: auto;
+    transition: 0.5s;
+    opacity: 1;
+}
+
+.hover:hover {
+    opacity: 0.5;
+}
+
+.container{
+  width: 1024px;
+  margin: 0 auto;
+  padding-left: 0;
+}

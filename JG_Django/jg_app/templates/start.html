@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tinos:ital@1&display=swap" rel="stylesheet">
+  <!-- Favicon and touch icons -->
+  <link type="image/x-icon" href="images/favicon1.ico" rel="icon" />
+  <link type="image/x-icon" href="images/favicon1.ico" rel="shortcut icon" />
+  <link type="image/x-icon" href="images/favicon1.ico" rel="bookmark" />
+
+  <!-- Favicon for Chrome -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/xxx/xxx.png" />
+  <title>Journey Go - Team Setup</title>
+
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&family=Ubuntu&display=swap"
+    rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+    crossorigin="anonymous"></script>
+  <!-- Fontawesome -->
+  <script src="https://kit.fontawesome.com/a973304abd.js" crossorigin="anonymous"></script>
+
+
+  <!-- CSS -->
+  <link href="{% static "css/navbar-styles.css" %}" rel="stylesheet">
+  <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
+
+
+  <style>
+    .container {
+      height: 40vh;
+    }
+
+    .dropdown-toggle {
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+      border: 2px solid #ffc107;
+      font-weight: 600;
+    }
+
+    .dropdown-toggle:focus {
+
+      box-shadow: none;
+
+    }
+
+
+    .dropdown-toggle::after {
+
+      display: none;
+
+    }
+
+    .dropdown-menu {
+
+      width: 200px;
+      border: 2px solid #ffc107;
+      padding: 0rem 0;
+      transform: translate3d(0px, 50px, 0px);
+
+    }
+
+    .dropdown-item:focus,
+    .dropdown-item:hover {
+      color: #ffffff;
+      background-color: #ffc107;
+      padding: 12px;
+    }
+
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 12px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <section id="title">
+
+    <div class="container-fluid">
+
+      <!-- Nav Bar -->
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{% static "index.html" %}">JourneyGo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% static "index.html" %}"><i class="fa-solid fa-house"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% static "searchPage.html" %}"><i class="fa-solid fa-magnifying-glass"></i>
+                Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% static "friends.html" %}"><i class="fa-solid fa-user-group"></i> My
+                Friends</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% static "setting.html" %}"><i class="fa-solid fa-gear"></i>
+                Settings</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <a href="{% static "login.html" %}" class="btn btn-outline-light " role="button">Log In</a>
+          </form>
+        </div>
+      </nav>
+    </div>
+  </section>
+
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="dropdown">
+      <!--Dropdown Box-->
+        <form method="post">
+            <h4>旅遊人數</h4>
+            <select name="numbers">
+                {% for n in nums %}
+                    <option
+                      value="{{ n }}"
+                      {% if selected_num == n %}
+                          selected="selected"
+                      {% endif %}
+                    >{{ n }}</option>
+                {% endfor %}
+            </select>
+
+            <h4>遊玩時間</h4>
+            <select name="duration">
+              {% for time in travel_duration %}
+                  <option
+                    value="{{ time }}"
+                    {% if selected_time == time %}
+                        selected="selected"
+                    {% endif %}
+                  >{{ time }}</option>
+              {% endfor %}
+            </select>
+
+            <h4>交通工具</h4>
+            <select name="trans">
+              {% for t in transportations %}
+                  <option
+                    value="{{ t }}"
+                    {% if selected_trans == t %}
+                        selected="selected"
+                    {% endif %}
+                  >{{ t }}</option>
+              {% endfor %}
+            </select><br><br>
+            <input type="submit" value="Select">
+        </form>
+        {% if selected_num and selected_time and selected_trans %}
+          <p>
+            選擇的人數: {{ selected_num }} <br>
+            選擇的時間: {{ selected_time }} <br>
+            選擇的交通工具: {{ selected_trans }}
+          </p>
+        {% endif %}
+        
+      <!--end of dropdown box-->
+    </div>
+  </div>
+
+
+  <div class="hover" style="margin: 40px">
+    <a href="{% static "room2.html" %}">
+      <img src="{% static "images/start1.png" %}" class="rounded mx-auto d-block" width="200px">
+    </a>
+  </div>
+
+
+</body>
+
+</html>

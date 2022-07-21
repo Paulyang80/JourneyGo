@@ -1,0 +1,22 @@
+button{border:0;
+    background-color:#049374;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;}
+  
+  button:hover{
+    color:#049374;
+    background-color:#fff;
+    border:2px #049374 solid;
+  }
+
+.kickButton{border:0;
+    background-color:#335f5d;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;}
+
+.to-center{
+    text-align: center;
+    padding-top: 5%;
+}
