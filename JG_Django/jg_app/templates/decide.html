@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JourneyGo - Home</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>JourneyGo - </title>
+
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,15 +22,15 @@
     <!-- Fontawesome -->
     <script src="https://kit.fontawesome.com/a973304abd.js" crossorigin="anonymous"></script>
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static "css/index-styles.css" %}">
     <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
-
+    <link rel="stylesheet" href="{% static "css/room.css" %}">
 </head>
 
 <body>
-
     <section id="title">
+
         <div class="container-fluid">
+
             <!-- Nav Bar -->
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
@@ -43,14 +43,14 @@
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link  active" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+                            <a class="nav-link" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
+                            <a class="nav-link" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
                                 Search</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
+                            <a class="nav-link" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
                                 Friends</a>
                         </li>
                         <li class="nav-item">
@@ -65,16 +65,15 @@
             </nav>
         </div>
     </section>
+    <div class="info" style="text-align:center;">
+        <h2>Do you like Taipei 101?</h2>
+        <img src="{% static "images/101.jpg" %}" alt="" style="width:40%;">
+        <br><br>
+        <a class="btn btn-primary text-uppercase" href="{% url 'result' %}">Go</a>
+        <a class="btn btn-primary text-uppercase" id="againbtn" href="{% url 'ready' %}">Again</a>
 
-    <ul class="to-center">
-        <h1>JourneyGo</h1>
-        <h3>Group Spots Recommender</h3>
-        <div>
-            <img src="{% static "images/04.png" %}" alt="Map" width="300" height="300">
-            <br><br><br><br>
-        </div>
-        <a href="{% url 'start' %}" class="btn btn-success btn-lg" tabindex="-1" role="button" aria-disabled="true">Team up!</a>
-    </ul>
+    </div>
+
 
 </body>
 

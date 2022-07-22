@@ -33,7 +33,7 @@
 
       <!-- Nav Bar -->
       <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="index.html">JourneyGo</a>
+        <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
           aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -42,23 +42,23 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% static "index.html" %}"><i class="fa-solid fa-house"></i> Home</a>
+              <a class="nav-link" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% static "searchPage.html" %}"><i class="fa-solid fa-magnifying-glass"></i>
+              <a class="nav-link" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
                 Search</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% static "friends.html" %}"><i class="fa-solid fa-user-group"></i> My
+              <a class="nav-link" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
                 Friends</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% static "setting.html" %}"><i class="fa-solid fa-gear"></i>
+              <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>
                 Settings</a>
             </li>
           </ul>
           <form class="d-flex">
-            <a href="{% static "login.html" %}" class="btn btn-outline-light " role="button">Log In</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light " role="button">Log In</a>
           </form>
         </div>
       </nav>
@@ -67,7 +67,6 @@
 
   <div class="info" style="text-align:center;">
     <h2>Let's go to <em>{{ result_name }}</em></h2>
-    {% comment %} <img src="{% static "images/101.jpg" %}" alt="101" style="width:40%;"> {% endcomment %} 
     <img src={{ result_img }} alt="101" style="width:40%;">
     <br><br>
     <div class="taipei101info">

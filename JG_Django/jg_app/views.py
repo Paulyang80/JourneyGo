@@ -4,8 +4,7 @@ from pymongo import MongoClient
 import datetime
 import random
 import math
-
-
+from datetime import datetime
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
@@ -14,53 +13,21 @@ db = cluster['JourneyGo_DB']
 
 # Create your views
 
-def index(request):
-    collection = db['Taipei_gov']
-    test = collection.find_one({"_id": 3})
-    return render(request, 'index.html', {'current_time': str(datetime.datetime.now()), 'spot1': test['name'], 'intro1': test['intro']})
-
-def result(request):
-    collection = db['Taipei_gov']
-    result = collection.find_one({"name": "台北101"})
-    #print(result)
-    return render(request, 'result.html', {'result_name': result['name'], 'result_intro': result['intro'], 'result_img': result['images'][0]})
-
-def friends(request):
-    collection = db['User_account']
-    friends = []
-    for i in range(6):
-        friends.append(collection.find_one({"_id": i}))    
-    
-    # user_id = "https://www.instagram.com/cy.tang/?__a=1"
-    # api = "https://i.instagram.com/api/v1/users/"+user_id+"/info/"
-
+def login(request):
     context = {
-        'friends': friends,
-        'rows': range(math.ceil(len(friends)/3))
-        # 'ig_pic': api
+
     }
-    return render(request, 'friends.html', context)
+    return render(request, 'login.html', context)
 
-def searchRec(request):
-    collection = db['Taipei_gov']
+def signup(request):
+    context = {
 
-    # Random Reccomendation
-    ran_list = []
-    while len(ran_list)<9:
-        rec = random.randint(0,520)
-        if rec not in ran_list:
-            ran_list.append(rec)
-        else:
-            continue
+    }
+    return render(request, 'signup.html', context)
 
-    # Get Random Data by _id 
-    test = collection.find({"_id":{"$in":ran_list}})
-
-    # return render(request, 'searchPage.html', {'context_list1':test[0:3],
-    # 'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
-
-    return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
-
+def index(request):
+    context = {}
+    return render(request, 'index.html', context)
 
 def startDropDown(request):
 
@@ -88,12 +55,9 @@ def startDropDown(request):
         selected_trans = request.POST.get("trans")
         tr = selected_trans
 
-
     # SAVE ROOM_RECORDS
     db = cluster["test"]
     collection = db["records_test"]
-
-    from datetime import datetime
 
     # Getting the current date and time
     dt = datetime.now()
@@ -110,7 +74,6 @@ def startDropDown(request):
     }
     if selected_num and selected_time and selected_trans:
         collection.insert_one(post)
- 
 
     context = {
         'nums': num_options,
@@ -122,6 +85,80 @@ def startDropDown(request):
     }
     return render(request, 'start.html', context)
 
+def room2(request):
+    context = {
+
+    }
+    return render(request, 'room2.html', context)
+
+def confirmPage(request):
+    context = {
+
+    }
+    return render(request, 'confirmPage.html', context)
+
+def spotvote(request):
+    context = {
+
+    }
+    return render(request, 'spotvote.html', context)
+
+def ready(request):
+    context = {
+
+    }
+    return render(request, 'ready.html', context)
+
+def decide(request):
+    context = {
+
+    }
+    return render(request, 'decide.html', context)
+
+def result(request):
+    collection = db['Taipei_gov']
+    result = collection.find_one({"name": "台北101"})
+    #print(result)
+    return render(request, 'result.html', {'result_name': result['name'], 'result_intro': result['intro'], 'result_img': result['images'][0]})
+
+def friends(request):
+    collection = db['User_account']
+    friends = []
+    for i in range(6):
+        friends.append(collection.find_one({"_id": i}))    
+    
+    # user_id = "https://www.instagram.com/cy.tang/?__a=1"
+    # api = "https://i.instagram.com/api/v1/users/"+user_id+"/info/"
+
+    context = {
+        'friends': friends,
+        # 'ig_pic': api
+    }
+    return render(request, 'friends.html', context)
+
+def searchRec(request):
+    collection = db['Taipei_gov']
+
+    # Random Reccomendation
+    ran_list = []
+    while len(ran_list)<9:
+        rec = random.randint(0,520)
+        if rec not in ran_list:
+            ran_list.append(rec)
+        else:
+            continue
+
+    # Get Random Data by _id 
+    test = collection.find({"_id":{"$in":ran_list}})
+
+    # return render(request, 'searchPage.html', {'context_list1':test[0:3],
+    # 'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
+
+    return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
+
+
+
+
 
 def setting(request):
     collection = db['User_account']
@@ -131,3 +168,7 @@ def setting(request):
         'user': user
     }
     return render(request, 'setting.html', context)
+
+
+
+

@@ -101,7 +101,7 @@
 
       <!-- Nav Bar -->
       <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="{% static "index.html" %}">JourneyGo</a>
+        <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
           aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -110,23 +110,23 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% static "index.html" %}"><i class="fa-solid fa-house"></i> Home</a>
+              <a class="nav-link" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% static "searchPage.html" %}"><i class="fa-solid fa-magnifying-glass"></i>
+              <a class="nav-link" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
                 Search</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% static "friends.html" %}"><i class="fa-solid fa-user-group"></i> My
+              <a class="nav-link" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
                 Friends</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% static "setting.html" %}"><i class="fa-solid fa-gear"></i>
+              <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>
                 Settings</a>
             </li>
           </ul>
           <form class="d-flex">
-            <a href="{% static "login.html" %}" class="btn btn-outline-light " role="button">Log In</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light " role="button">Log In</a>
           </form>
         </div>
       </nav>
@@ -188,7 +188,7 @@
 
 
   <div class="hover" style="margin: 40px">
-    <a href="{% static "room2.html" %}">
+    <a href="{% url 'room2' %}">
       <img src="{% static "images/start1.png" %}" class="rounded mx-auto d-block" width="200px">
     </a>
   </div>
