@@ -73,7 +73,7 @@
   </div>
 
 
-  <div class="container">
+  {% comment %} <div class="container">
     <div class="row">
       {% for content in context_list %}
       <div class="col-lg-4">
@@ -94,10 +94,9 @@
       </div>
       {%endfor%}
     </div>
-  </div>
+  </div> {% endcomment %}
 
-
-  {% comment %} <!-- Carousel wrapper -->
+<!-- Carousel wrapper -->
   <div id="carouselMultiItemExample" class="carousel slide carousel-dark text-center" data-bs-ride="carousel">
     <!-- Inner -->
     <div class="carousel-inner py-4">
@@ -239,7 +238,7 @@
       </button>
     </div>
   </div>
-  <!-- Carousel wrapper --> {% endcomment %}
+  <!-- Carousel wrapper -->
 </body>
 
 </html>

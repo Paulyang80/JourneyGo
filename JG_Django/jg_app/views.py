@@ -10,25 +10,63 @@ from datetime import datetime
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
 db = cluster['JourneyGo_DB']
 
+# Views
 
-# Create your views
 
+# login
 def login(request):
-    context = {
+    input_name = None
+    input_email = None
+    input_pwd = None
+    if request.method == 'POST':
+        input_name = request.POST["username"]
+        input_email = request.POST["user-email"]
+        input_pwd = request.POST["password"]
+    
+    db = cluster['test']
+    collection = db['signup']
+    user = collection.find_one({"name": input_name})
 
+    context = {
+        'user': user,
+        'username': input_name,
+        'user_email': input_email,
+        'password': input_pwd,
     }
+
     return render(request, 'login.html', context)
 
+# sign up
 def signup(request):
-    context = {
+    input_fname = None
+    input_lname = None
+    input_email = None
+    input_pwd = None
+    if request.method == 'POST':
+        input_fname = request.POST["user-fname"]
+        input_lname = request.POST["user-lname"]
+        input_email = request.POST["user-email"]
+        input_pwd = request.POST["password"]
 
+    context = {
+       'user_first_name': input_fname,
+       'user_last_name': input_lname,
+       'user_email': input_email,
+       'password': input_pwd,
     }
+
+    db = cluster['test'] # 要記得改回去
+    collection = db['signup']
+    collection.insert_one(context)
+
     return render(request, 'signup.html', context)
 
+# index: home page 
 def index(request):
     context = {}
     return render(request, 'index.html', context)
 
+# start
 def startDropDown(request):
 
     # 出遊人數
@@ -39,21 +77,18 @@ def startDropDown(request):
     selected_num = None
     if request.method == "POST":
         selected_num = request.POST.get("numbers")
-        n = selected_num
 
     # 遊玩時間
     travel_duration = ["半天", "一天", "兩天一夜", "三天兩夜"]
     selected_time = None
     if request.method == "POST":
         selected_time = request.POST.get("duration")
-        t = selected_time
 
     # 交通工具
     transportations = ["機車", "汽車", "腳踏車", "大眾運輸"]
     selected_trans = None
     if request.method == "POST":
         selected_trans = request.POST.get("trans")
-        tr = selected_trans
 
     # SAVE ROOM_RECORDS
     db = cluster["test"]
@@ -85,11 +120,13 @@ def startDropDown(request):
     }
     return render(request, 'start.html', context)
 
+# room 
 def room2(request):
     context = {
 
     }
     return render(request, 'room2.html', context)
+
 
 def confirmPage(request):
     context = {
@@ -151,10 +188,10 @@ def searchRec(request):
     # Get Random Data by _id 
     test = collection.find({"_id":{"$in":ran_list}})
 
-    # return render(request, 'searchPage.html', {'context_list1':test[0:3],
-    # 'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
+    return render(request, 'searchPage.html', {'context_list1':test[0:3],
+    'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
 
-    return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
+    # return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
 
 
 
