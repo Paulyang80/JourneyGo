@@ -89,13 +89,6 @@
                                 <div class="invalid-feedback" data-sb-feedback="phone:required">The password number is
                                     required.</div>
                             </div>
-                            {% comment %} <div class="form-floating">
-                                <input class="form-control" id="password" type="tel"
-                                    placeholder="Enter your password..." data-sb-validations="required" />
-                                <label for="phone">Confirm Password</label>
-                                <div class="invalid-feedback" data-sb-feedback="phone:required">The password number is
-                                    required.</div>
-                            </div> {% endcomment %}
                             <br />
                             <!-- Submit success message-->
                             <!-- This is what your users will see when the form-->
@@ -117,7 +110,7 @@
                                 <div class="text-center text-danger mb-3">Error sending message!</div>
                             </div>
                             <!-- Submit Button-->
-                            <input type="submit" value="Log In" name="submit" class="btn btn-primary btn-lg active" aria-pressed="true" formaction="{% url 'index' %}">
+                            <input type="submit" value="Sign Up" class="btn btn-primary btn-lg active" aria-pressed="true" formaction="{% url 'index' %}">
                         </form>
                     </div>
                 </div>

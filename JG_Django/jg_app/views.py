@@ -3,7 +3,6 @@ from django.shortcuts import render
 from pymongo import MongoClient
 import datetime
 import random
-import math
 from datetime import datetime
 
 # Make MongoDB connection with Pymongo
@@ -11,7 +10,6 @@ cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.ne
 db = cluster['JourneyGo_DB']
 
 # Views
-
 
 # login
 def login(request):
@@ -25,7 +23,7 @@ def login(request):
     
     db = cluster['test']
     collection = db['signup']
-    user = collection.find_one({"name": input_name})
+    user = collection.find_one({"user_first_name": input_name})
 
     context = {
         'user': user,
@@ -38,22 +36,14 @@ def login(request):
 
 # sign up
 def signup(request):
-    input_fname = None
-    input_lname = None
-    input_email = None
-    input_pwd = None
+    context = {}
     if request.method == 'POST':
-        input_fname = request.POST["user-fname"]
-        input_lname = request.POST["user-lname"]
-        input_email = request.POST["user-email"]
-        input_pwd = request.POST["password"]
-
-    context = {
-       'user_first_name': input_fname,
-       'user_last_name': input_lname,
-       'user_email': input_email,
-       'password': input_pwd,
-    }
+        context = {
+            'user_first_name': request.POST["user-fname"],
+            'user_last_name': request.POST["user-lname"],
+            'user_email': request.POST["user-email"],
+            'password': request.POST["password"],
+        }  
 
     db = cluster['test'] # 要記得改回去
     collection = db['signup']
@@ -178,7 +168,7 @@ def searchRec(request):
 
     # Random Reccomendation
     ran_list = []
-    while len(ran_list)<9:
+    while len(ran_list)<3:
         rec = random.randint(0,520)
         if rec not in ran_list:
             ran_list.append(rec)
@@ -188,10 +178,10 @@ def searchRec(request):
     # Get Random Data by _id 
     test = collection.find({"_id":{"$in":ran_list}})
 
-    return render(request, 'searchPage.html', {'context_list1':test[0:3],
-    'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
+    # return render(request, 'searchPage.html', {'context_list1':test[0:3],
+    # 'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
 
-    # return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
+    return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
 
 
 

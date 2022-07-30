@@ -39,58 +39,6 @@
   <link href="{% static "css/navbar-styles.css" %}" rel="stylesheet">
   <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
-
-  <style>
-    .container {
-      height: 40vh;
-    }
-
-    .dropdown-toggle {
-      width: 200px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 50px;
-      border: 2px solid #ffc107;
-      font-weight: 600;
-    }
-
-    .dropdown-toggle:focus {
-
-      box-shadow: none;
-
-    }
-
-
-    .dropdown-toggle::after {
-
-      display: none;
-
-    }
-
-    .dropdown-menu {
-
-      width: 200px;
-      border: 2px solid #ffc107;
-      padding: 0rem 0;
-      transform: translate3d(0px, 50px, 0px);
-
-    }
-
-    .dropdown-item:focus,
-    .dropdown-item:hover {
-      color: #ffffff;
-      background-color: #ffc107;
-      padding: 12px;
-    }
-
-    .dropdown-item {
-      display: block;
-      width: 100%;
-      padding: 12px;
-
-    }
-  </style>
 </head>
 
 <body>
@@ -133,46 +81,32 @@
     </div>
   </section>
 
-  <div class="container d-flex justify-content-center align-items-center">
+  <div class="container d-flex justify-content-center align-items-center start-form">
     <div class="dropdown">
       <!--Dropdown Box-->
+
         <form method="post">
             <h4>旅遊人數</h4>
-            <select name="numbers">
-                {% for n in nums %}
-                    <option
-                      value="{{ n }}"
-                      {% if selected_num == n %}
-                          selected="selected"
-                      {% endif %}
-                    >{{ n }}</option>
-                {% endfor %}
-            </select>
+            <select name="numbers" class="form-select" aria-label="Default select example">
+              {% for n in nums %}
+                  <option value="{{ n }}" {% if selected_num == n %} selected="selected" {% endif %}> {{ n }} </option>
+              {% endfor %}
+            </select><br>
 
             <h4>遊玩時間</h4>
-            <select name="duration">
-              {% for time in travel_duration %}
-                  <option
-                    value="{{ time }}"
-                    {% if selected_time == time %}
-                        selected="selected"
-                    {% endif %}
-                  >{{ time }}</option>
+            <select name="duration" class="form-select" aria-label="Default select example">
+              {% for time in travel_duration %} 
+                <option value="{{ time }}" {% if selected_time == time %} selected="selected" {% endif %}> {{ time }} </option>
               {% endfor %}
-            </select>
+            </select><br>
 
-            <h4>交通工具</h4>
-            <select name="trans">
+            <h4>交通工具</h4> 
+            <select name="trans" class="form-select" aria-label="Default select example">
               {% for t in transportations %}
-                  <option
-                    value="{{ t }}"
-                    {% if selected_trans == t %}
-                        selected="selected"
-                    {% endif %}
-                  >{{ t }}</option>
+                  <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
               {% endfor %}
             </select><br><br>
-            <input type="submit" value="Select">
+            <input type="submit" value="Confirm" class="btn btn-secondary">
         </form>
         {% if selected_num and selected_time and selected_trans %}
           <p>

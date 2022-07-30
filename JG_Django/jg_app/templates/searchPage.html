@@ -105,13 +105,21 @@
       <div class="carousel-item active">
         <div class="container">
           <div class="row">
-            {% for content in context_list1 %}
+            {% for content in context_list %}
             <div class="col-lg-4">
               <div class="card">
-                <img src={{ content.images.0 }} class="img-fluid card-img-top" />
+                <!-- 當src的圖片不存在時,使用onerror的圖片來顯示 -->
+                <img src={{ content.images.0 }} onerror={{content.images.1}} class="img-fluid card-img-top" alt="景點圖片"/>
                 <div class="card-body">
                   <h5 class="card-title">{{ content.name }}</h5>
-                  <p class="card-text">{{ content.intro }}</p>
+                  <p class="card-text">
+                    {% if content.open_time %} 營業時間: {{ content.open_time }} <br> {% endif %}
+                    {% if content.county or content.distric or content.address %} 地址: {{ content.county }} {{ content.distric }} {{ content.address }} <br> {% endif %}
+                    {% if content.tel %}電話： {{ content.tel }} <br> {% endif %}
+                    {% comment %} 官方網站： {{ content.official_site }} <br> {% endcomment %}
+                    {% if content.categories %}類別： {% for cat in content.categories %}{{cat}} {% endfor %} <br> {% endif %}
+                    {% comment %} 推薦指數: {{ recN }} {% endcomment %}
+                  </p>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Read more
                   </button>
@@ -124,12 +132,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <p>營業時間: {{ content.open_time }}</p>
-                          <p>地址: {{ content.county }} {{ content.distric }} {{ content.address }}</p>
-                          <p>電話： {{ content.tel }}</p>
-                          <p>官方網站： {{ content.official_site }}</p>
-                          <p>類別： {% for cat in content.categories %}{{cat}} {% endfor %}</p>
-                          <p>推薦指數: {{ recN }}</p>
+                          <p>{{ content.intro }}</p>
                         </div>
                       </div>
                     </div>
@@ -142,7 +145,7 @@
         </div>
       </div>
       
-      <!-- Single item 2-->
+      {% comment %} <!-- Single item 2-->
       <div class="carousel-item">
         <div class="container">
           <div class="row">
@@ -221,11 +224,11 @@
             {% endfor %}
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
     </div>
     <!-- Inner -->
     <!-- Controls -->
-    <div class="d-flex justify-content-center mb-4">
+    {% comment %} <div class="d-flex justify-content-center mb-4">
       <button class="carousel-control-prev position-relative" type="button" data-bs-target="#carouselMultiItemExample"
         data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -236,7 +239,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
+    </div> {% endcomment %}
   </div>
   <!-- Carousel wrapper -->
 </body>

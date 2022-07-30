@@ -71,8 +71,23 @@
         </div>
 
           <div align="center">
-            <a href="{% url 'confirmPage' %}"><button type="button" class="btn btn-primary btn-lg">Invite</button></a>
-            <a href="linkPage.html"><button type="button" class="btn btn-secondary btn-lg">Cancel</button></a>
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ content.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Ready to go?</p>
+                    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="{% url 'start' %}"><button type="button" class="btn btn-secondary btn-lg">Cancel</button></a>
           </div>
         </div>
       </div>

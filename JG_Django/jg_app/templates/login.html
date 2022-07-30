@@ -104,11 +104,10 @@
                                 <div class="text-center text-danger mb-3">Error sending message!</div>
                             </div>
                             <!-- Submit Button-->
-                            <input type="submit" value="Log In" name="submit" class="btn btn-primary btn-lg active" aria-pressed="true" action="{% url 'index' %}"> 
+                            
+                            <input type="submit" value="Log In" name="submit" class="btn btn-primary btn-lg active" aria-pressed="true" 
+                            {% if user.password == password %} formaction="{% url 'index' %}" {% endif %}> 
                         </form>
-                        {% if user.passwrod == password %}
-                            <p>Login success!</p>
-                        {% endif %}
                     </div>
                 </div>
             </div>

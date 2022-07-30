@@ -11,3 +11,13 @@
 .card-img-top{
   height: 276px;
 }
+
+.ellipsis {
+  overflow:hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; 
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  }

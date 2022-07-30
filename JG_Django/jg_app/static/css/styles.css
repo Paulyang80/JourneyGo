@@ -60,13 +60,5 @@
    padding: 3px;
 }
 
-.ellipsis {
-  overflow:hidden;
-  white-space: normal;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 5; 
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  }
+
 

@@ -1,6 +1,8 @@
+
 var done = ['Tang', 'Ning', 'Coco', 'Peter', 'Paul'];
 // new
 var imgList=['images/person1.png','images/person2.png','images/person3.png','images/person4.png','images/person5.png']
+
 // var done = [];
 
 const appendItem = (textContent,imgContent, parentNodeId) => {
