@@ -21,7 +21,7 @@
     <!-- Fontawesome -->
     <script src="https://kit.fontawesome.com/a973304abd.js" crossorigin="anonymous"></script>
     <!-- css -->
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
+    {% comment %} <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css"> {% endcomment %}
     <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}" type="text/css">
     <link rel="stylesheet" href="{% static "css/room.css" %}">
   </head>
@@ -59,14 +59,84 @@
 
         <div id="main">
             <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                   <h1>YOUR ROOM</h1>
                     <ul id="todo">Invited</ul>
                     <ul id="done">Friend List</ul>
-                    <script src="{% static "js/main.js" %}"></script>
-                  
+                    <!--Next Step: Get FB Profile pic CDN-->
+                    <script>
+                        var done = "{{ friends_name | safe }}"; // use "safe" to convert &#x27; to quote
+                        done = done.replace(/'/g, '"');         // convert string to array
+                        done = JSON.parse(done);
+                        //alert(done); 
+
+                        var imgList = "{{ friends_pic | safe }}";
+                        imgList = imgList.replace(/'/g, '"');
+                        imgList = JSON.parse(imgList);
+                        //alert(imgList)
+
+                        var hashtag = "{{ friends_hash | safe }}";
+                        hashtag = hashtag.replace(/'/g, '"');
+                        hashtag = JSON.parse(hashtag);
+                        //alert(hashtag);
+
+                        const appendItem = (textContent,imgContent, hashContent, parentNodeId) => {
+                            const newItem = document.createElement('li');
+                            newItem.classList.add('todo_item');
+                            // new
+                            const img = document.createElement('img');
+                            img.src=imgContent
+                            img.width=100
+                            // newItemImg.innerHTML = `<p class='todo_content'>${imgContent}</p>`
+                            newItem.innerHTML = `<p class='todo_content'>${textContent}<br>Hashtag: #${hashContent}</p>`
+                                                
+                            // new
+                            newItem.appendChild(img)
+
+                            document.querySelector(`#${parentNodeId}`).appendChild(newItem);
+
+                            // document.querySelector(`#${parentNodeId}`).appendChild(img);
+                        };
+
+                        const itemMove = (event, newParentNodeId) => {
+                            const target = event.target;
+                            console.log(target.parentNode.childNodes)
+                            if (target.classList.contains('todo_content')) {
+                                // done.unshift(target.textContent);
+                                // todo = todo.filter(value => value !== target.textContent);
+
+                                // new
+                                const newItem = document.createElement('li');
+                                newItem.classList.add('todo_item');
+                                // alert(target.textContent);
+                                newItem.innerHTML = `<p class='todo_content'>${target.textContent}</p>`
+                                console.log(newItem)
+                                newItem.appendChild(target.parentNode.childNodes[1])
+                                document.querySelector(`#${newParentNodeId}`).appendChild(newItem);
+                                target.parentNode.remove();
+
+                                // appendItem(target.textContent,target.imgContent, newParentNodeId);
+                            }
+                        }
+
+                        // render all todo items
+                        for (var i = 0; i < done.length; i++) {
+                            appendItem(done[i],imgList[i],hashtag[i], 'done');
+                        }
+
+                        // add event listener to parent node todo, then see whether the clicked element contains todo_content class
+                        document.querySelector('#todo').addEventListener('click', function (event) {
+                            itemMove(event, 'done');
+                        });
+
+                        document.querySelector('#done').addEventListener('click', function(event) {
+                            itemMove(event, 'todo');
+                        });
+                    </script>
+                    <!---->
                 </div>
+              </div>
             </div>
         </div>
 
@@ -77,7 +147,7 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ content.name }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">

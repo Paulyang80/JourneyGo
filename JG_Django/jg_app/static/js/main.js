@@ -1,7 +1,7 @@
 
 var done = ['Tang', 'Ning', 'Coco', 'Peter', 'Paul'];
 // new
-var imgList=['images/person1.png','images/person2.png','images/person3.png','images/person4.png','images/person5.png']
+// var imgList = '{{ imgList }}';
 
 // var done = [];
 
@@ -17,13 +17,10 @@ const appendItem = (textContent,imgContent, parentNodeId) => {
     // new
     newItem.appendChild(img)
 
-
-
     document.querySelector(`#${parentNodeId}`).appendChild(newItem);
 
     // document.querySelector(`#${parentNodeId}`).appendChild(img);
 };
-
 
 const itemMove = (event, newParentNodeId) => {
     const target = event.target;

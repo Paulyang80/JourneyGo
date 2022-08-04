@@ -65,7 +65,7 @@
                         <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="post">
                             
                             <div class="form-floating">
-                                <input class="form-control" name="username" id="name" type="text" placeholder="Enter your name..."
+                                <input class="form-control" name="user-name" id="name" type="text" placeholder="Enter your name..."
                                     data-sb-validations="required" />
                                 <label for="name">Name</label>
                                 <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
@@ -78,7 +78,7 @@
                                 <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" name="password" id="password" type="tel"
+                                <input class="form-control" name="user-pwd" id="password" type="tel"
                                     placeholder="Enter your password..." data-sb-validations="required" />
                                 <label for="phone">Password</label>
                                 <div class="invalid-feedback" data-sb-feedback="phone:required">The password number is required.</div>
@@ -104,9 +104,10 @@
                                 <div class="text-center text-danger mb-3">Error sending message!</div>
                             </div>
                             <!-- Submit Button-->
-                            
                             <input type="submit" value="Log In" name="submit" class="btn btn-primary btn-lg active" aria-pressed="true" 
-                            {% if user.password == password %} formaction="{% url 'index' %}" {% endif %}> 
+                            {% if user.name == name and user.password == input_pwd and user.email == input_email %}
+                            formaction="{% url 'index' %}"
+                            {% endif %} >
                         </form>
                     </div>
                 </div>

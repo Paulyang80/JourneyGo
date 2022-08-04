@@ -1,4 +1,5 @@
 from cgi import test
+from unicodedata import name
 from django.shortcuts import render
 from pymongo import MongoClient
 import datetime
@@ -17,9 +18,9 @@ def login(request):
     input_email = None
     input_pwd = None
     if request.method == 'POST':
-        input_name = request.POST["username"]
+        input_name = request.POST["user-name"]
         input_email = request.POST["user-email"]
-        input_pwd = request.POST["password"]
+        input_pwd = request.POST["user-pwd"]
     
     db = cluster['test']
     collection = db['signup']
@@ -27,9 +28,9 @@ def login(request):
 
     context = {
         'user': user,
-        'username': input_name,
-        'user_email': input_email,
-        'password': input_pwd,
+        'input_name': input_name,
+        'input_email': input_email,
+        'input_pwd': input_pwd,
     }
 
     return render(request, 'login.html', context)
@@ -45,8 +46,7 @@ def signup(request):
             'password': request.POST["password"],
         }  
 
-    db = cluster['test'] # 要記得改回去
-    collection = db['signup']
+    collection = db['User_account']
     collection.insert_one(context)
 
     return render(request, 'signup.html', context)
@@ -112,9 +112,23 @@ def startDropDown(request):
 
 # room 
 def room2(request):
+    collection = db['User_account']
+    #friends = []
+    friends_name = []
+    friends_pic = []
+    friends_hash = []
+    for i in range(6):
+        #friends.append(collection.find_one({'_id': i}))
+        friends_name.append((collection.find_one({'_id': i})['firstName']+" "+collection.find_one({'_id': i})['lastName']))
+        friends_pic.append(collection.find_one({'_id': i})['pic'])
+        friends_hash.append(collection.find_one({'_id': i})['hashtag'])
     context = {
-
+        #'friends': friends, 
+        'friends_name': friends_name, #list
+        'friends_pic': friends_pic,   #list
+        'friends_hash': friends_hash, #list
     }
+    #print(friends_pic) 確認有存到，但js那邊get不到
     return render(request, 'room2.html', context)
 
 
@@ -125,8 +139,33 @@ def confirmPage(request):
     return render(request, 'confirmPage.html', context)
 
 def spotvote(request):
-    context = {
+    
+    # 先隨機抓六張圖
+    n = []
+    while len(n) <= 6: #推薦幾個景點
+        id = random.randrange(0, 550)
+        if id not in n: n.append(id)
+        else: continue
+    print(n)
 
+    collection = db['Taipei_gov']
+    spots = []
+    for i in n:
+        spots.append(collection.find_one({"_id": i}))
+
+    imgList = []
+    introList = []
+    nameList = []
+    for spot in spots:
+        imgList.append(spot['images'][0])
+        introList.append(spot['intro'])
+        nameList.append(spot['name'])
+
+    context = {
+        'spots': spots,
+        'imgList': imgList,
+        'introList': introList,
+        'nameList': nameList,
     }
     return render(request, 'spotvote.html', context)
 

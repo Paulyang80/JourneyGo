@@ -25,15 +25,11 @@
     <title>spotvote</title>
     <style type="text/css">
         * {
-
-
             margin: 0;
             padding: 0;
         }
 
         .img-wrapper {
-
-
             width: 520px;
             height: 520px;
             background-size: contain;
@@ -42,15 +38,11 @@
         }
 
         .img-wrapper img {
-
-
             width: 533px;
             height: 300px;
         }
 
         .img-wrapper p {
-
-
             text-align: center;
             height: 20px;
             line-height: 20px;
@@ -60,51 +52,49 @@
         }
 
         .img-wrapper button {
-
-
-            margin: 12px 93px;
+            margin: 12px 20px;
             font-size: 18px;
         }
     </style>
 
     <script type="text/javascript">
+        
         window.onload = function () {
-
-
             let prev = document.getElementById("prev");
             let next = document.getElementById("next");
             let img = document.getElementsByTagName("img")[0];
             let info = document.getElementById("info");
+
             //建立一個數組儲存照片的路徑
-            let imgArr = ["images/aa.jpg","images/bb.jpg","images/cc.jpg","images/dd.jpg", "images/dd.jpg", "images/ee.jpg","images/ff.jpg", "images/gg.jpg"];
+            let imgArr = "{{ imgList | safe }}";
+            imgArr = imgArr.replace(/'/g, '"');
+            imgArr = JSON.parse(imgArr);
+            //想效仿上面讓card顯示name、intro等資訊，但失敗
+            let infoArr = "{{ nameList | safe }}"
+            infoArr = infoArr.replace(/'/g, '"');
+            infoArr = JSON.parse(infoArr);
+            
             let index = 0;
             prev.onclick = function () {
-
-
-
-                prev.style.backgroundColor = "#ffffff";
+                //prev.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
-                    window.location.href = {% url 'ready' %};
+                    window.location.href = '{% url 'ready' %}';
                 }
                 img.src = imgArr[index];
+                //info.src = infoArr[index];
                 index++;
             };
 
             next.onclick = function () {
-
-
                 index++;
-                next.style.backgroundColor = "#ffffff";
+                //next.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
-
-                    window.location.href = {% url 'ready' %};
-
+                    window.location.href = '{% url 'ready' %}';
                 }
                 img.src = imgArr[index];
+                //info.src = infoArr[index];
                 index++;
             };
-
-
 
         };
     </script>
@@ -144,19 +134,23 @@
             </nav>
         </div>
       </section>
+
     <br>
     <div style="text-align:center">
-        <h3>選擇你喜歡的景點</h3>
+        <h3>Do you like this place?</h3>
     </div>
 
     <div class="img-wrapper">
-        <p id="info"></p>
-        <img src="{% static "images/aa.jpg" %}">
-        <button type="button" class="btn btn-light" id="prev">Like</button>
-        <button type="button" class="btn btn-light" id="next">Disike</button>
-
-
+        <div class="card" style="width: auto;">
+            <img src={{ imgList.0 }} class="card-img-top" alt="你可能喜歡的景點">
+            <div class="card-body" style="height: auto;">
+              <p class="card-text"></p>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" id="prev"><i class="fa-solid fa-heart"></i> Like</button>
+            <button type="button" class="btn btn-light btn-sm" id="next"><i class="fa-solid fa-xmark"></i> Disike</button>
+        </div>
     </div>
+    
 </body>
 
 </html>

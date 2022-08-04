@@ -28,9 +28,7 @@
 
 <body>
     <section id="title">
-
         <div class="container-fluid">
-
             <!-- Nav Bar -->
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
@@ -39,7 +37,6 @@
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
@@ -58,14 +55,21 @@
                                 Settings</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
+                    {% comment %} <form class="d-flex">
                         <a href="{% url 'login' %}" class="btn btn-outline-light " role="button">Log In</a>
-                    </form>
+                    </form> {% endcomment %}
                 </div>
             </nav>
         </div>
     </section>
-    <h1>Your journey is being prepared......</h1>
+
+    {% comment %} <div class="loading">
+        <p>Your journey is being prepared......</p>
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> {% endcomment %}
+   
     <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="container">
             <div class="ball"></div>
@@ -76,9 +80,11 @@
             <div class="ball"></div>
             <div class="ball"></div>
         </div>
-        <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href={% url 'room2' %}>Back</a>
+        <div class="text-center">
+            {% comment %} <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href={% url 'room2' %}>Back</a></div> {% endcomment %}
+            <meta http-equiv="refresh" content="6; {% url 'decide' %}">
         </div>
-        <meta http-equiv="refresh" content="6; {% url 'decide' %}">
+    </div>
 </body>
 
 </html>

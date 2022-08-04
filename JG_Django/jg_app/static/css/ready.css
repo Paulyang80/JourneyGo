@@ -1,4 +1,12 @@
 
+/* .loading {
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+} */
+
 .ball {
   width: 10px;
   height: 10px;
@@ -54,6 +62,8 @@
   -moz-animation: right 1s infinite ease-in-out;
   animation: right 1s infinite ease-in-out;
 }
+
+
 
 @-webkit-keyframes right {
   0% {
@@ -127,5 +137,3 @@
   }
 }
 
-
-Resources
