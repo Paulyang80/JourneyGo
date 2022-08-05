@@ -71,9 +71,11 @@
     </div>
   </div>
 
+  {% if keywords %}
   <div>
     <p>「{{ keywords }}」搜尋結果：</p>
   </div>
+  {% endif %}
 
   <!--測試有沒有收到輸入-->
   {% if keywords %}

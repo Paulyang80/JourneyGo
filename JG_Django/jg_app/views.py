@@ -229,7 +229,7 @@ def searchRec(request):
     
     # Random Reccomendation
     ran_list = []
-    while len(ran_list)<3:
+    while len(ran_list)<6:
         rec = random.randint(0,520)
         if rec not in ran_list:
             ran_list.append(rec)
