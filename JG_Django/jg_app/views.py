@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import datetime
 import random
 from datetime import datetime
+import jieba
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
@@ -185,7 +186,13 @@ def result(request):
     collection = db['Taipei_gov']
     result = collection.find_one({"name": "台北101"})
     #print(result)
-    return render(request, 'result.html', {'result_name': result['name'], 'result_intro': result['intro'], 'result_img': result['images'][0]})
+
+    context = {
+        'result_name': result['name'], 
+        'result_intro': result['intro'], 
+        'result_img': result['images'][0]
+    }
+    return render(request, 'result.html', context)
 
 def friends(request):
     collection = db['User_account']
@@ -202,9 +209,24 @@ def friends(request):
     }
     return render(request, 'friends.html', context)
 
+def fenci(sentence: str)->str:
+    words = jieba.lcut_for_search(sentence)
+    return ' '.join(words)
+
 def searchRec(request):
+
     collection = db['Taipei_gov']
 
+    # Search Engine
+    keywords = None
+    cur = None
+    if request.method == "POST": # Get input value
+        keywords = request.POST.get("keywords") # type: str
+        #print(type(fenci(keywords)))
+        key_list = fenci(keywords).split()
+        cur = collection.find({"splited_words": { "$in": key_list }}) # cur is a list of multiple dictionaries
+
+    
     # Random Reccomendation
     ran_list = []
     while len(ran_list)<3:
@@ -215,15 +237,17 @@ def searchRec(request):
             continue
 
     # Get Random Data by _id 
-    test = collection.find({"_id":{"$in":ran_list}})
+    spots = collection.find({"_id":{"$in":ran_list}})
 
-    # return render(request, 'searchPage.html', {'context_list1':test[0:3],
-    # 'context_list2':test[3:6], 'context_list3':test[6:], 'recN': random.randrange(1, 5)})
+    # Render context
+    context = {
+        'spots':spots,
+        'recN': random.randrange(1, 5),
+        'keywords': keywords,
+        'cur': cur,
+    }
 
-    return render(request, 'searchPage.html', {'context_list':test,'recN': random.randrange(1, 5)})
-
-
-
+    return render(request, 'searchPage.html', context)
 
 
 def setting(request):

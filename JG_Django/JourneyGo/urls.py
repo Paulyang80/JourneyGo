@@ -34,5 +34,6 @@ urlpatterns = [
     path('confirmPage/', views.confirmPage, name='confirmPage'),
     path('spotvote/', views.spotvote, name='spotvote'),
     path('ready/', views.ready, name='ready'),
-    path('decide/', views.decide, name='decide')
+    path('decide/', views.decide, name='decide'),
+
 ]

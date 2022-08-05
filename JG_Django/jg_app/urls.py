@@ -29,5 +29,6 @@ urlpatterns = [
     path('',views.spotvote,name='spotvote'),
     path('',views.ready,name='ready'),
     path('',views.decide,name='decide'),
-    path('',views.result,name='result')
+    path('',views.result,name='result'),
+
 ]
