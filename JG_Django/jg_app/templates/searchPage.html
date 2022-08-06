@@ -72,120 +72,88 @@
   </div>
 
   {% if keywords %}
-  <div>
-    <p>「{{ keywords }}」搜尋結果：</p>
-  </div>
-  {% endif %}
+    <div>
+      <p>「{{ keywords }}」搜尋結果：</p>
+    </div> 
 
-  <!--測試有沒有收到輸入-->
-  {% if keywords %}
-  <!-- Card Group -->
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for doc in cur %}
-    <div class="col">
-      <div class="card h-100">
-        <img src={{ doc.images.0 }} class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{ doc.name }}</h5>
-          <p class="card-text">
-            {% if doc.open_time %} 營業時間: {{ doc.open_time }} <br> {% endif %}
-            {% if doc.county or doc.distric or doc.address %} 地址: {{ doc.county }} {{ doc.distric }} {{ doc.address }} <br> {% endif %}
-            {% if doc.tel %}電話： {{ doc.tel }} <br> {% endif %}
-            {% comment %} 推薦指數: {{ recN }} {% endcomment %}
-            {% comment %} 官方網站： {{ content.official_site }} <br> {% endcomment %}
-          </p>
-          <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Read more
-          </button>
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel" >{{ doc.name }} 介紹</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>{{ doc.intro }}</p>
+    <!-- Search Results -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for doc in cur %}
+        <div class="col">
+          <div class="card h-100">
+            <img src={{ doc.images.0 }} class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ doc.name }}</h5>
+              <p class="card-text">
+                {% if doc.open_time %} 營業時間: {{ doc.open_time }} <br> {% endif %}
+                {% if doc.county or doc.distric or doc.address %} 地址: {{ doc.county }} {{ doc.distric }} {{ doc.address }} <br> {% endif %}
+                {% if doc.tel %}電話： {{ doc.tel }} <br> {% endif %}
+              </p>
+              <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Read more
+              </button>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel" >{{ doc.name }} 介紹</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>{{ doc.intro }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="card-footer">
+              <small class="text-muted">類別：{% if doc.categories %} {% for cat in doc.categories %}{{ cat }} {% endfor %} <br> {% endif %}</small>
+            </div>
           </div>
         </div>
-        <div class="card-footer">
-          <small class="text-muted">類別：{% if doc.categories %} {% for cat in doc.categories %}{{ cat }} {% endfor %} <br> {% endif %}</small>
-        </div>
-      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-  {% endif %}
 
-<!-- Paul's 九宮格-->
-
-  {% comment %} <div class="container">
-    <div class="row">
-      {% for content in context_list %}
-      <div class="col-lg-4">
-        <div class="card">
-          <img
-            src="{{content.images.0}}"
-            class="card-img-top"
-            alt="Waterfall"
-          />
+  
+  {% else %}
+    <!-- Default -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for spot in spots %}
+      <div class="col">
+        <div class="card h-100">
+          <img src={{ spot.images.0 }} class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">{{content.name}}</h5>
-            <div class="box">
-              <p class="card-text ellipsis">{{content.intro}}</p>
-            </div>
-            <a href="#!" class="btn btn-primary">Button</a>
-          </div>
-        </div>
-      </div>
-      {%endfor%}
-    </div>
-  </div> {% endcomment %}
-
-  <!-- Card Group -->
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for spot in spots %}
-    <div class="col">
-      <div class="card h-100">
-        <img src={{ spot.images.0 }} class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{ spot.name }}</h5>
-          <p class="card-text">
-            {% if spot.open_time %} 營業時間: {{ spot.open_time }} <br> {% endif %}
-            {% if spot.county or spot.distric or spot.address %} 地址: {{ spot.county }} {{ spot.distric }} {{ spot.address }} <br> {% endif %}
-            {% if spot.tel %}電話： {{ spot.tel }} <br> {% endif %}
-            {% comment %} 推薦指數: {{ recN }} {% endcomment %}
-            {% comment %} 官方網站： {{ content.official_site }} <br> {% endcomment %}
-          </p>
-          <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Read more
-          </button>
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel" >{{ spot.name }} 介紹</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>{{ spot.intro }}</p>
+            <h5 class="card-title">{{ spot.name }}</h5>
+            <p class="card-text">
+              {% if spot.open_time %} 營業時間: {{ spot.open_time }} <br> {% endif %}
+              {% if spot.county or spot.distric or spot.address %} 地址: {{ spot.county }} {{ spot.distric }} {{ spot.address }} <br> {% endif %}
+              {% if spot.tel %}電話： {{ spot.tel }} <br> {% endif %}
+            </p>
+            <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Read more
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" >{{ spot.name }} 介紹</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>{{ spot.intro }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="card-footer">
-          <small class="text-muted">類別：{% if spot.categories %} {% for cat in spot.categories %}{{ cat }} {% endfor %} <br> {% endif %}</small>
+          <div class="card-footer">
+            <small class="text-muted">類別：{% if spot.categories %} {% for cat in spot.categories %}{{ cat }} {% endfor %} <br> {% endif %}</small>
+          </div>
         </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+  {% endif %}
 
 </body>
 
