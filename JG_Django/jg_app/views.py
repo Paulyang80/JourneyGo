@@ -1,4 +1,5 @@
 from cgi import test
+from os import remove
 from unicodedata import name
 from django.shortcuts import render
 from pymongo import MongoClient
@@ -195,13 +196,26 @@ def result(request):
     return render(request, 'result.html', context)
 
 def friends(request):
+    # 抓好友資料
+    db = cluster['JourneyGo_DB']
     collection = db['User_account']
     friends = []
     for i in range(6):
-        friends.append(collection.find_one({"_id": i}))    
-    
-    # user_id = "https://www.instagram.com/cy.tang/?__a=1"
-    # api = "https://i.instagram.com/api/v1/users/"+user_id+"/info/"
+        friends.append(collection.find_one({"_id": i}))   
+
+    # 刪除好友功能
+    db = cluster['test']
+    collection = db['unfriend']
+
+    exf = None
+    exl = None
+    if request.method == "POST":
+        exf = request.POST.get("exf")
+        exl = request.POST.get("exl")
+        #print( exf, exl)
+        collection.update({'_id': 6}, {'$pull': {'friendList': exf}})
+
+    # 新增朋友功能
 
     context = {
         'friends': friends,

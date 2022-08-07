@@ -88,14 +88,16 @@
           <div class="card-body">
             <img class="photo" src={{ f.pic }} alt="">
             <p>#{{ f.hashtag }}</p>
-            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-id-card"></i>
+            <!-- Profile Btn-->
+            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="fa-solid fa-id-card"></i>
               Profile
             </button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- Profile Modal -->
+            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ f.firstName }} {{ f.lastName }}</h5>
+                    <h5 class="modal-title" id="profileModal">{{ f.firstName }} {{ f.lastName }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -104,9 +106,31 @@
                 </div>
               </div>
             </div>
-            <button class="btn bnt-lg btn-block btn-dark" type="button"><i class="fa-solid fa-user-xmark"></i>
+            <!-- Unfriend Btn-->
+            <button class="btn bnt-lg btn-block btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#unfriendModal"><i class="fa-solid fa-user-xmark"></i>
               Unfriend
             </button>
+            <!-- Unfriend Modal -->
+            <div class="modal fade" id="unfriendModal" tabindex="-1" aria-labelledby="unfriendModal" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="unfriendModal">Unfriend</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to remove {{ f.firstName }} {{ f.lastName }} from your friend list?</p>
+                    <form action="" method="post">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <input type="hidden" name="exf"    value= {{f.firstName}}>
+                      <input type="hidden" name="exl"    value= {{f.lastName}}>
+                      <input type="submit" name="remove" value="Yes, remove." class="btn btn-primary">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of Modal -->
           </div>
         </div>
       </div>
