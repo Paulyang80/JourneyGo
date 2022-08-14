@@ -1,12 +1,20 @@
 from cgi import test
 from os import remove
 from unicodedata import name
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
 import random
 from datetime import datetime
 import jieba
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as logins
+from django.contrib.auth import logout as logouts
+from django.contrib.auth import authenticate
+from jg_app.forms import RegisterUserForm
+from django.contrib import messages
+
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
@@ -14,7 +22,40 @@ db = cluster['JourneyGo_DB']
 
 # Views
 
+#register
+def register(request):
+    if request.method == 'POST':
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # username = form.cleaned_data['username']
+            # password = form.cleaned_data['password']
+            # user = authenticate(username=username)
+            return redirect('login1')
+    else:
+        form = RegisterUserForm()
+    return render(request, 'register.html', {'form': form})
+
 # login
+def login1(request):
+    if request.method == 'POST':
+        # username = request.POST['username']
+        # password = request.POST['password']
+        # user = authenticate(request, username=username, password=password)
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            logins(request, user)    
+            return redirect('index')  
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login1.html', {'form': form})
+
+def logout(request):
+    if request.method == 'POST':
+        logouts(request)
+        return redirect('index')
+
 def login(request):
     input_name = None
     input_email = None
@@ -55,7 +96,8 @@ def signup(request):
 
 # index: home page 
 def index(request):
-    context = {}
+    user = request.user
+    context = {'user': user}
     return render(request, 'index.html', context)
 
 # start

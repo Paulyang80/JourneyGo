@@ -13,10 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from unicodedata import name
 from django.contrib import admin
 from django.urls import path
-from jg_app import views
+from jg_app import urls, views
 from django.conf.urls import include
 
 urlpatterns = [
@@ -35,5 +34,8 @@ urlpatterns = [
     path('spotvote/', views.spotvote, name='spotvote'),
     path('ready/', views.ready, name='ready'),
     path('decide/', views.decide, name='decide'),
-
+    path('accounts/', include('allauth.urls')), #allauth第三方登入 
+    path('login1/', views.login1, name='login1'),
+    path('register/', views.register, name='register'),
+    path('logout/', views.logout, name='logout'),
 ]
