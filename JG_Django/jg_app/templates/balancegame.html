@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -35,8 +36,8 @@
 
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/navbar-styles.css">
-    <link href="css/start.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 
     <style>
@@ -50,27 +51,27 @@
     </h3>
     <div class="card-group">
         <div class="card text-center">
-            <img src="{% static " images/ramadan.png" %}" class="card-img-top"
+            <img src="{% static "images/ramadan.png" %}" class="card-img-top"
                 style="display:block; margin:auto; width: 75%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title">文藝旅行</h5>
-                <a class="btn btn-primary" href="art.html" role="button">pick me</a>
+                <a class="btn btn-primary" href="{% url 'art' %}" role="button">pick me</a>
             </div>
         </div>
         <div class="card text-center">
-            <img src="{% static " images/muscle.png" %}"" class="card-img-top"
+            <img src="{% static "images/muscle.png" %}" class="card-img-top"
                 style="display:block; margin:auto; width: 75%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title">健康路線</h5>
-                <a class="btn btn-primary" href="health.html" role="button">pick me</a>
+                <a class="btn btn-primary" href="{% url 'health' %}" role="button">pick me</a>
             </div>
         </div>
         <div class="card text-center">
-            <img src="{% static " images/map.png class="card-img-top" style="display:block; margin:auto; width: 75%;"
+            <img src="{% static "images/map.png" %}" class="card-img-top" style="display:block; margin:auto; width: 75%;"
                 alt="...">
             <div class="card-body">
                 <h5 class="card-title">其他</h5>
-                <a class="btn btn-primary" href="other.html" role="button">pick me</a>
+                <a class="btn btn-primary" href="{% url 'other' %}" role="button">pick me</a>
 
             </div>
         </div>

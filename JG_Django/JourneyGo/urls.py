@@ -38,4 +38,8 @@ urlpatterns = [
     path('login1/', views.login1, name='login1'),
     path('register/', views.register, name='register'),
     path('logout/', views.logout, name='logout'),
+    path('art/', views.art, name='art'),
+    path('balancegame/', views.balancegame, name='balancegame'),
+    path('health/', views.health, name='health'),
+    path('other/', views.other, name='other'),
 ]

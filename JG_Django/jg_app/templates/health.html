@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -36,8 +37,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/navbar-styles.css">
-    <link href="css/start.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 
     <style>
@@ -51,7 +52,7 @@
     </h3>
     <div class="card-group">
         <div class="card">
-            <img src="{% static " images/07.jpg" %}" class="card-img-top" alt="...">
+            <img src="{% static "images/07.jpg" %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">戶外踏青</h5>
                 <div class="form-check">
@@ -61,7 +62,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/06.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
+            <img src="{% static "images/06.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">單車遊蹤</h5>
                 <div class="form-check">
@@ -71,7 +72,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/05.jpg" %}" class="card-img-top" style="width: 130%;" alt="...">
+            <img src="{% static "images/05.jpg" %}" class="card-img-top" style="width: 130%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">親子共遊</h5>
                 <div class="form-check">
@@ -81,7 +82,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/08.jpg" %}" class="card-img-top" alt="...">
+            <img src="{% static "images/08.jpg" %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">養生溫泉</h5>
                 <div class="form-check">
@@ -93,7 +94,7 @@
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        <a class="btn btn-primary" href="index.html" role="button" id="checkBtn">submit</a>
+        <a class="btn btn-primary" href="{% url 'index' %}" role="button" id="checkBtn">submit</a>
 
     </div>
     <script>

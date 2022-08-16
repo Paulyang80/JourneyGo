@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -36,8 +37,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/navbar-styles.css">
-    <link href="css/start.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 
     <style>
@@ -50,7 +51,7 @@
     </h3>
     <div class="card-group">
         <div class="card">
-            <img src="{% static " images/02.jpg" %}" class="card-img-top" style="width: 110%;">
+            <img src="{% static "images/02.jpg" %}" class="card-img-top" style="width: 110%;">
             <div class="card-body">
                 <h5 class="card-title text-center">歷史建築</h5>
                 <div class="form-check">
@@ -60,7 +61,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/01.jpg" %}" class="card-img-top" style="width: 110%;" alt="...">
+            <img src="{% static "images/01.jpg" %}" class="card-img-top" style="width: 110%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">藝文館所</h5>
                 <div class="form-check">
@@ -70,7 +71,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/03.jpg" %}" class="card-img-top" alt="...">
+            <img src="{% static "images/03.jpg" %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">公共藝術</h5>
                 <div class="form-check">
@@ -80,7 +81,7 @@
             </div>
         </div>
         <div class="card ">
-            <img src="{% static " images/04.jpg" %}" class="card-img-top" style="height: 110%;" alt="...">
+            <img src="{% static "images/04.jpg" %}" class="card-img-top" style="height: 110%;" alt="...">
             <div class="card-body ">
                 <h5 class="card-title text-center">主題商街</h5>
                 <div class="form-check">

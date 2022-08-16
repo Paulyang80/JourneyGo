@@ -238,16 +238,20 @@ def result(request):
     return render(request, 'result.html', context)
 
 def friends(request):
+
+    # 先確定使用者
+    user = request.user
+    user_first_name = user.firstname
+
+    
     # 抓好友資料
     db = cluster['JourneyGo_DB']
     collection = db['User_account']
     friends = []
-    for i in range(7):
+    for i in range(6): #num要改
         friends.append(collection.find_one({"_id": i}))
 
-    # # 刪除好友功能
-    # db = cluster['test']
-    # collection = db['unfriend']
+    # 刪除好友功能
 
     exf = None
     exl = None
@@ -261,7 +265,7 @@ def friends(request):
     # 新增朋友功能
     context = {
         'friends': friends,
-        # 'ig_pic': api
+        'user': user,
     }
     return render(request, 'friends.html', context)
 
@@ -315,6 +319,21 @@ def setting(request):
     }
     return render(request, 'setting.html', context)
 
+def art(request):
+    context = {}
+    return render(request, 'art.html', context)    
+
+def balancegame(request):
+    context = {}
+    return render(request, 'balancegame.html', context)
+
+def health(request):
+    context = {}
+    return render(request, 'health.html', context)
+
+def other(request):
+    context = {}
+    return render(request, 'other.html', context)
 
 
 

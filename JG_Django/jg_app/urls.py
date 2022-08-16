@@ -33,4 +33,8 @@ urlpatterns = [
     path('',views.login1,name='login1'),
     path('',views.register,name='register'),
     path('',views.logout,name='logout'),
+    path('',views.art,name='art'),
+    path('',views.balancegame,name='balancegame'),
+    path('',views.health,name='health'),
+    path('',views.other,name='other'),
 ]

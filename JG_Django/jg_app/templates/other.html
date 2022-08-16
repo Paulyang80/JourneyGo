@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -37,8 +38,8 @@
 
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/navbar-styles.css">
-    <link href="css/start.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 
     <style>
@@ -51,7 +52,7 @@
     </h3>
     <div class="card-group">
         <div class="card">
-            <img src="{% static " images/09.jpg" %}" class="card-img-top" style="width: 120%" alt="...">
+            <img src="{% static "images/09.jpg" %}" class="card-img-top" style="width: 120%" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">宗教信仰</h5>
                 <div class="form-check">
@@ -61,7 +62,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/10.jpg" %}" class="card-img-top" alt="...">
+            <img src="{% static "images/10.jpg" %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">藍色公路</h5>
                 <div class="form-check">
@@ -71,7 +72,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/11.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
+            <img src="{% static "images/11.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">夜市商圈</h5>
                 <div class="form-check">
@@ -81,7 +82,7 @@
             </div>
         </div>
         <div class="card">
-            <img src="{% static " images/12.jpg" %}" class="card-img-top" style="height: 110%" alt=" ...">
+            <img src="{% static "images/12.jpg" %}" class="card-img-top" style="height: 110%" alt=" ...">
             <div class="card-body">
                 <h5 class="card-title text-center">北北基景點</h5>
                 <div class="form-check">
@@ -93,7 +94,7 @@
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        <a class="btn btn-primary" href="index.html" role="button" id="checkBtn">submit</a>
+        <a class="btn btn-primary" href="{% url 'index' %}" role="button" id="checkBtn">submit</a>
 
     </div>
     <script>
