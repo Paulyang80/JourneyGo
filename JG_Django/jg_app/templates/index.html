@@ -46,6 +46,7 @@
                             <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
                                 Search</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
                                 Friends</a>
@@ -54,16 +55,43 @@
                             <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>
                                 Settings</a>
                         </li>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" value="Logout" class="btn btn-outline-light"> 
+                                    LOG OUT
+                                </button>
+                            </form>
+                        </li>
+                        {% else %}
+                        <li>
+                            <form class="d-flex">
+                                <a href="{% url 'login1' %}" class="btn btn-outline-light " role="button" style="margin-right: 10px;">LOG IN</a>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="d-flex">
+                                <a href="{% url 'register' %}" class="btn btn-outline-light " role="button">SIGN UP</a>
+                            </form>
+                        </li>
+                        {% endif %}
+                        
                     </ul>
-                    <form class="d-flex">
-                        <a href="{% url 'login' %}" class="btn btn-outline-light " role="button">Log In</a>
-                    </form>
                 </div>
             </nav>
         </div>
     </section>
 
+    <div>
+    {% if user.is_authenticated %}
+        Hello, "{{ user.username }}" <br>
+    {% else %}
+    YOU HAVE TO LOGIN TO GET YOUR CUSTOMIZED RECOMMENDATION FROM JOURNEYGO.
+    {% endif %}
+    </div>
+
     <ul class="to-center">
+        
         <h1>JourneyGo</h1>
         <h3>Group Spots Recommender</h3>
         <div>

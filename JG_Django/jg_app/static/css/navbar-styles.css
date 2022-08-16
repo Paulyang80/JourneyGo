@@ -40,3 +40,7 @@ p {
     font-size: 1.2rem;
     font-family: "Monserrat", sans-serif;
 }
+
+.btn-login {
+    margin-right: 5px !important;
+}

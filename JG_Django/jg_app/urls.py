@@ -30,5 +30,7 @@ urlpatterns = [
     path('',views.ready,name='ready'),
     path('',views.decide,name='decide'),
     path('',views.result,name='result'),
-
+    path('',views.login1,name='login1'),
+    path('',views.register,name='register'),
+    path('',views.logout,name='logout'),
 ]
