@@ -200,12 +200,12 @@ def friends(request):
     db = cluster['JourneyGo_DB']
     collection = db['User_account']
     friends = []
-    for i in range(6):
-        friends.append(collection.find_one({"_id": i}))   
+    for i in range(7):
+        friends.append(collection.find_one({"_id": i}))
 
-    # 刪除好友功能
-    db = cluster['test']
-    collection = db['unfriend']
+    # # 刪除好友功能
+    # db = cluster['test']
+    # collection = db['unfriend']
 
     exf = None
     exl = None
@@ -213,10 +213,10 @@ def friends(request):
         exf = request.POST.get("exf")
         exl = request.POST.get("exl")
         #print( exf, exl)
-        collection.update({'_id': 6}, {'$pull': {'friendList': exf}})
+        # collection.update_one({"_id": 0}, {"$pull": {"friendList": exf}})
+        collection.find_one_and_delete({"firstName":exf,"lastName":exl})
 
     # 新增朋友功能
-
     context = {
         'friends': friends,
         # 'ig_pic': api

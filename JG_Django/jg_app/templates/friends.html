@@ -19,12 +19,18 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <!-- Fontawesome -->
   <script src="https://kit.fontawesome.com/a973304abd.js" crossorigin="anonymous"></script>
   <!-- CSS -->
   <link rel="stylesheet" href="{% static "css/friendlist-styles.css" %}">
   <link rel="stylesheet" href="{% static "css/navbar-styles.css" %}">
 </head>
+<style>
+ .card{
+    text-align: center;
+}
+</style>
 
 <body>
   <section id="title">
@@ -89,15 +95,15 @@
             <img class="photo" src={{ f.pic }} alt="">
             <p>#{{ f.hashtag }}</p>
             <!-- Profile Btn-->
-            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="fa-solid fa-id-card"></i>
+            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal{{id}}"><i class="fa-solid fa-id-card"></i>
               Profile
             </button>
             <!-- Profile Modal -->
-            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
-              <div class="modal-dialog">
+            <div class="modal fade"  id="profileModal{{id}}" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
+              <div class=" modal-dialog" id="{{id}}">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="profileModal">{{ f.firstName }} {{ f.lastName }}</h5>
+                    <h5 class="modal-title" id="profileModal{{id}}">{{ f.firstName }} {{ f.lastName }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -107,20 +113,20 @@
               </div>
             </div>
             <!-- Unfriend Btn-->
-            <button class="btn bnt-lg btn-block btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#unfriendModal"><i class="fa-solid fa-user-xmark"></i>
+            <button class="btn bnt-lg btn-block btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#unfriendModal{{id}}"><i class="fa-solid fa-user-xmark"></i>
               Unfriend
             </button>
             <!-- Unfriend Modal -->
-            <div class="modal fade" id="unfriendModal" tabindex="-1" aria-labelledby="unfriendModal" aria-hidden="true">
+            <div class="modal fade" id="unfriendModal{{id}}" tabindex="-1" aria-labelledby="unfriendModal" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="unfriendModal">Unfriend</h5>
+                    <h5 class="modal-title" id="unfriendModal{{id}}">Unfriend</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <p>Are you sure you want to remove {{ f.firstName }} {{ f.lastName }} from your friend list?</p>
-                    <form action="" method="post">
+                    <form action="" method="POST">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                       <input type="hidden" name="exf"    value= {{f.firstName}}>
                       <input type="hidden" name="exl"    value= {{f.lastName}}>
@@ -139,5 +145,33 @@
 
   </section>
 </body>
+data-bs-target="#profileModal"
+<!-- id="profileModal" -->
+
+<script>
+// $(document).ready(function(){
+// 	$('[data-toggle="tooltip"]').tooltip();
+// 	var actions = $("table td:last-child").html();
+// 	// Append table with add row form on add new button click
+//     $(".add-new").click(function(){
+// 		$(this).attr("disabled", "disabled");
+// 		var index = $("table tbody tr:last-child").index();
+//         var row = '<tr>' +
+//             '<td><input type="text" class="form-control" name="name" id="name"></td>' +
+//             '<td><input type="text" class="form-control" name="department" id="department"></td>' +
+//             '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+// 			'<td>' + actions + '</td>' +
+//         '</tr>';
+//     	$("table").append(row);		
+// 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+//         $('[data-toggle="tooltip"]').tooltip();
+//     });
+	
+	// Delete row on delete button click
+	// $("button").on("click", ".delete", function(){
+  //       $(this).parents(".card").hide();
+  //   });
+// });
+</script>
 
 </html>
