@@ -1,4 +1,12 @@
-REGISTER <hr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'base1.html' %}
+  <title>Document</title>
+</head>
+<body>
+  {% include 'base2.html' %}
+  REGISTER <hr>
 
 <form method="post">
     {{ form.as_table }}
@@ -29,3 +37,5 @@ REGISTER <hr>
     </div> {% endcomment %}
     <input type="submit" value="Register">
 </form>
+</body>
+</html>

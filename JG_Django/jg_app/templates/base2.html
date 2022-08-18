@@ -1,0 +1,57 @@
+{% load static %}
+
+<section id="title">
+    <div class="container-fluid">
+        <!-- Nav Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link  active" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
+                            Search</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
+                            Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>
+                            Settings</a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" value="Logout" class="btn btn-outline-light"> 
+                                LOG OUT
+                            </button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li>
+                        <form class="d-flex">
+                            <a href="{% url 'login1' %}" class="btn btn-outline-light " role="button" style="margin-right: 10px;">LOG IN</a>
+                        </form>
+                    </li>
+                    <li>
+                        <form class="d-flex">
+                            <a href="{% url 'register' %}" class="btn btn-outline-light " role="button">SIGN UP</a>
+                        </form>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+</section>

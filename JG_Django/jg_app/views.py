@@ -1,4 +1,5 @@
 from cgi import test
+from multiprocessing import context
 from os import remove
 from unicodedata import name
 from django.shortcuts import render, redirect
@@ -28,10 +29,12 @@ def register(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
-            # username = form.cleaned_data['username']
-            # password = form.cleaned_data['password']
-            # user = authenticate(username=username)
-            return redirect('login1')
+            messages.info(request, "Thanks for registering. You are now logged in.")
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],
+                                    )
+            logins(request, new_user)
+            return redirect('balancegame')
     else:
         form = RegisterUserForm()
     return render(request, 'register.html', {'form': form})
@@ -81,23 +84,22 @@ def login(request):
 # sign up
 def signup(request):
     context = {}
-    if request.method == 'POST':
-        context = {
-            'user_first_name': request.POST["user-fname"],
-            'user_last_name': request.POST["user-lname"],
-            'user_email': request.POST["user-email"],
-            'password': request.POST["password"],
-        }  
-
-    collection = db['User_account']
-    collection.insert_one(context)
-
     return render(request, 'signup.html', context)
 
 # index: home page 
 def index(request):
     user = request.user
     context = {'user': user}
+
+    collection = db['Taipei_gov']
+    displayList = []
+    for i in range(3):
+        ran = random.randrange(0, 550)
+        displayList.append(collection.find_one({"spotID": ran}))
+
+    context = {
+        'displayList': displayList,
+    }
     return render(request, 'index.html', context)
 
 # start
@@ -174,13 +176,6 @@ def room2(request):
     }
     #print(friends_pic) 確認有存到，但js那邊get不到
     return render(request, 'room2.html', context)
-
-
-def confirmPage(request):
-    context = {
-
-    }
-    return render(request, 'confirmPage.html', context)
 
 def spotvote(request):
     
@@ -340,5 +335,11 @@ def other(request):
     context = {}
     return render(request, 'other.html', context)
 
+def base1(request):
+    context = {}
+    return render(request, 'base1.html', context)
 
+def base2(request):
+    context = {}
+    return render(request, 'base2.html', context)
 

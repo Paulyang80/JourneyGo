@@ -30,7 +30,6 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
     path('room2/', views.room2, name='room2'),
-    path('confirmPage/', views.confirmPage, name='confirmPage'),
     path('spotvote/', views.spotvote, name='spotvote'),
     path('ready/', views.ready, name='ready'),
     path('decide/', views.decide, name='decide'),
@@ -42,4 +41,6 @@ urlpatterns = [
     path('balancegame/', views.balancegame, name='balancegame'),
     path('health/', views.health, name='health'),
     path('other/', views.other, name='other'),
+    path('base1/', views.base1, name='base1'),
+    path('base2/', views.base2, name='base2'),
 ]

@@ -1,6 +1,13 @@
 
-
-<form class="site-form" method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'base1.html' %}
+  <title>Document</title>
+</head>
+<body>
+  {% include 'base2.html' %}
+  <form class="site-form" method="post">
     {% csrf_token %}
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Username</label>
@@ -12,4 +19,7 @@
         </div>
     <input type="submit" value="SIGN-IN">
 </form> 
+</body>
+</html>
+
 

@@ -25,7 +25,6 @@ urlpatterns = [
     path('',views.startDropDown,name='startDropDown'),
     path('',views.setting,name='setting'),
     path('',views.room2,name='room2'),
-    path('',views.confirmPage,name='confirmPage'),
     path('',views.spotvote,name='spotvote'),
     path('',views.ready,name='ready'),
     path('',views.decide,name='decide'),
@@ -37,4 +36,6 @@ urlpatterns = [
     path('',views.balancegame,name='balancegame'),
     path('',views.health,name='health'),
     path('',views.other,name='other'),
+    path('',views.base1, name='base1'),
+    path('',views.base2, name='base2'),
 ]
