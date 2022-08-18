@@ -105,14 +105,14 @@
                 {% if doc.county or doc.distric or doc.address %} 地址: {{ doc.county }} {{ doc.distric }} {{ doc.address }} <br> {% endif %}
                 {% if doc.tel %}電話： {{ doc.tel }} <br> {% endif %}
               </p>
-              <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ doc.spotID }}">
                 Read more
               </button>
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+              <div class="modal fade" id="exampleModal{{ doc.spotID }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" id="{{ doc.spotID }}">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel" >{{ doc.name }} 介紹</h5>
+                      <h5 class="modal-title" id="exampleModal{{ doc.spotID }}" >{{ doc.name }} 介紹</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -145,15 +145,14 @@
               {% if spot.county or spot.distric or spot.address %} 地址: {{ spot.county }} {{ spot.distric }} {{ spot.address }} <br> {% endif %}
               {% if spot.tel %}電話： {{ spot.tel }} <br> {% endif %}
             </p>
-            <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ spot.spotID }}">
               Read more
             </button>
-            <!-- problem here -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
+            <div class="modal fade" id="exampleModal{{ spot.spotID }}" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+              <div class="modal-dialog" id="{{ spot.spotID }}">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel" >{{ spot.name }} 介紹</h5>
+                    <h5 class="modal-title" id="exampleModal{{ spot.spotID }}" >{{ spot.name }} 介紹</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -162,7 +161,6 @@
                 </div>
               </div>
             </div>
-            <!-- problem end -->
           </div>
           <div class="card-footer">
             <small class="text-muted">類別：{% if spot.categories %} {% for cat in spot.categories %}{{ cat }} {% endfor %} {% else %} 無 {% endif %}</small>

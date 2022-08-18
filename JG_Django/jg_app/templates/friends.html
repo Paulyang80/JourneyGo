@@ -71,18 +71,16 @@
   <!-- Friendlist -->
   <section class="f-list">
 
-    <h2 class="friend-list-title">My Lovely Friends</h2>
+    <h2 class="friend-list-title">Friends of {{user}}</h2>
     <p>Gather up and start your journey!</p>
     <div>
       <button class="btn bnt-lg btn-block btn-success" type="button"><i class="fa-solid fa-plus"></i> Add new
         friend</button>
     </div>
-
-    Hi, {{ user }}
     
     <div class="row">
       <!-- card -->
-      {% for f in friends %}
+      {% for f, id in ffid %}
       <div class="friend-col col-lg-4 col-md-6">
         <div class="card">
           <div class="card-header">
@@ -92,15 +90,15 @@
             <img class="photo" src={{ f.pic }} alt="">
             <p>#{{ f.hashtag }}</p>
             <!-- Profile Btn-->
-            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal{{id}}"><i class="fa-solid fa-id-card"></i>
+            <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal{{ id }}"><i class="fa-solid fa-id-card"></i>
               Profile
             </button>
-            <!-- Profile Modal ~~~~~ PROBLEM HERE -->
-            <div class="modal fade"  id="profileModal{{id}}" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
-              <div class=" modal-dialog" id="{{id}}">
+            <!-- Profile Modal -->
+            <div class="modal fade"  id="profileModal{{ id }}" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
+              <div class=" modal-dialog" id="{{ id }}">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="profileModal{{id}}">{{ f.firstName }} {{ f.lastName }}</h5>
+                    <h5 class="modal-title" id="profileModal{{ id }}">{{ f.firstName }} {{ f.lastName }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">

@@ -241,15 +241,16 @@ def friends(request):
 
     # 先確定使用者
     user = request.user
-    user_first_name = user.firstname
 
     
     # 抓好友資料
     db = cluster['JourneyGo_DB']
     collection = db['User_account']
     friends = []
+    friendsID = []
     for i in range(6): #num要改
         friends.append(collection.find_one({"_id": i}))
+        friendsID.append(friends[i]['_id'])
 
     # 刪除好友功能
 
@@ -262,9 +263,13 @@ def friends(request):
         # collection.update_one({"_id": 0}, {"$pull": {"friendList": exf}})
         collection.find_one_and_delete({"firstName":exf,"lastName":exl})
 
+    #print(friends[0]['_id'])
+
     # 新增朋友功能
     context = {
         'friends': friends,
+        'friendsID': friendsID,
+        'ffid': zip(friends, friendsID),
         'user': user,
     }
     return render(request, 'friends.html', context)
@@ -301,10 +306,10 @@ def searchRec(request):
 
     # Render context
     context = {
-        'spots':spots,
+        'spots':spots, #default rec
         'recN': random.randrange(1, 5),
         'keywords': keywords,
-        'cur': cur,
+        'cur': cur, #search results
     }
 
     return render(request, 'searchPage.html', context)
