@@ -15,11 +15,31 @@
   <!-- Friendlist -->
   <section class="f-list">
 
-    <h2 class="friend-list-title">Friends of {{user}}</h2>
+    <h2 class="friend-list-title">Friends of {{ userAcc.firstName }}</h2>
     <p>Gather up and start your journey!</p>
     <div>
-      <button class="btn bnt-lg btn-block btn-success" type="button"><i class="fa-solid fa-plus"></i> Add new
-        friend</button>
+      <button class="btn bnt-lg btn-block btn-success" type="button" data-bs-toggle="modal" data-bs-target="#add"><i class="fa-solid fa-plus"></i> Add new friend</button>
+      <div class="modal fade" tabindex="-1" id="add">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Friends</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Enter App ID: </p>
+              <form action="" method="POST">
+                <input type="text" name="addedID"><br><br>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <input type="submit" name="Add" value="Add" class="btn btn-primary">
+              </form>
+            </div>
+            
+              
+            
+          </div>
+        </div>
+      </div>
     </div>
     
     <div class="row">
@@ -31,7 +51,7 @@
             <h3>{{ f.firstName }}</h3>
           </div>
           <div class="card-body">
-            <img class="photo" src={{ f.pic }} alt="">
+            <img class="photo" src={{ f.pic }} alt="friend-pic">
             <p>#{{ f.hashtag }}</p>
             <!-- Profile Btn-->
             <button type="button" class="btn bnt-lg btn-block btn-outline-dark" data-bs-toggle="modal" data-bs-target="#profileModal{{ id }}"><i class="fa-solid fa-id-card"></i>

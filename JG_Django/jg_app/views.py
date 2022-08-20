@@ -1,4 +1,6 @@
 from cgi import test
+import collections
+from ipaddress import collapse_addresses
 from multiprocessing import context
 from os import remove
 from unicodedata import name
@@ -168,6 +170,10 @@ def room2(request):
         friends_name.append((collection.find_one({'_id': i})['firstName']+" "+collection.find_one({'_id': i})['lastName']))
         friends_pic.append(collection.find_one({'_id': i})['pic'])
         friends_hash.append(collection.find_one({'_id': i})['hashtag'])
+        
+    # get invited friends from form:
+
+    
     context = {
         #'friends': friends, 
         'friends_name': friends_name, #list
@@ -178,6 +184,11 @@ def room2(request):
     return render(request, 'room2.html', context)
 
 def spotvote(request):
+
+    # Reccomandation Computing
+
+
+    # Record the Votes
     
     # 先隨機抓六張圖
     n = []
@@ -221,51 +232,53 @@ def decide(request):
     return render(request, 'decide.html', context)
 
 def result(request):
-    collection = db['Taipei_gov']
-    result = collection.find_one({"name": "台北101"})
-    #print(result)
+    
+    # Vote Computing 
 
+    # Vote result -> Google Map API
     context = {
-        'result_name': result['name'], 
-        'result_intro': result['intro'], 
-        'result_img': result['images'][0]
+        
     }
     return render(request, 'result.html', context)
 
-def friends(request):
+def friends(request): # 大前提： 沒有重複的 first name
+
+    collection = cluster['JourneyGo_DB']['User_account']
 
     # 先確定使用者
-    user = request.user
-
+    userFirstName = request.user.get_short_name()
+    userAcc = collection.find_one({"firstName": userFirstName})
     
-    # 抓好友資料
-    db = cluster['JourneyGo_DB']
-    collection = db['User_account']
-    friends = []
-    friendsID = []
-    for i in range(6): #num要改
-        friends.append(collection.find_one({"_id": i}))
-        friendsID.append(friends[i]['_id'])
+    # 顯示好友資料
+    friends = userAcc['friendList'] # Type: String in Array
+    friendsDocs = []                # Type: User Document
+    f_IDs = []
+    for f in friends:
+        friendsDocs.append(collection.find_one({"firstName": f}))
+        f_IDs.append(collection.find_one({"firstName": f})['_id'])
 
-    # 刪除好友功能
-
-    exf = None
-    exl = None
+    # 刪除好友
+    exf = None  # exf stands for "ex-friend's first name"
     if request.method == "POST":
-        exf = request.POST.get("exf")
-        exl = request.POST.get("exl")
-        #print( exf, exl)
-        # collection.update_one({"_id": 0}, {"$pull": {"friendList": exf}})
-        collection.find_one_and_delete({"firstName":exf,"lastName":exl})
+        exf = request.POST.get("exf") 
+        if exf is not None:
+            friendsDocs.remove(collection.find_one({"firstName": exf}))
 
-    #print(friends[0]['_id'])
+    # 新增朋友
+    addedID = None
+    if request.method == "POST":
+        addedID = request.POST.get("addedID")
+        if addedID is not None:
+            # add to ['friendList']
+            new_friend = collection.find_one({"_id": int(addedID)})
+            collection.update({"_id": userAcc['_id']}, {"$push": {"friendList": new_friend['firstName']}})
+            # add to friendsDocs
+            friendsDocs.append(collection.find_one({"_id": int(addedID)}))
+            return redirect('friends')
 
-    # 新增朋友功能
     context = {
-        'friends': friends,
-        'friendsID': friendsID,
-        'ffid': zip(friends, friendsID),
-        'user': user,
+        'userAcc': userAcc,
+        'ffid': zip(friendsDocs, f_IDs),
     }
     return render(request, 'friends.html', context)
 
@@ -315,24 +328,53 @@ def setting(request):
     user = collection.find_one({"_id": 0})
 
     context = {
-        'user': user
     }
     return render(request, 'setting.html', context)
 
 def art(request):
-    context = {}
+    collection = db['User_account']
+    userFirstName = request.user.get_short_name()
+
+    # get pref from form: 
+    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+    context = {
+        'userFirstName': userFirstName,
+    }
     return render(request, 'art.html', context)    
 
 def balancegame(request):
+
+    # 新增MongoDB User_account
+    user = request.user
+    collection = db['User_account']
+    post = {"_id": (collection.count()+1), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
+    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+    #print(collection.count()+1, user.first_name, user.last_name, user.email, user.password)
+    collection.insert_one(post)
+
     context = {}
     return render(request, 'balancegame.html', context)
 
 def health(request):
-    context = {}
+    collection = db['User_account']
+    userFirstName = request.user.get_short_name()
+
+    # get pref from form: 
+    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+    context = {
+        'userFirstName': userFirstName,
+    }
     return render(request, 'health.html', context)
 
 def other(request):
-    context = {}
+    collection = db['User_account']
+    userFirstName = request.user.get_short_name()
+
+    # get pref from form: 
+    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+    context = {
+        'userFirstName': userFirstName,
+    }
     return render(request, 'other.html', context)
 
 def base1(request):
