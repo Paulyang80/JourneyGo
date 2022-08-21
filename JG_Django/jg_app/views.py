@@ -262,6 +262,7 @@ def friends(request): # 大前提： 沒有重複的 first name
     if request.method == "POST":
         exf = request.POST.get("exf") 
         if exf is not None:
+            collection.update({"firstName": userAcc['firstName']}, {"$pull": {"friendList": exf}})
             friendsDocs.remove(collection.find_one({"firstName": exf}))
 
     # 新增朋友
