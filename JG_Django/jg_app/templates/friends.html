@@ -4,6 +4,7 @@
 
 <head>
   {% include 'base1.html' %}
+  <title>JourneyGo - Friends</title>  
   <link rel="stylesheet" href="{% static "css/friendlist-styles.css" %}">
 </head>
 
@@ -66,6 +67,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
+                    <p>App ID: {{ id }}</p>
                     <p>E-mail: {{ f.email }}</p>
                     <p>Self-Intro: {{ f.intro }}</p>
                   </div>

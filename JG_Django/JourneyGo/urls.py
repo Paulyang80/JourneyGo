@@ -29,10 +29,11 @@ urlpatterns = [
     path('setting/', views.setting, name='setting'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('room/', views.room, name='room'),
     path('room2/', views.room2, name='room2'),
     path('spotvote/', views.spotvote, name='spotvote'),
     path('ready/', views.ready, name='ready'),
-    path('decide/', views.decide, name='decide'),
+    path('map/', views.map, name='map'),
     path('accounts/', include('allauth.urls')), #allauth第三方登入 
     path('login1/', views.login1, name='login1'),
     path('register/', views.register, name='register'),

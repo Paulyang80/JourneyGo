@@ -4,6 +4,7 @@
 
 <head>
   {% include 'base1.html' %}
+  <title>JourneyGo - Build Room</title>
   <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 </head>
@@ -36,26 +37,26 @@
                   <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
               {% endfor %}
             </select><br><br>
-            <input type="submit" value="Confirm" class="btn btn-secondary">
+            
+            <input class="hover" type="image" name="submit" src="{% static "images/start1.png" %}" border="0" alt="Submit" style="width: 150px; margin: 40px;">
+
         </form>
-        {% if selected_num and selected_time and selected_trans %}
-          <p>
-            選擇的人數: {{ selected_num }} <br>
-            選擇的時間: {{ selected_time }} <br>
-            選擇的交通工具: {{ selected_trans }}
-          </p>
-        {% endif %}
+        {% comment %} {% if selected_num and selected_time and selected_trans %}
+            <script>
+              alert("選擇的人數: {{ selected_num }} \n選擇的時間: {{ selected_time }} \n選擇的交通工具: {{ selected_trans }}");
+            </script>
+        {% endif %} {% endcomment %}
         
       <!--end of dropdown box-->
     </div>
   </div>
 
 
-  <div class="hover" style="margin: 40px">
+  {% comment %} <div class="hover" style="margin: 40px">
     <a href="{% url 'room2' %}">
       <img src="{% static "images/start1.png" %}" class="rounded mx-auto d-block" width="200px">
     </a>
-  </div>
+  </div> {% endcomment %}
 
 
 </body>

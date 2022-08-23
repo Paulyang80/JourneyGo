@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     {% include 'base1.html' %}
+    <title>JourneyGo - Room</title>
     <link rel="stylesheet" href="{% static "css/room.css" %}">
   </head>
 
@@ -18,6 +19,7 @@
                     <ul id="done">Friend List</ul>
                     <!--Next Step: Get FB Profile pic CDN-->
                     <script>
+
                         var done = "{{ friends_name | safe }}"; // use "safe" to convert &#x27; to quote
                         done = done.replace(/'/g, '"');         // convert string to array
                         done = JSON.parse(done);
@@ -32,6 +34,8 @@
                         hashtag = hashtag.replace(/'/g, '"');
                         hashtag = JSON.parse(hashtag);
                         //alert(hashtag);
+
+                        var invited = []; // 紀錄邀請誰
 
                         const appendItem = (textContent,imgContent, hashContent, parentNodeId) => {
                             const newItem = document.createElement('li');
@@ -84,6 +88,9 @@
 
                         document.querySelector('#done').addEventListener('click', function(event) {
                             itemMove(event, 'todo');
+                            //alert('add');
+                            //invited = invited.push('todo');
+                            //alert(invited);
                         });
                     </script>
                     <!---->

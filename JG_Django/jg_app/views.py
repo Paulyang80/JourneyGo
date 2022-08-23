@@ -147,6 +147,8 @@ def startDropDown(request):
     }
     if selected_num and selected_time and selected_trans:
         collection.insert_one(post)
+        return redirect('room2')
+
 
     context = {
         'nums': num_options,
@@ -159,28 +161,35 @@ def startDropDown(request):
     return render(request, 'start.html', context)
 
 # room 
+def room(request):
+    context = {}
+    return render(request, 'room.html', context)
+
 def room2(request):
+    # show login user's friends
     collection = db['User_account']
-    #friends = []
+    userFirstName = request.user.get_short_name()
+    userLastName = request.user.last_name # consider last name ?
+    userAcc = collection.find_one({"firstName": userFirstName})
+    friendList = userAcc['friendList']
+
     friends_name = []
     friends_pic = []
     friends_hash = []
-    for i in range(6):
-        #friends.append(collection.find_one({'_id': i}))
-        friends_name.append((collection.find_one({'_id': i})['firstName']+" "+collection.find_one({'_id': i})['lastName']))
-        friends_pic.append(collection.find_one({'_id': i})['pic'])
-        friends_hash.append(collection.find_one({'_id': i})['hashtag'])
+    for f in friendList:
+        friendAcc = collection.find_one({"firstName": f})
+        friends_name.append(friendAcc['firstName'] + " " + friendAcc['lastName'])
+        friends_pic.append(friendAcc['pic'])
+        friends_hash.append(friendAcc['hashtag'])
         
-    # get invited friends from form:
+    # record invited friends:
 
     
     context = {
-        #'friends': friends, 
         'friends_name': friends_name, #list
         'friends_pic': friends_pic,   #list
         'friends_hash': friends_hash, #list
     }
-    #print(friends_pic) 確認有存到，但js那邊get不到
     return render(request, 'room2.html', context)
 
 def spotvote(request):
@@ -225,12 +234,6 @@ def ready(request):
     }
     return render(request, 'ready.html', context)
 
-def decide(request):
-    context = {
-
-    }
-    return render(request, 'decide.html', context)
-
 def result(request):
     
     # Vote Computing 
@@ -241,12 +244,19 @@ def result(request):
     }
     return render(request, 'result.html', context)
 
+def map(request):
+    context = {
+
+    }
+    return render(request, 'map.html', context)
+
 def friends(request): # 大前提： 沒有重複的 first name
 
     collection = cluster['JourneyGo_DB']['User_account']
 
     # 先確定使用者
     userFirstName = request.user.get_short_name()
+    userLastName = request.user.last_name 
     userAcc = collection.find_one({"firstName": userFirstName})
     
     # 顯示好友資料

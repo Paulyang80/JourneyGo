@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base1.html' %}
+    <title>JourneyGo - Room</title>
+    <style>
+        .button.move{margin-left:50px;}
+    </style>
+</head>
+<body>
+    {% include 'base2.html' %}
+
+    <div class="button" id="button">
+        <button type="test" class="btn btn-primary btn-lg">Go</button>
+        <script>
+            var d = document.getElementById("button");
+            d.addEventListener('click',function(){
+                d.className = d.className + " move";
+            });
+        </script>
+    </div>
+    
+</body>
+</html>
