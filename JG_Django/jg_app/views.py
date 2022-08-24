@@ -236,6 +236,10 @@ def spotvote(request):
     }
     return render(request, 'spotvote.html', context)
 
+def loading(request):
+    context = {}
+    return render(request, 'loading.html', context)
+
 def ready(request):
     context = {
 

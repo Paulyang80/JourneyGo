@@ -62,7 +62,7 @@
             prev.onclick = function () {
                 //prev.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
-                    window.location.href = '{% url 'ready' %}';
+                    window.location.href = '{% url 'loading' %}';
                 }
                 img.src = imgArr[index];
                 //info.src = infoArr[index];
@@ -73,7 +73,7 @@
                 index++;
                 //next.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
-                    window.location.href = '{% url 'ready' %}';
+                    window.location.href = '{% url 'loading' %}';
                 }
                 img.src = imgArr[index];
                 //info.src = infoArr[index];

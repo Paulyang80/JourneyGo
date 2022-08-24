@@ -8,8 +8,8 @@
 } */
 
 .ball {
-  width: 10px;
-  height: 10px;
+  width: 100px;
+  height: 100px;
   margin: 10px auto;
   border-radius: 50px;
 }
