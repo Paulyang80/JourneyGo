@@ -33,7 +33,7 @@
                         var hashtag = "{{ friends_hash | safe }}";
                         hashtag = hashtag.replace(/'/g, '"');
                         hashtag = JSON.parse(hashtag);
-                        alert(hashtag);
+                        //alert(hashtag);
 
                         var invited = []; // 紀錄邀請誰
 
@@ -44,6 +44,7 @@
                             const img = document.createElement('img');
                             img.src=imgContent
                             img.width=100
+                            img.height=100
                             // newItemImg.innerHTML = `<p class='todo_content'>${imgContent}</p>`
                             newItem.innerHTML = `<p class='todo_content'>${textContent}<br>Hashtag: #${hashContent}</p>`
                                                 
