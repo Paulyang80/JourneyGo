@@ -40,6 +40,10 @@ def register(request):
             # 新增MongoDB User_account
             user = request.user
             collection = db['User_account']
+            if collection.count() == 0:
+                post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
+                    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                collection.insert_one(post)
             if collection.find({"firstName": user.first_name}) is not None:
                 post = {"_id": (collection.count()+1), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
                     "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
@@ -213,7 +217,7 @@ def spotvote(request):
         id = random.randrange(0, 550)
         if id not in n: n.append(id)
         else: continue
-    print(n)
+    #print(n)
 
     collection = db['Taipei_gov']
     spots = []
