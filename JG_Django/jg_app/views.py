@@ -43,7 +43,7 @@ def register(request):
                 collection = db['User_account']
                 if collection.count() == 0:
                     post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": None, "pic": None, "friendList": [], "intro": None}
+                        "hashtag": "", "pic": "", "friendList": [], "intro": ""}
                     collection.insert_one(post)
                 else:
                     post = {"_id": int(collection.count()), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
@@ -197,11 +197,10 @@ def room2(request):
         
     # record invited friends:
 
-    
     context = {
-        'friends_name': friends_name, #list
-        'friends_pic': friends_pic,   #list
-        'friends_hash': friends_hash, #list
+        'friends_name': friends_name,
+        'friends_pic': friends_pic,  
+        'friends_hash': friends_hash,
     }
     return render(request, 'room2.html', context)
 
