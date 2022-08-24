@@ -43,11 +43,11 @@ def register(request):
                 collection = db['User_account']
                 if collection.count() == 0:
                     post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                        "hashtag": None, "pic": None, "friendList": [], "intro": None}
                     collection.insert_one(post)
                 else:
                     post = {"_id": int(collection.count()), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                        "hashtag": None, "pic": None, "friendList": [], "intro": None}
                     #print(collection.count(), user.first_name, user.last_name, user.email, user.password)
                     collection.insert_one(post)
             return redirect('balancegame')
