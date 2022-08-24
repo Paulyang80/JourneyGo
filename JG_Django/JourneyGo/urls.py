@@ -44,4 +44,5 @@ urlpatterns = [
     path('other/', views.other, name='other'),
     path('base1/', views.base1, name='base1'),
     path('base2/', views.base2, name='base2'),
+    path('test/', views.test, name='test'),
 ]

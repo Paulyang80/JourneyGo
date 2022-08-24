@@ -37,7 +37,7 @@
                   <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
               {% endfor %}
             </select><br><br>
-            
+
             <input class="hover" type="image" name="submit" src="{% static "images/start1.png" %}" border="0" alt="Submit" style="width: 150px; margin: 40px;">
 
         </form>
@@ -50,15 +50,6 @@
       <!--end of dropdown box-->
     </div>
   </div>
-
-
-  {% comment %} <div class="hover" style="margin: 40px">
-    <a href="{% url 'room2' %}">
-      <img src="{% static "images/start1.png" %}" class="rounded mx-auto d-block" width="200px">
-    </a>
-  </div> {% endcomment %}
-
-
 </body>
 
 </html>

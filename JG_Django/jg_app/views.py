@@ -1,5 +1,6 @@
 from cgi import test
 import collections
+from gc import collect
 from ipaddress import collapse_addresses
 from multiprocessing import context
 from os import remove
@@ -36,6 +37,14 @@ def register(request):
                                     password=form.cleaned_data['password1'],
                                     )
             logins(request, new_user)
+            # 新增MongoDB User_account
+            user = request.user
+            collection = db['User_account']
+            if collection.find({"firstName": user.first_name}) is not None:
+                post = {"_id": (collection.count()+1), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
+                    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                #print(collection.count()+1, user.first_name, user.last_name, user.email, user.password)
+                collection.insert_one(post)
             return redirect('balancegame')
     else:
         form = RegisterUserForm()
@@ -44,13 +53,10 @@ def register(request):
 # login
 def login1(request):
     if request.method == 'POST':
-        # username = request.POST['username']
-        # password = request.POST['password']
-        # user = authenticate(request, username=username, password=password)
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            logins(request, user)    
+            logins(request, user) 
             return redirect('index')  
     else:
         form = AuthenticationForm()
@@ -162,7 +168,9 @@ def startDropDown(request):
 
 # room 
 def room(request):
-    context = {}
+    context = {
+       
+    }
     return render(request, 'room.html', context)
 
 def room2(request):
@@ -354,15 +362,6 @@ def art(request):
     return render(request, 'art.html', context)    
 
 def balancegame(request):
-
-    # 新增MongoDB User_account
-    user = request.user
-    collection = db['User_account']
-    post = {"_id": (collection.count()+1), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
-    #print(collection.count()+1, user.first_name, user.last_name, user.email, user.password)
-    collection.insert_one(post)
-
     context = {}
     return render(request, 'balancegame.html', context)
 
@@ -395,4 +394,8 @@ def base1(request):
 def base2(request):
     context = {}
     return render(request, 'base2.html', context)
+
+def test(request):
+    context = {}
+    return render(request, 'test.html', context)
 

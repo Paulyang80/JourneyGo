@@ -39,4 +39,5 @@ urlpatterns = [
     path('',views.other,name='other'),
     path('',views.base1, name='base1'),
     path('',views.base2, name='base2'),
+    path('',views.test, name='test'),
 ]

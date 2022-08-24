@@ -14,20 +14,33 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+                        {% if request.path == "/index/" %}
+                        <a class="nav-link active" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+                        {% else %}
+                        <a class="nav-link" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Home</a>
+                        {% endif %}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>
-                            Search</a>
+                        {% if request.path == "/searchPage/" %}
+                        <a class="nav-link active" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+                        {% else %}
+                        <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+                        {% endif %}
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My
-                            Friends</a>
+                        {% if request.path == "/friends/" %}
+                        <a class="nav-link active" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My Friends</a>
+                        {% else %}
+                        <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My Friends</a>
+                        {% endif %}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>
-                            Settings</a>
+                        {% if request.path == "/setting/" %}
+                        <a class="nav-link active" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>Settings</a>
+                        {% else %}
+                        <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>Settings</a>
+                        {% endif %}
                     </li>
                     <li>
                         <form action="{% url 'logout' %}" method="post">
