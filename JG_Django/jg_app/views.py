@@ -37,18 +37,19 @@ def register(request):
                                     password=form.cleaned_data['password1'],
                                     )
             logins(request, new_user)
-            # 新增MongoDB User_account
-            user = request.user
-            collection = db['User_account']
-            if collection.count() == 0:
-                post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
-                collection.insert_one(post)
-            if collection.find({"firstName": user.first_name}) is not None:
-                post = {"_id": (collection.count()+1), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                    "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
-                #print(collection.count()+1, user.first_name, user.last_name, user.email, user.password)
-                collection.insert_one(post)
+            if request.user.is_authenticated:
+                # 新增MongoDB User_account
+                user = request.user
+                collection = db['User_account']
+                if collection.count() == 0:
+                    post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
+                        "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                    collection.insert_one(post)
+                else:
+                    post = {"_id": int(collection.count()), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
+                        "hashtag": None, "pic": None, "friendList": [], "self-intro": None}
+                    #print(collection.count(), user.first_name, user.last_name, user.email, user.password)
+                    collection.insert_one(post)
             return redirect('balancegame')
     else:
         form = RegisterUserForm()
