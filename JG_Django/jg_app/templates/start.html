@@ -8,48 +8,71 @@
   <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
 
 </head>
+<style>
+.banner{
+  background-size: cover;
+  padding-top: 40px;
+  width:100%;
+  background-image: 
+  linear-gradient(to bottom, rgba(204, 210, 239, 0.6), rgba(255,252,220,0.6)),
+  url("https://images.unsplash.com/photo-1625777719130-0a8e07086117?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80");
+}
+
+.quote{
+  margin: auto;
+  font-size: 50px;
+  text-align: center;
+}
+
+</style>
 
 <body>
   {% include 'base2.html' %}
 
-  <div class="container d-flex justify-content-center align-items-center start-form">
-    <div class="dropdown">
-      <!--Dropdown Box-->
+  <div class="banner">
+    <div class="quote">
+      <p><span style="color:rgba(88, 88, 91, 0.967)">Let's have fun together</span></p>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center start-form">
+      <div class="dropdown">
+        <!--Dropdown Box-->
 
-        <form method="post">
-            <h4>旅遊人數</h4>
-            <select name="numbers" class="form-select" aria-label="Default select example">
-              {% for n in nums %}
-                  <option value="{{ n }}" {% if selected_num == n %} selected="selected" {% endif %}> {{ n }} </option>
-              {% endfor %}
-            </select><br>
+          <form method="post">
+              <h4>旅遊人數</h4>
+              <select name="numbers" class="form-select" aria-label="Default select example">
+                {% for n in nums %}
+                    <option value="{{ n }}" {% if selected_num == n %} selected="selected" {% endif %}> {{ n }} </option>
+                {% endfor %}
+              </select><br>
 
-            <h4>遊玩時間</h4>
-            <select name="duration" class="form-select" aria-label="Default select example">
-              {% for time in travel_duration %} 
-                <option value="{{ time }}" {% if selected_time == time %} selected="selected" {% endif %}> {{ time }} </option>
-              {% endfor %}
-            </select><br>
+              <h4>遊玩時間</h4>
+              <select name="duration" class="form-select" aria-label="Default select example">
+                {% for time in travel_duration %} 
+                  <option value="{{ time }}" {% if selected_time == time %} selected="selected" {% endif %}> {{ time }} </option>
+                {% endfor %}
+              </select><br>
 
-            <h4>交通工具</h4> 
-            <select name="trans" class="form-select" aria-label="Default select example">
-              {% for t in transportations %}
-                  <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
-              {% endfor %}
-            </select><br><br>
+              <h4>交通工具</h4> 
+              <select name="trans" class="form-select" aria-label="Default select example">
+                {% for t in transportations %}
+                    <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
+                {% endfor %}
+              </select><br><br>
 
-            <input class="hover" type="image" name="submit" src="{% static "images/start1.png" %}" border="0" alt="Submit" style="width: 150px; margin: 40px;">
+              <input class="hover" type="image" name="submit" src="{% static "images/start1.png" %}" border="0" alt="Submit" style="width: 150px; margin: 40px;">
 
-        </form>
-        {% comment %} {% if selected_num and selected_time and selected_trans %}
-            <script>
-              alert("選擇的人數: {{ selected_num }} \n選擇的時間: {{ selected_time }} \n選擇的交通工具: {{ selected_trans }}");
-            </script>
-        {% endif %} {% endcomment %}
-        
-      <!--end of dropdown box-->
+          </form>
+          {% comment %} {% if selected_num and selected_time and selected_trans %}
+              <script>
+                alert("選擇的人數: {{ selected_num }} \n選擇的時間: {{ selected_time }} \n選擇的交通工具: {{ selected_trans }}");
+              </script>
+          {% endif %} {% endcomment %}
+          
+        <!--end of dropdown box-->
+      </div>
     </div>
   </div>
+  
 </body>
 
 </html>
