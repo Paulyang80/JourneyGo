@@ -5,6 +5,11 @@
     {% include 'base1.html' %}
     <title>JourneyGo - Room</title>
     <link rel="stylesheet" href="{% static "css/room.css" %}">
+    <style>
+      #todo li:nth-of-type(1n+4) {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -14,10 +19,12 @@
             <div class="container px-4 px-lg-5">
               <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-                  <h1>YOUR ROOM</h1>
-                    <ul id="todo">Invited</ul>
-                    <ul id="done">Friend List</ul>
+                  <h1 style="text-align: center; margin-top: 20px;">YOUR ROOM</h1>
+                    <ul id="todo">Invited</ul><hr>
+                    <ul id="done">Friend List</ul><hr>
+                    <h5 style="text-align: center;">Group Member Limitation: {{ mem_limit }} people</h3>
                     <!--Next Step: Get FB Profile pic CDN-->
+
                     <script>
 
                         var done = "{{ friends_name | safe }}"; // use "safe" to convert &#x27; to quote
@@ -34,8 +41,6 @@
                         hashtag = hashtag.replace(/'/g, '"');
                         hashtag = JSON.parse(hashtag);
                         //alert(hashtag);
-
-                        var invited = []; // 紀錄邀請誰
 
                         const appendItem = (textContent,imgContent, hashContent, parentNodeId) => {
                             const newItem = document.createElement('li');
@@ -88,10 +93,13 @@
                         });
 
                         document.querySelector('#done').addEventListener('click', function(event) {
-                            itemMove(event, 'todo');
-                            //alert('add');
-                            //invited = invited.push('todo');
-                            //alert(invited);
+                              //alert(document.querySelectorAll("#todo li").length)
+                              if (document.querySelectorAll("#todo li").length < "{{ mem_limit | safe }}") {
+                                  itemMove(event, 'todo');
+                              }   
+                              else{
+                                  alert("人數已達上限！");
+                              } 
                         });
                     </script>
                     <!---->

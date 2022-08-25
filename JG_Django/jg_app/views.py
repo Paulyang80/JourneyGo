@@ -140,21 +140,17 @@ def startDropDown(request):
         selected_trans = request.POST.get("trans")
 
     # SAVE ROOM_RECORDS
-    db = cluster["test"]
-    collection = db["records_test"]
-
-    # Getting the current date and time
+    collection = cluster["JourneyGo_DB"]["Room_spec"]
     dt = datetime.now()
-    # getting the timestamp
     ts = datetime.timestamp(dt)
 
     # create post
-    post = {"創建時間": dt, 
-            "出遊人數": selected_num, 
-            "遊玩天數": selected_time, 
-            "交通工具": selected_trans, 
-            "成員": None, 
-            "投票結果": None,
+    post = {"build_time": dt, 
+            "member_limitation": selected_num, 
+            "duration": selected_time, 
+            "transportation": selected_trans, 
+            "members": [], 
+            "vote_results": {},
     }
     if selected_num and selected_time and selected_trans:
         collection.insert_one(post)
@@ -194,13 +190,22 @@ def room2(request):
         friends_name.append(friendAcc['firstName'] + " " + friendAcc['lastName'])
         friends_pic.append(friendAcc['pic'])
         friends_hash.append(friendAcc['hashtag'])
-        
+    
+    # get room spec
+    collection = cluster['JourneyGo_DB']['Room_spec']
+    latest_record = collection.find().sort('_id',-1).limit(1)
+    mem_limit = None
+    for doc in latest_record:
+        mem_limit = int(doc['member_limitation'])
+    #print(mem_limit)
+
     # record invited friends:
 
     context = {
         'friends_name': friends_name,
         'friends_pic': friends_pic,  
         'friends_hash': friends_hash,
+        'mem_limit': mem_limit,
     }
     return render(request, 'room2.html', context)
 
@@ -358,6 +363,10 @@ def setting(request):
     }
     return render(request, 'setting.html', context)
 
+def balancegame(request):
+    context = {}
+    return render(request, 'balancegame.html', context)
+
 def art(request):
     collection = db['User_account']
     userFirstName = request.user.get_short_name()
@@ -368,10 +377,6 @@ def art(request):
         'userFirstName': userFirstName,
     }
     return render(request, 'art.html', context)    
-
-def balancegame(request):
-    context = {}
-    return render(request, 'balancegame.html', context)
 
 def health(request):
     collection = db['User_account']
