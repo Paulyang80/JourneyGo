@@ -47,7 +47,7 @@ def register(request):
                     collection.insert_one(post)
                 else:
                     post = {"_id": int(collection.count()), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": None, "pic": None, "friendList": [], "intro": None}
+                        "hashtag": "", "pic": "", "friendList": [], "intro": ""}
                     #print(collection.count(), user.first_name, user.last_name, user.email, user.password)
                     collection.insert_one(post)
             return redirect('balancegame')
