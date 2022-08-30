@@ -4,8 +4,8 @@
 <html>
 <head>
     {% include 'base1.html' %}
-    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static "css/checkbox.css" %}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     {% include 'base2.html' %}
@@ -81,12 +81,20 @@
                 if (theme_street.checked) {
                     pref.push('北北基景點');
                 } 
-                if ((pref.length > 0) & (pref.length == 2)){
-                    alert("已記錄您的喜好：" + pref);
-                    window.location.replace("{% url 'index' %}");
-                } else {
-                    alert("請選擇兩個您可能喜歡的景點類別");
-                }
+                if (pref.length == 2){
+                  alert("已記錄您的喜好：" + pref);
+                  data = {
+                      'pref[]': pref
+                  }
+                  $.ajax({
+                      type: 'POST',
+                      url: "{% url 'other' %}",
+                      data: data,
+                  });
+                  window.location.replace("{% url 'index' %}");
+              } else {
+                  alert("請選擇2個您可能喜歡的景點類別");
+              }
                 
             }
         </script>

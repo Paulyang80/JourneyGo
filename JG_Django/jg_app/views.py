@@ -18,6 +18,7 @@ from django.contrib.auth import logout as logouts
 from django.contrib.auth import authenticate
 from jg_app.forms import RegisterUserForm
 from django.contrib import messages
+import json
 
 
 # Make MongoDB connection with Pymongo
@@ -373,7 +374,10 @@ def art(request):
     collection = db['User_account']
     userFirstName = request.user.first_name
 
-    # get pref from form: 
+    # get pref from JS: 
+    if request.method == "POST":
+        pref = request.POST.getlist("pref[]")
+        collection = db['Room_spec'] 
     # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
     context = {
         'userFirstName': userFirstName,
@@ -383,9 +387,13 @@ def art(request):
 def health(request):
     collection = db['User_account']
     userFirstName = request.user.first_name
+    
+    # get pref from JS: 
+    if request.method == "POST":
+        pref = request.POST.getlist("pref[]")
+        collection = db['Room_spec']
 
-    # get pref from form: 
-    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+
     context = {
         'userFirstName': userFirstName,
     }
@@ -395,7 +403,10 @@ def other(request):
     collection = db['User_account']
     userFirstName = request.user.first_name
 
-    # get pref from form: 
+    # get pref from JS: 
+    if request.method == "POST":
+        pref = request.POST.getlist("pref[]")
+        collection = db['Room_spec'] 
     # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
     context = {
         'userFirstName': userFirstName,
@@ -416,5 +427,5 @@ def test(request):
 
 def getJS(request):
     if request.method == "POST":
-        print(request.POST.get("record"))
+        print(request.POST.getlist("pref[]"))
         

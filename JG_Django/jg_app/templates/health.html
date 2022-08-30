@@ -4,8 +4,8 @@
 <html>
 <head>
     {% include 'base1.html' %}
-    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static "css/checkbox.css" %}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     {% include 'base2.html' %}
@@ -70,29 +70,32 @@
                 var pref = [];
 
                 if (history.checked) {
-                    pref.push('戶外踏青');
+                    pref.push('戶外踏青');               
                 } 
                 if (art_museum.checked) {
-                    pref.push('單車遊蹤');
+                    pref.push('單車遊蹤');                  
                 } 
                 if (pub_art.checked) {
-                    pref.push('親子共遊');
+                    pref.push('親子共遊');                  
                 } 
                 if (theme_street.checked) {
                     pref.push('養生溫泉');
                 } 
-                if ((pref.length > 0) & (pref.length == 2)){
+                if (pref.length == 2){
                     alert("已記錄您的喜好：" + pref);
+                    data = {
+                        'pref[]': pref
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'health' %}",
+                        data: data,
+                    });
                     window.location.replace("{% url 'index' %}");
-                    return pref;
                 } else {
-                    alert("請選擇兩個您可能喜歡的景點類別");
+                    alert("請選擇2個您可能喜歡的景點類別");
                 }
             }
         </script>
-
-    <form name="pref" action="" method="post">
-    <input type="hidden" name="record" value="yes">
-    </form>
 </body>
 </html>
