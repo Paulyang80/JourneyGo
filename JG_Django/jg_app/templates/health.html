@@ -6,18 +6,6 @@
     {% include 'base1.html' %}
     <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static "css/checkbox.css" %}" type="text/css">
-    <style>
-        .card-img-top:hover{
-             opacity: 0.3;
-        }
-        .btn1{
-height: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
-}
-    
-    </style>
 </head>
 <body>
     {% include 'base2.html' %}
@@ -96,57 +84,15 @@ align-items: center;
                 if ((pref.length > 0) & (pref.length == 2)){
                     alert("已記錄您的喜好：" + pref);
                     window.location.replace("{% url 'index' %}");
+                    return pref;
                 } else {
                     alert("請選擇兩個您可能喜歡的景點類別");
                 }
-                
             }
         </script>
 
-{% comment %} <form method="post">
-    <div class="container-fluid">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-            <div class="col-sm d-flex">
-                <div class="card">
-                    <img src="{% static "images/07.jpg" %}"   alt="Submit" class="card-img-top"  height="450px"  style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc ' ">
-                <div class="card card-body flex-fill">
-                    <h5 class="card-title text-center">戶外踏青</h5>
-                </div>
-            </div>
-            </div>
-            <div class="col-sm d-flex">
-                <div class="card">
-                    <img src="{% static "images/06.jpg" %}"   alt="Submit" class="card-img-top"   height="450px" style="display:block;  margin:auto; "  onclick="this.style.border='solid 5px #accadc '">
-                <div class="card card-body flex-fill">
-                    <h5 class="card-title text-center">單車遊蹤</h5>
-                </div>
-                </div>
-            </div>
-            <div class="col-sm d-flex">
-                <div class="card">
-                    <img src="{% static "images/05.jpg" %}"   alt="Submit" class="card-img-top"  height="450px" style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc '  ">
-                <div class="card card-body flex-fill">
-                    <h5 class="card-title text-center">親子共遊</h5>
-                </div>
-            </div>
-            
-        </div>
-            <div class="col-sm d-flex">
-                <div class="card">
-                    <img src="{% static "images/08.jpg" %}"  alt="Submit" class="card-img-top"   height="450px" style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc '  ">
-                <div class="card card-body flex-fill">
-                    <h5 class="card-title text-center">養生溫泉</h5>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="btn1">
-        <input type="sumbit" button class="btn btn-outline-dark" style="float:left" value="Back！"  onclick="location.href = 'balancegame';" >
-        <input type="sumbit" button class="btn btn-outline-dark" style="float:left;margin-left:10px;" value="Pick！"  onclick="location.href = 'index';" >
-    </div>
-       <br>
-</form> {% endcomment %}
+    <form name="pref" action="" method="post">
+    <input type="hidden" name="record" value="yes">
+    </form>
 </body>
 </html>

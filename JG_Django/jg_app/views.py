@@ -414,3 +414,7 @@ def test(request):
     context = {}
     return render(request, 'test.html', context)
 
+def getJS(request):
+    if request.method == "POST":
+        print(request.POST.get("record"))
+        
