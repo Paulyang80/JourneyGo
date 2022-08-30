@@ -365,8 +365,6 @@ def setting(request):
     return render(request, 'setting.html', context)
 
 def balancegame(request):
-    if request.method == "POST":
-        print(request.POST.get("art"))
     context = {}
     return render(request, 'balancegame.html', context)
 
@@ -377,10 +375,11 @@ def art(request):
     # get pref from JS: 
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
-        collection = db['Room_spec'] 
-    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+        for p in pref:
+            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
+
     context = {
-        'userFirstName': userFirstName,
+        
     }
     return render(request, 'art.html', context)    
 
@@ -391,11 +390,11 @@ def health(request):
     # get pref from JS: 
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
-        collection = db['Room_spec']
-
+        for p in pref:
+            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
 
     context = {
-        'userFirstName': userFirstName,
+        
     }
     return render(request, 'health.html', context)
 
@@ -406,10 +405,11 @@ def other(request):
     # get pref from JS: 
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
-        collection = db['Room_spec'] 
-    # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
+        for p in pref:
+            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
+
     context = {
-        'userFirstName': userFirstName,
+        
     }
     return render(request, 'other.html', context)
 
@@ -424,8 +424,4 @@ def base2(request):
 def test(request):
     context = {}
     return render(request, 'test.html', context)
-
-def getJS(request):
-    if request.method == "POST":
-        print(request.POST.getlist("pref[]"))
         
