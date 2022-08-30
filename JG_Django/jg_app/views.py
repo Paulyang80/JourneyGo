@@ -177,7 +177,7 @@ def room(request):
 def room2(request):
     # show login user's friends
     collection = db['User_account']
-    userFirstName = request.user.get_short_name()
+    userFirstName = request.user.first_name
     userLastName = request.user.last_name # consider last name ?
     userAcc = collection.find_one({"firstName": userFirstName})
     friendList = userAcc['friendList']
@@ -276,7 +276,7 @@ def friends(request): # 大前提： 沒有重複的 first name
     collection = cluster['JourneyGo_DB']['User_account']
 
     # 先確定使用者
-    userFirstName = request.user.get_short_name()
+    userFirstName = request.user.first_name
     userLastName = request.user.last_name 
     userAcc = collection.find_one({"firstName": userFirstName})
     
@@ -364,12 +364,14 @@ def setting(request):
     return render(request, 'setting.html', context)
 
 def balancegame(request):
+    if request.method == "POST":
+        print(request.POST.get("art"))
     context = {}
     return render(request, 'balancegame.html', context)
 
 def art(request):
     collection = db['User_account']
-    userFirstName = request.user.get_short_name()
+    userFirstName = request.user.first_name
 
     # get pref from form: 
     # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
@@ -380,7 +382,7 @@ def art(request):
 
 def health(request):
     collection = db['User_account']
-    userFirstName = request.user.get_short_name()
+    userFirstName = request.user.first_name
 
     # get pref from form: 
     # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)
@@ -391,7 +393,7 @@ def health(request):
 
 def other(request):
     collection = db['User_account']
-    userFirstName = request.user.get_short_name()
+    userFirstName = request.user.first_name
 
     # get pref from form: 
     # collection.update_one({"firstName": userFirstName}, {"$set": {"preferences": pref}}, upsert=False)

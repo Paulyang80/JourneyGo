@@ -1,96 +1,152 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html>
-
 <head>
     {% include 'base1.html' %}
-    <title>JourneyGo - Health Category</title>
     <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static "css/checkbox.css" %}" type="text/css">
+    <style>
+        .card-img-top:hover{
+             opacity: 0.3;
+        }
+        .btn1{
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+    
+    </style>
 </head>
-
 <body>
     {% include 'base2.html' %}
-    <br>
-    <h3 style="text-align:center;">
-        選擇兩個你有興趣的主題
-    </h3>
-    <div class="card-group">
-        <div class="card">
-            <img src="{% static "images/07.jpg" %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">戶外踏青</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
-            </div>
+
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+    <div class="wrapper">
+        <div class="title">
+            選擇2個你有興趣的景點類別
         </div>
-        <div class="card">
-            <img src="{% static "images/06.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">單車遊蹤</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+      
+        <div class="container">
+          <label class="option_item" >
+            <input type="checkbox" class="checkbox" id="alpha" name="alpha">
+            <div class="option_inner facebook">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-facebook-f"></i></div>
+              <div class="name">戶外踏青</div>
             </div>
-        </div>
-        <div class="card">
-            <img src="{% static "images/05.jpg" %}" class="card-img-top" style="width: 130%;" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">親子共遊</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="beta" name="beta">
+            <div class="option_inner twitter">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-twitter"></i></div>
+              <div class="name">單車遊蹤</div>
             </div>
-        </div>
-        <div class="card">
-            <img src="{% static "images/08.jpg" %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">養生溫泉</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="theta" name="theta">
+            <div class="option_inner instagram">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-instagram"></i></div>
+              <div class="name">親子共遊</div>
             </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="delta" name="delta">
+            <div class="option_inner linkedin">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-linkedin-in"></i></div>
+              <div class="name">養生溫泉</div>
+            </div>
+          </label>
         </div>
     </div>
-    <br>
-    <div class="d-flex justify-content-center">
-        <a class="btn btn-primary" href="{% url 'index' %}" role="button" id="checkBtn">submit</a>
 
+    <div class="btn1">
+        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left">Back</button></a>
+        <a><button type="button" class="btn btn-outline-dark" style="float:left" onclick="validate()">確認</button></a>
     </div>
-    <script>
-        var check_num = 0;
-        function check() {
-            if (event.srcElement.checked == true)
-                check_num++;
-            else
-                check_num--;
-            if (check_num > 2) {
-                alert("最多只能選2個！");
-                event.srcElement.checked = false;
-                check_num--;
-            }
+    
 
-        }
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#checkBtn').click(function () {
-                checked = $("input[type=checkbox]:checked").length;
+        <script type="text/javascript">
+            
+            function validate() {
+                var history = document.getElementById('alpha');
+                var art_museum = document.getElementById('beta');
+                var pub_art = document.getElementById('theta');
+                var theme_street = document.getElementById('delta');
 
-                if (!checked) {
-                    alert("至少要選1個！");
-                    return false;
+                var pref = [];
+
+                if (history.checked) {
+                    pref.push('戶外踏青');
+                } 
+                if (art_museum.checked) {
+                    pref.push('單車遊蹤');
+                } 
+                if (pub_art.checked) {
+                    pref.push('親子共遊');
+                } 
+                if (theme_street.checked) {
+                    pref.push('養生溫泉');
+                } 
+                if ((pref.length > 0) & (pref.length == 2)){
+                    alert("已記錄您的喜好：" + pref);
+                    window.location.replace("{% url 'index' %}");
+                } else {
+                    alert("請選擇兩個您可能喜歡的景點類別");
                 }
+                
+            }
+        </script>
 
-            });
-        });
-
-    </script>
-
+{% comment %} <form method="post">
+    <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col-sm d-flex">
+                <div class="card">
+                    <img src="{% static "images/07.jpg" %}"   alt="Submit" class="card-img-top"  height="450px"  style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc ' ">
+                <div class="card card-body flex-fill">
+                    <h5 class="card-title text-center">戶外踏青</h5>
+                </div>
+            </div>
+            </div>
+            <div class="col-sm d-flex">
+                <div class="card">
+                    <img src="{% static "images/06.jpg" %}"   alt="Submit" class="card-img-top"   height="450px" style="display:block;  margin:auto; "  onclick="this.style.border='solid 5px #accadc '">
+                <div class="card card-body flex-fill">
+                    <h5 class="card-title text-center">單車遊蹤</h5>
+                </div>
+                </div>
+            </div>
+            <div class="col-sm d-flex">
+                <div class="card">
+                    <img src="{% static "images/05.jpg" %}"   alt="Submit" class="card-img-top"  height="450px" style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc '  ">
+                <div class="card card-body flex-fill">
+                    <h5 class="card-title text-center">親子共遊</h5>
+                </div>
+            </div>
+            
+        </div>
+            <div class="col-sm d-flex">
+                <div class="card">
+                    <img src="{% static "images/08.jpg" %}"  alt="Submit" class="card-img-top"   height="450px" style="display:block;  margin:auto;"  onclick="this.style.border='solid 5px #accadc '  ">
+                <div class="card card-body flex-fill">
+                    <h5 class="card-title text-center">養生溫泉</h5>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn1">
+        <input type="sumbit" button class="btn btn-outline-dark" style="float:left" value="Back！"  onclick="location.href = 'balancegame';" >
+        <input type="sumbit" button class="btn btn-outline-dark" style="float:left;margin-left:10px;" value="Pick！"  onclick="location.href = 'index';" >
+    </div>
+       <br>
+</form> {% endcomment %}
 </body>
-
 </html>

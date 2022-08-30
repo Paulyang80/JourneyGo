@@ -1,49 +1,54 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {% include 'base1.html' %}
-    <title>JourneyGo - Your Preference</title>
+    <style>
+        .card-img-top:hover{
+             opacity: 0.3;
+        }
+    
+    </style>
 </head>
-
 <body>
     {% include 'base2.html' %}
-
     {% if user.is_authenticated %}
-    Welcome, {{ user.username }}. Choose Your Preferences: <hr>
-    
+    {% comment %} Welcome, {{ user.username }}. Choose Your Preferences: <hr> {% endcomment %}
+    <br><br>
     <h3 style="text-align:center;">
-        選擇一個你有興趣的主題
+        嗨 {{ user.username }}，選擇一個你有興趣的主題
     </h3>
+    <br><br>
+
     <div class="card-group">
         <div class="card text-center">
-            <img src="{% static "images/ramadan.png" %}" class="card-img-top"
-                style="display:block; margin:auto; width: 75%;" alt="...">
+            <a href="{% url 'art' %}">
+                <img src="{% static "images/ramadan.png" %}" class="card-img-top" style="display:block; margin:auto; width: 50%;">
+            </a>
             <div class="card-body">
                 <h5 class="card-title">文藝旅行</h5>
-                <a class="btn btn-primary" href="{% url 'art' %}" role="button">pick me</a>
             </div>
         </div>
         <div class="card text-center">
-            <img src="{% static "images/muscle.png" %}" class="card-img-top"
-                style="display:block; margin:auto; width: 75%;" alt="...">
+            <a href="{% url 'health' %}">
+                <img src="{% static "images/muscle.png" %}" class="card-img-top" style="display:block; margin:auto; width: 50%;" >
+            </a>
             <div class="card-body">
                 <h5 class="card-title">健康路線</h5>
-                <a class="btn btn-primary" href="{% url 'health' %}" role="button">pick me</a>
             </div>
         </div>
         <div class="card text-center">
-            <img src="{% static "images/map.png" %}" class="card-img-top" style="display:block; margin:auto; width: 75%;"
-                alt="...">
+            <a href="{% url 'other' %}">
+                <img src="{% static "images/map.png" %}" class="card-img-top" style="display:block; margin:auto; width: 50%;">
+            </a>
             <div class="card-body">
-                <h5 class="card-title">其他</h5>
-                <a class="btn btn-primary" href="{% url 'other' %}" role="button">pick me</a>
-
+                <h5 class="card-title">其他類別</h5>
             </div>
         </div>
     </div>
+    {% else %}
+    <h2>Please Login</h2>
     {% endif %}
 </body>
-
 </html>

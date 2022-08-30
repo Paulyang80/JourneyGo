@@ -1,99 +1,112 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html>
-
 <head>
     {% include 'base1.html' %}
-    <title>JourneyGo - Art Category</title>
-    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
+    {% comment %} <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css"> {% endcomment %}
+    <link rel="stylesheet" href="{% static "css/checkbox.css" %}" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <style>
+        .card-img-top:hover{
+             opacity: 0.3;
+        }
+        .btn1{
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+    </style>
 </head>
-
 <body>
     {% include 'base2.html' %}
     <br>
-    Hi {{ userFirstName }}, Choose 2 categories. 
-    <h3 style="text-align:center;">
-        選擇兩個你有興趣的行程
-    </h3>
-    <div class="card-group">
-        <div class="card">
-            <img src="{% static "images/02.jpg" %}" class="card-img-top" style="width: 110%;">
-            <div class="card-body">
-                <h5 class="card-title text-center">歷史建築</h5>
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label " for="flexCheckChecked">like</label>
-                </div>
-            </div>
+    {% comment %} Hi {{ userFirstName }}, Choose 2 categories.  {% endcomment %}
+    {% comment %} <h3 style="text-align:center;">
+        {{ user.username }} 選擇兩個你有興趣的行程
+    </h3> {% endcomment %}
+
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+    <div class="wrapper">
+        <div class="title">
+            選擇2個你有興趣的景點類別
         </div>
-        <div class="card">
-            <img src="{% static "images/01.jpg" %}" class="card-img-top" style="width: 110%;" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">藝文館所</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+      
+        <div class="container">
+          <label class="option_item" >
+            <input type="checkbox" class="checkbox" id="alpha" name="alpha">
+            <div class="option_inner facebook">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-facebook-f"></i></div>
+              <div class="name">歷史建築</div>
             </div>
-        </div>
-        <div class="card">
-            <img src="{% static "images/03.jpg" %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title text-center">公共藝術</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="beta" name="beta">
+            <div class="option_inner twitter">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-twitter"></i></div>
+              <div class="name">藝文館所</div>
             </div>
-        </div>
-        <div class="card ">
-            <img src="{% static "images/04.jpg" %}" class="card-img-top" style="height: 110%;" alt="...">
-            <div class="card-body ">
-                <h5 class="card-title text-center">主題商街</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
-                    <label class="form-check-label" for="flexCheckChecked">like</label>
-                </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="theta" name="theta">
+            <div class="option_inner instagram">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-instagram"></i></div>
+              <div class="name">公共藝術</div>
             </div>
+          </label>
+          <label class="option_item">
+            <input type="checkbox" class="checkbox" id="delta" name="delta">
+            <div class="option_inner linkedin">
+              <div class="tickmark"></div>
+              <div class="icon"><i class="fab fa-linkedin-in"></i></div>
+              <div class="name">主題商街</div>
+            </div>
+          </label>
         </div>
     </div>
-    <br>
-    <div class="d-flex justify-content-center">
-        <a class="btn btn-primary" href="index.html" role="button" id="checkBtn">submit</a>
 
+    <div class="btn1">
+        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left">Back</button></a>
+        <a><button type="button" class="btn btn-outline-dark" style="float:left" onclick="validate()">確認</button></a>
     </div>
+    
 
-    <script>
-        var check_num = 0;
-        function check() {
-            if (event.srcElement.checked == true)
-                check_num++;
-            else
-                check_num--;
-            if (check_num > 2) {
-                alert("最多只能選2個！");
-                event.srcElement.checked = false;
-                check_num--;
-            }
+        <script type="text/javascript">
+            
+            function validate() {
+                var history = document.getElementById('alpha');
+                var art_museum = document.getElementById('beta');
+                var pub_art = document.getElementById('theta');
+                var theme_street = document.getElementById('delta');
 
-        }
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#checkBtn').click(function () {
-                checked = $("input[type=checkbox]:checked").length;
+                var pref = [];
 
-                if (!checked) {
-                    alert("至少要選1個！");
-                    return false;
+                if (history.checked) {
+                    pref.push('歷史建築');
+                } 
+                if (art_museum.checked) {
+                    pref.push('藝文館所');
+                } 
+                if (pub_art.checked) {
+                    pref.push('公共藝術');
+                } 
+                if (theme_street.checked) {
+                    pref.push('主題商街');
+                } 
+                if ((pref.length > 0) & (pref.length == 2)){
+                    alert("已記錄您的喜好：" + pref);
+                    window.location.replace("{% url 'index' %}");
+                } else {
+                    alert("請選擇兩個您可能喜歡的景點類別");
                 }
-
-            });
-        });
-
-    </script>
-
+                
+            }
+        </script>
 </body>
-
 </html>

@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'base1.html' %}
+    <title>JourneyGo - Other Category</title>
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    {% include 'base2.html' %}
+    <h3 style="text-align:center;">
+        選擇兩個你有興趣的主題
+    </h3>
+    <div class="card-group">
+        <div class="card">
+            <img src="{% static "images/09.jpg" %}" class="card-img-top" style="width: 120%" alt="...">
+            <div class="card-body">
+                <h5 class="card-title text-center">宗教信仰</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "images/10.jpg" %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title text-center">藍色公路</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "images/11.jpg" %}" class="card-img-top" style="width: 135%;" alt="...">
+            <div class="card-body">
+                <h5 class="card-title text-center">夜市商圈</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "images/12.jpg" %}" class="card-img-top" style="height: 110%" alt=" ...">
+            <div class="card-body">
+                <h5 class="card-title text-center">北北基景點</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-primary" href="{% url 'index' %}" role="button" id="checkBtn">submit</a>
+
+    </div>
+    <script>
+        var check_num = 0;
+        function check() {
+            if (event.srcElement.checked == true)
+                check_num++;
+            else
+                check_num--;
+            if (check_num > 2) {
+                alert("最多只能選2個！");
+                event.srcElement.checked = false;
+                check_num--;
+            }
+
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#checkBtn').click(function () {
+                checked = $("input[type=checkbox]:checked").length;
+
+                if (!checked) {
+                    alert("至少要選1個！");
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
+</body>
+
+</html>

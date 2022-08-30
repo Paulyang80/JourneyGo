@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'base1.html' %}
+    <title>JourneyGo - Art Category</title>
+    <link href="{% static "css/start.css" %}" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+</head>
+
+<body>
+    {% include 'base2.html' %}
+    <br>
+    Hi {{ userFirstName }}, Choose 2 categories. 
+    <h3 style="text-align:center;">
+        選擇兩個你有興趣的行程
+    </h3>
+    <div class="card-group">
+        <div class="card">
+            <img src="{% static "images/02.jpg" %}" class="card-img-top" style="width: 110%;">
+            <div class="card-body">
+                <h5 class="card-title text-center">歷史建築</h5>
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label " for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "images/01.jpg" %}" class="card-img-top" style="width: 110%;" alt="...">
+            <div class="card-body">
+                <h5 class="card-title text-center">藝文館所</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "images/03.jpg" %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title text-center">公共藝術</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+        <div class="card ">
+            <img src="{% static "images/04.jpg" %}" class="card-img-top" style="height: 110%;" alt="...">
+            <div class="card-body ">
+                <h5 class="card-title text-center">主題商街</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="check()">
+                    <label class="form-check-label" for="flexCheckChecked">like</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-primary" href="index.html" role="button" id="checkBtn">submit</a>
+
+    </div>
+
+    <script>
+        var check_num = 0;
+        function check() {
+            if (event.srcElement.checked == true)
+                check_num++;
+            else
+                check_num--;
+            if (check_num > 2) {
+                alert("最多只能選2個！");
+                event.srcElement.checked = false;
+                check_num--;
+            }
+
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#checkBtn').click(function () {
+                checked = $("input[type=checkbox]:checked").length;
+
+                if (!checked) {
+                    alert("至少要選1個！");
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
