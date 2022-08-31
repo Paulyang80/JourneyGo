@@ -179,7 +179,6 @@ def room2(request):
     # show login user's friends
     collection = db['User_account']
     userFirstName = request.user.first_name
-    userLastName = request.user.last_name # consider last name ?
     userAcc = collection.find_one({"firstName": userFirstName})
     friendList = userAcc['friendList']
 
@@ -198,14 +197,15 @@ def room2(request):
     mem_limit = None
     for doc in collection.find().sort('_id',-1).limit(1): # the only doc
         latest_record = doc
-        mem_limit = int(doc['member_limitation'])
+        mem_limit = int(doc['member_limitation'])-1
 
     # save invited friends:
     if request.method == "POST":
+        collection.update({"_id": latest_record['_id']}, {"$push": {"members": userFirstName}}) # save myself 
         invited = request.POST.getlist("invited[]")
         for i in invited:
             fn = i.split()[0]
-            collection.update({"_id": latest_record['_id']}, {"$push": {"members": fn}})
+            collection.update({"_id": latest_record['_id']}, {"$push": {"members": fn}}) # save invited friends
 
     context = {
         'friends_name': friends_name,
@@ -215,36 +215,45 @@ def room2(request):
     }
     return render(request, 'room2.html', context)
 
+def basic_rec(memberList, time, prefList):
+    recs = []
+    while len(recs) <= 6:
+        id = random.randrange(0, 550)
+        collection = db['Taipei_gov']
+        rec = collection.find({"_id": id})
+        if (rec not in recs) and bool(set(prefList) & set(rec[0]['categories'])):
+            recs.append(rec) #recs will be a list of cursors
+    # for r in recs:
+    #     print(r[0]['categories'])
+    return recs
+
 def spotvote(request):
 
     # Reccomandation Computing
-
-
-    # Record the Votes
+    collection = cluster['JourneyGo_DB']['Room_spec']
+    members = collection.find().sort('_id',-1).limit(1)[0]['members']
+    duration = collection.find().sort('_id',-1).limit(1)[0]['duration']
+    pref_list = []
+    for member in members:
+        collection = cluster['JourneyGo_DB']['User_account']
+        personal_pref_list = collection.find({"firstName": member})[0]['balPref']
+        for cat in personal_pref_list:
+            pref_list.append(cat)
     
-    # 先隨機抓六張圖
-    n = []
-    while len(n) <= 6: #推薦幾個景點
-        id = random.randrange(0, 550)
-        if id not in n: n.append(id)
-        else: continue
-    #print(n)
+    recs = basic_rec(members, duration, pref_list) # recs[0][0] = dict
+    # Record the Votes
 
-    collection = db['Taipei_gov']
-    spots = []
-    for i in n:
-        spots.append(collection.find_one({"_id": i}))
 
+    # render field data
     imgList = []
     introList = []
     nameList = []
-    for spot in spots:
-        imgList.append(spot['images'][0])
-        introList.append(spot['intro'])
-        nameList.append(spot['name'])
+    for r in recs:
+        imgList.append(r[0]['images'][0])
+        introList.append(r[0]['intro'])
+        nameList.append(r[0]['name'])
 
     context = {
-        'spots': spots,
         'imgList': imgList,
         'introList': introList,
         'nameList': nameList,
@@ -381,7 +390,7 @@ def art(request):
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
         for p in pref:
-            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
+            collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
     context = {
         
@@ -396,7 +405,7 @@ def health(request):
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
         for p in pref:
-            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
+            collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
     context = {
         
@@ -411,7 +420,7 @@ def other(request):
     if request.method == "POST":
         pref = request.POST.getlist("pref[]")
         for p in pref:
-            collection.update({"firstName": userFirstName}, {"$push": {"bal_pref": p}})
+            collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
     context = {
         

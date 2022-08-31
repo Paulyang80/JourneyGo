@@ -48,25 +48,33 @@
             let next = document.getElementById("next");
             let img = document.getElementsByTagName("img")[0];
             let info = document.getElementById("info");
+            let intro = document.getElementById("intro");
 
             //建立一個數組儲存照片的路徑
             let imgArr = "{{ imgList | safe }}";
             imgArr = imgArr.replace(/'/g, '"');
             imgArr = JSON.parse(imgArr);
-            //想效仿上面讓card顯示name、intro等資訊，但失敗
+
             let infoArr = "{{ nameList | safe }}"
             infoArr = infoArr.replace(/'/g, '"');
-            infoArr = JSON.parse(infoArr);
+            infoArr = JSON.parse(infoArr);  
+            
             
             let index = 0;
+            document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
+            document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
+            //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
+
             prev.onclick = function () {
                 //prev.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
                     window.location.href = "{% url 'loading' %}";
                 }
-                img.src = imgArr[index];
-                //info.src = infoArr[index];
+                //img.src = imgArr[index];
                 index++;
+                document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
+                document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
+                //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
             };
 
             next.onclick = function () {
@@ -75,9 +83,11 @@
                 if (index >= imgArr.length - 1) {
                     window.location.href = "{% url 'loading' %}";
                 }
-                img.src = imgArr[index];
-                //info.src = infoArr[index];
+                //img.src = imgArr[index];
                 index++;
+                document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
+                document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
+                //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
             };
 
         };
@@ -92,17 +102,20 @@
         <h3>Do you like this place?</h3>
     </div>
 
+    
     <div class="img-wrapper">
         <div class="card" style="width: auto;">
-            <img src={{ imgList.0 }} class="card-img-top" alt="你可能喜歡的景點">
+            <div id="image"></div>
+            {% comment %} <img  class="card-img-top" alt="你可能喜歡的景點"> {% endcomment %}
             <div class="card-body" style="height: auto;">
-              <p class="card-text"></p>
+              <div id="name"></div>
+              <div id="intro"></div>
             </div>
             <button type="button" class="btn btn-danger btn-sm" id="prev"><i class="fa-solid fa-heart"></i> Like</button>
             <button type="button" class="btn btn-light btn-sm" id="next"><i class="fa-solid fa-xmark"></i> Disike</button>
         </div>
     </div>
-    
+
 </body>
 
 </html>
