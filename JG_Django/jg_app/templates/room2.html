@@ -5,6 +5,7 @@
     {% include 'base1.html' %}
     <title>JourneyGo - Room</title>
     <link rel="stylesheet" href="{% static "css/room.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
 
   <body>
@@ -20,83 +21,7 @@
                     <h5 style="text-align: center;">Group Member Limitation: {{ mem_limit }} people</h3>
                     <!--Next Step: Get FB Profile pic CDN-->
 
-                    <script>
-
-                        var done = "{{ friends_name | safe }}"; // use "safe" to convert &#x27; to quote
-                        done = done.replace(/'/g, '"');         // convert string to array
-                        done = JSON.parse(done);
-                        //alert(done); 
-
-                        var imgList = "{{ friends_pic | safe }}";
-                        imgList = imgList.replace(/'/g, '"');
-                        imgList = JSON.parse(imgList);
-                        //alert(imgList)
-
-                        var hashtag = "{{ friends_hash | safe }}";
-                        hashtag = hashtag.replace(/'/g, '"');
-                        hashtag = JSON.parse(hashtag);
-                        //alert(hashtag);
-
-                        const appendItem = (textContent,imgContent, hashContent, parentNodeId) => {
-                            const newItem = document.createElement('li');
-                            newItem.classList.add('todo_item');
-                            // new
-                            const img = document.createElement('img');
-                            img.src=imgContent
-                            img.width=100
-                            img.height=100
-                            // newItemImg.innerHTML = `<p class='todo_content'>${imgContent}</p>`
-                            newItem.innerHTML = `<p class='todo_content'>${textContent}<br>Hashtag: #${hashContent}</p>`
-                                                
-                            // new
-                            newItem.appendChild(img)
-
-                            document.querySelector(`#${parentNodeId}`).appendChild(newItem);
-
-                            // document.querySelector(`#${parentNodeId}`).appendChild(img);
-                        };
-
-                        const itemMove = (event, newParentNodeId) => {
-                            const target = event.target;
-                            console.log(target.parentNode.childNodes)
-                            if (target.classList.contains('todo_content')) {
-                                // done.unshift(target.textContent);
-                                // todo = todo.filter(value => value !== target.textContent);
-
-                                // new
-                                const newItem = document.createElement('li');
-                                newItem.classList.add('todo_item');
-                                // alert(target.textContent);
-                                newItem.innerHTML = `<p class='todo_content'>${target.textContent}</p>`
-                                console.log(newItem)
-                                newItem.appendChild(target.parentNode.childNodes[1])
-                                document.querySelector(`#${newParentNodeId}`).appendChild(newItem);
-                                target.parentNode.remove();
-
-                                // appendItem(target.textContent,target.imgContent, newParentNodeId);
-                            }
-                        }
-
-                        // render all todo items
-                        for (var i = 0; i < done.length; i++) {
-                            appendItem(done[i],imgList[i],hashtag[i], 'done');
-                        }
-
-                        // add event listener to parent node todo, then see whether the clicked element contains todo_content class
-                        document.querySelector('#todo').addEventListener('click', function (event) {
-                            itemMove(event, 'done');
-                        });
-
-                        document.querySelector('#done').addEventListener('click', function(event) {
-                              //alert(document.querySelectorAll("#todo li").length)
-                              if (document.querySelectorAll("#todo li").length < "{{ mem_limit | safe }}") {
-                                  itemMove(event, 'todo');
-                              }   
-                              else{
-                                  alert("人數已達上限！");
-                              } 
-                        });
-                    </script>
+                    
                     <!---->
                 </div>
               </div>
@@ -104,7 +29,7 @@
         </div>
 
           <div align="center">
-            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
+            <button type="button" id="go1" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
@@ -115,7 +40,7 @@
                   </div>
                   <div class="modal-body">
                     <p>Ready to go?</p>
-                    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button></a>
+                    <a href="{% url 'spotvote' %}"><button type="button" id="go2" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button></a>
                   </div>
                 </div>
               </div>
@@ -124,6 +49,125 @@
           </div>
         </div>
       </div>
+
+      <script>
+
+        var done = "{{ friends_name | safe }}"; // use "safe" to convert &#x27; to quote
+        done = done.replace(/'/g, '"');         // convert string to array
+        done = JSON.parse(done);
+        //alert(done); 
+
+        var imgList = "{{ friends_pic | safe }}";
+        imgList = imgList.replace(/'/g, '"');
+        imgList = JSON.parse(imgList);
+        //alert(imgList)
+
+        var hashtag = "{{ friends_hash | safe }}";
+        hashtag = hashtag.replace(/'/g, '"');
+        hashtag = JSON.parse(hashtag);
+        //alert(hashtag);
+
+        var invited = [];
+
+        const appendItem = (textContent,imgContent, hashContent, parentNodeId) => {
+            const newItem = document.createElement('li');
+            newItem.classList.add('todo_item');
+            // new
+            const img = document.createElement('img');
+            img.src=imgContent
+            img.width=100
+            img.height=100
+            // newItemImg.innerHTML = `<p class='todo_content'>${imgContent}</p>`
+            newItem.innerHTML = `<p class='todo_content'>${textContent}</p>`
+            //newItem.innerHTML += `<p class='todo_content'> Hashtag: #${hashContent}</p>`
+   
+            // new
+            newItem.appendChild(img)
+
+            document.querySelector(`#${parentNodeId}`).appendChild(newItem);
+
+            // document.querySelector(`#${parentNodeId}`).appendChild(img);
+        };
+
+        const itemMove = (event, newParentNodeId) => {
+            const target = event.target;
+            console.log(target.parentNode.childNodes)
+            if (target.classList.contains('todo_content')) {
+                // done.unshift(target.textContent);
+                // todo = todo.filter(value => value !== target.textContent);
+
+                // new
+                const newItem = document.createElement('li');
+                newItem.classList.add('todo_item');
+                // alert(target.textContent);
+                newItem.innerHTML = `<p class='todo_content'>${target.textContent}</p>`
+                //newItem.innerHTML += `<p class='todo_content'> Hashtag: #${target.hashContent}</p>`
+
+                console.log(newItem)
+                newItem.appendChild(target.parentNode.childNodes[1])
+                document.querySelector(`#${newParentNodeId}`).appendChild(newItem);
+                target.parentNode.remove();
+
+                // appendItem(target.textContent,target.imgContent, newParentNodeId);
+            } 
+        }
+
+        // render all todo items
+        for (var i = 0; i < done.length; i++) {
+            appendItem(done[i],imgList[i],hashtag[i], 'done');
+        }
+
+        // add event listener to parent node todo, then see whether the clicked element contains todo_content class
+        document.querySelector('#todo').addEventListener('click', function (event) {
+            itemMove(event, 'done');
+            //alert("remove");
+            var index = invited.indexOf(event.target.textContent);
+            if (index !== -1) {
+              invited.splice(index, 1);
+            }
+            //alert("已邀請：" + invited);
+        });
+
+        document.querySelector('#done').addEventListener('click', function(event) {
+              //alert(document.querySelectorAll("#todo li").length)
+              if (document.querySelectorAll("#todo li").length < "{{ mem_limit | safe }}") {
+                  itemMove(event, 'todo');
+                  if (!invited.includes(event.target.textContent)){
+                      invited.push(event.target.textContent);
+                      //alert("已邀請：" + invited);
+                  }
+              }   
+              else{
+                  alert("人數已達上限！");
+              } 
+        });
+
+        document.getElementById('go1').onclick = function(){
+          if (document.querySelectorAll("#todo li").length != "{{ mem_limit | safe }}") {
+            alert("選擇人數少於房間設置");
+          }
+        }
+        
+        document.getElementById('go2').onclick = function() {
+            //alert("clicked");
+              data = {
+                'invited[]': invited
+              }
+              $.ajax({
+                  type: 'POST',
+                  url: "{% url 'room2' %}",
+                  data: data,
+              });
+
+            
+        }
+        
+        
+          
+        
+        
+        
+    </script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
           <!-- Core theme JS-->
 

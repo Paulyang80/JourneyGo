@@ -194,13 +194,18 @@ def room2(request):
     
     # get room spec
     collection = cluster['JourneyGo_DB']['Room_spec']
-    latest_record = collection.find().sort('_id',-1).limit(1)
+    latest_record = None
     mem_limit = None
-    for doc in latest_record:
+    for doc in collection.find().sort('_id',-1).limit(1): # the only doc
+        latest_record = doc
         mem_limit = int(doc['member_limitation'])
-    #print(mem_limit)
 
-    # record invited friends:
+    # save invited friends:
+    if request.method == "POST":
+        invited = request.POST.getlist("invited[]")
+        for i in invited:
+            fn = i.split()[0]
+            collection.update({"_id": latest_record['_id']}, {"$push": {"members": fn}})
 
     context = {
         'friends_name': friends_name,
