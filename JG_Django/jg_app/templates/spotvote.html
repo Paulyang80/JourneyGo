@@ -65,12 +65,19 @@
             document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
             //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
 
+            var mem_vote = [];
+
             prev.onclick = function () {
                 //prev.style.backgroundColor = "#ffffff";
                 if (index >= imgArr.length - 1) {
                     window.location.href = "{% url 'loading' %}";
                 }
-                //img.src = imgArr[index];
+                // save vote
+                alert(document.getElementById('name').textContent);
+                mem_vote.push(1);
+                alert(mem_vote);
+
+                // render next object
                 index++;
                 document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
                 document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
@@ -83,7 +90,11 @@
                 if (index >= imgArr.length - 1) {
                     window.location.href = "{% url 'loading' %}";
                 }
-                //img.src = imgArr[index];
+                //save vote
+                mem_vote.push(0);
+                alert(mem_vote);
+
+                //render next object
                 index++;
                 document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
                 document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;

@@ -40,7 +40,7 @@
                   </div>
                   <div class="modal-body">
                     <p>Ready to go?</p>
-                    <a href="{% url 'spotvote' %}"><button type="button" id="go2" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button></a>
+                    <button type="button" id="go2" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
                   </div>
                 </div>
               </div>
@@ -157,6 +157,10 @@
                   type: 'POST',
                   url: "{% url 'room2' %}",
                   data: data,
+                  success: function (response) {
+                    console.log("coooooool");
+                    window.location.href = "{% url 'spotvote' %}";
+                  }
               });
 
             

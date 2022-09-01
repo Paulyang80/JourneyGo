@@ -3,6 +3,7 @@ import collections
 from gc import collect
 from ipaddress import collapse_addresses
 from multiprocessing import context
+from operator import truediv
 from os import remove
 from unicodedata import name
 from django.shortcuts import render, redirect
@@ -18,7 +19,7 @@ from django.contrib.auth import logout as logouts
 from django.contrib.auth import authenticate
 from jg_app.forms import RegisterUserForm
 from django.contrib import messages
-import json
+from django.http import HttpResponse
 
 
 # Make MongoDB connection with Pymongo
@@ -206,58 +207,63 @@ def room2(request):
         for i in invited:
             fn = i.split()[0]
             collection.update({"_id": latest_record['_id']}, {"$push": {"members": fn}}) # save invited friends
+        return HttpResponse(status=200)
 
     context = {
         'friends_name': friends_name,
-        'friends_pic': friends_pic,  
+        'friends_pic': friends_pic,
         'friends_hash': friends_hash,
         'mem_limit': mem_limit,
     }
     return render(request, 'room2.html', context)
 
 def basic_rec(memberList, time, prefList):
-    recs = []
-    while len(recs) <= 6:
-        id = random.randrange(0, 550)
-        collection = db['Taipei_gov']
-        rec = collection.find({"_id": id})
-        if (rec not in recs) and bool(set(prefList) & set(rec[0]['categories'])):
-            recs.append(rec) #recs will be a list of cursors
-    # for r in recs:
-    #     print(r[0]['categories'])
-    return recs
+    collection = db['User_account']
+    userPref = []
+    for mem in memberList:
+        new_pref = collection.find({"firstName": mem})[0]['balPref']
+        userPref.extend(new_pref)
+    collection = db['Taipei_gov']
+    demon = collection.find({"categories" : { "$in" : userPref}}) #all spots
+    demon = list(demon)
+    angel = random.choices(demon, k=5)
+    return angel
 
 def spotvote(request):
-
     # Reccomandation Computing
-    collection = cluster['JourneyGo_DB']['Room_spec']
-    members = collection.find().sort('_id',-1).limit(1)[0]['members']
-    duration = collection.find().sort('_id',-1).limit(1)[0]['duration']
+    collection = db['Room_spec']
+
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    members = latest_room[0]['members']
+    duration = latest_room[0]['duration']
+    transportation = latest_room[0]['transportation']
+
     pref_list = []
+    collection = db['User_account']
     for member in members:
-        collection = cluster['JourneyGo_DB']['User_account']
         personal_pref_list = collection.find({"firstName": member})[0]['balPref']
         for cat in personal_pref_list:
             pref_list.append(cat)
-    
-    recs = basic_rec(members, duration, pref_list) # recs[0][0] = dict
-    # Record the Votes
 
+    recs = basic_rec(members, duration, pref_list)
 
     # render field data
     imgList = []
     introList = []
     nameList = []
     for r in recs:
-        imgList.append(r[0]['images'][0])
-        introList.append(r[0]['intro'])
-        nameList.append(r[0]['name'])
+        imgList.append(r['images'][0])
+        introList.append(r['intro'])
+        nameList.append(r['name'])
+
+    # Record the Votes
 
     context = {
         'imgList': imgList,
         'introList': introList,
         'nameList': nameList,
     }
+    print(context)
     return render(request, 'spotvote.html', context)
 
 def loading(request):
@@ -296,12 +302,13 @@ def friends(request): # 大前提： 沒有重複的 first name
     userAcc = collection.find_one({"firstName": userFirstName})
     
     # 顯示好友資料
-    friends = userAcc['friendList'] # Type: String in Array
-    friendsDocs = []                # Type: User Document
-    f_IDs = []
-    for f in friends:
-        friendsDocs.append(collection.find_one({"firstName": f}))
-        f_IDs.append(collection.find_one({"firstName": f})['_id'])
+    if userAcc['friendList'] is not None:
+        friends = userAcc['friendList'] # Type: String in Array
+        friendsDocs = []                # Type: User Document
+        f_IDs = []
+        for f in friends:
+            friendsDocs.append(collection.find_one({"firstName": f}))
+            f_IDs.append(collection.find_one({"firstName": f})['_id'])
 
     # 刪除好友
     exf = None  # exf stands for "ex-friend's first name"
