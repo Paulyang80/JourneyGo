@@ -1,0 +1,55 @@
+.body
+{
+margin: 0;
+padding: 0;
+}
+.container{
+    background:url(image.jpg);
+    background-size: cover;
+    height: 150px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+}
+.container img{
+    width:85%;
+}
+.cloud{
+    position: absolute;
+    display: inline-block;
+    width: 20%;
+    animation: CloudOne infinite 5s linear;
+}
+.cloud1{
+    display:inline-block;
+    width: 100%;
+    position: absolute;
+    
+    animation: CloudTwo infinite 20s linear;
+}
+@keyframes CloudOne{
+    0%
+    {
+        transform:translateX(0%);
+    }
+    100%
+    {
+        transform:translateX(200%);
+    }
+}
+@keyframes CloudTwo{
+    0%
+    {
+        transform:translateX(50%);
+    }
+    100%
+    {
+        transform:translateX(200%);
+    }
+}
+.spot{
+    -webkit-box-reflect: left 0 
+    -webkit-radial-gradient(#000 30%,transparent);
+    box-reflect: left 0 radial-gradient(#000 30%,transparent);
+}

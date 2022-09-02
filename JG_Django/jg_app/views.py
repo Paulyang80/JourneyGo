@@ -1,6 +1,7 @@
 from cgi import test
 import collections
 from gc import collect
+from hashlib import new
 from ipaddress import collapse_addresses
 from multiprocessing import context
 from operator import truediv
@@ -20,6 +21,7 @@ from django.contrib.auth import authenticate
 from jg_app.forms import RegisterUserForm
 from django.contrib import messages
 from django.http import HttpResponse
+import numpy as np
 
 
 # Make MongoDB connection with Pymongo
@@ -152,7 +154,7 @@ def startDropDown(request):
             "duration": selected_time, 
             "transportation": selected_trans, 
             "members": [], 
-            "vote_results": {},
+            "vote_results": [],
     }
     if selected_num and selected_time and selected_trans:
         collection.insert_one(post)
@@ -256,17 +258,46 @@ def spotvote(request):
         introList.append(r['intro'])
         nameList.append(r['name'])
 
-    # Record the Votes
+    # Save the Votes
+    if request.method == "POST":
+        mem_vote = request.POST.getlist("mem_vote[]")
+        #print(mem_vote)
+        collection = db['Room_spec']
+        collection.update({"_id": latest_room[0]['_id']}, {"$push": {"vote_results": mem_vote}}) # save invited friends
+        return HttpResponse(status=200)
 
     context = {
         'imgList': imgList,
         'introList': introList,
         'nameList': nameList,
     }
-    print(context)
     return render(request, 'spotvote.html', context)
 
 def loading(request):
+
+     # Calculate the Votes
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    vote_arr = latest_room[0]['vote_results']
+    new_vote_arr = []
+    for l in vote_arr:
+        l = [int(x) for x in l]
+        new_vote_arr.append(l)
+    print(new_vote_arr)
+    sum_list = np.sum(new_vote_arr, axis = 0).tolist()
+    print("Sum of arr(axis = 0) : ", sum_list)
+
+    highest_three = []
+    while len(highest_three) < 3:   
+        max_value = max(sum_list)
+        max_index = sum_list.index(max_value)
+        sum_list[max_index] = -1
+        highest_three.append(max_index)
+    print(highest_three)
+
+        
+
+
     context = {}
     return render(request, 'loading.html', context)
 

@@ -8,6 +8,10 @@ ul {
     border-radius: 5px;
     margin: 5px;
     padding: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+    
+    
 }
 
 .todo_content {

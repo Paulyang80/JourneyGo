@@ -6,6 +6,7 @@
     {% include 'base1.html' %}
     <title>JourneyGo - Voting</title>
     <link rel="stylesheet" href="{% static "css/friendlist-styles.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>spotvote</title>
     <style type="text/css">
         * {
@@ -69,36 +70,62 @@
 
             prev.onclick = function () {
                 //prev.style.backgroundColor = "#ffffff";
-                if (index >= imgArr.length - 1) {
-                    window.location.href = "{% url 'loading' %}";
-                }
+                index++;
+                if (index == imgArr.length) {
+                    mem_vote.push(1);
+                    alert(mem_vote);
+                    data = {
+                        'mem_vote[]': mem_vote
+                      }
+                      $.ajax({
+                          type: 'POST',
+                          url: "{% url 'spotvote' %}",
+                          data: data,
+                          success: function (response) {
+                            console.log("coooooool");
+                            window.location.href = "{% url 'loading' %}";
+                          }
+                      });
+                } else {
+
                 // save vote
-                alert(document.getElementById('name').textContent);
                 mem_vote.push(1);
-                alert(mem_vote);
 
                 // render next object
-                index++;
+                
                 document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
                 document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
                 //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
+                }
             };
 
             next.onclick = function () {
-                index++;
                 //next.style.backgroundColor = "#ffffff";
-                if (index >= imgArr.length - 1) {
-                    window.location.href = "{% url 'loading' %}";
-                }
+                index++;
+                if (index == imgArr.length) {
+                    mem_vote.push(1);
+                    alert(mem_vote);
+                    data = {
+                        'mem_vote[]': mem_vote
+                      }
+                      $.ajax({
+                          type: 'POST',
+                          url: "{% url 'spotvote' %}",
+                          data: data,
+                          success: function (response) {
+                            console.log("coooooool");
+                            window.location.href = "{% url 'loading' %}";
+                          }
+                      });
+                } else {
                 //save vote
                 mem_vote.push(0);
-                alert(mem_vote);
 
                 //render next object
-                index++;
                 document.getElementById('image').innerHTML=`<img src=${imgArr[index]} class="card-img-top" alt="你可能喜歡的景點">`;
                 document.getElementById('name').innerHTML=`<p>${infoArr[index]}</p>`;
                 //document.getElementById('intro').innerHTML=`<p>${introArr[index]}</p>`;
+                }
             };
 
         };

@@ -1,13 +1,204 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% include 'base1.html' %}
+    <link rel="stylesheet" href="{% static "css/room.css" %}">
+    <link rel="stylesheet" href="{% static "css/decide.css" %}">
     <title>JourneyGo - Google Map Guide</title>
+ 
 </head>
-<body>
-    {% include 'base2.html' %}
+{% include 'base2.html' %}
+  <body style="background-color:#FDF6EC;">
+    <div class="container">
+        <div class="cloud">
+          <img src="{% static "images/cloud.png" %}"  >
+          
+          <div class="cloud1">
+            <img src="{% static "images/cloud.png" %}"  >
+          </div>
+        </div>
+      </div>
+    <br><br>
+    <div class="info" style="text-align:center;">
+        <h2 >Do you like this schedule?</h2>
+        <br><br><br>
+        <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
+    <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
 
-    Do Google Map Here: 
+    <h4 style="margin-right: 20px;">兒童新樂園</h4>
+  <br><br>
+ 
+  <img class="spot" src="{% static "images/gg.jpg" %}" width="100%" >
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Core theme JS-->
+    </div>
+    
+    
+  </div><br>
+  
+  <div align="center">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"style="
+	
+	background-color:#86C6F4;
+	border-radius:15px;
+	border:hidden;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+    font-family:Times New Roman;
+	font-size:14px;
+	font-weight:bold;
+	padding:12px 16px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >more...</button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>兒童新樂園資訊</p>
+            <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+</div>
+<br>
+  <div class="line" style="text-align:center;">
+    <img src="{% static "images/dotted-barline.png" %}" width="5%" >
+    <p >Distance:3KM</p>
+    <p >Time:50mins</p>
+  </div><br>
+
+
+  <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
+    <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
+
+    <h4 style="margin-right: 20px;">綠世界</h4>
+  <br><br>
+  <img src="{% static "images/aa.jpg" %}" width="110%" >
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Core theme JS-->
+    </div>
+    
+    
+  </div><br>
+  
+  <div align="center">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"style="
+	background-color:#86C6F4;
+	border-radius:15px;
+	border:hidden;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+    font-family:Times New Roman;
+	font-size:14px;
+	font-weight:bold;
+	padding:12px 16px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;margin-left:220px;" " >more...</button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>綠世界資訊</p>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+</div>
+<br>
+  <div class="line" style="text-align:center;">
+    <img src="{% static "images/dotted-barline.png" %}" width="5%" >
+    <p >Distance:1KM</p>
+    <p >Time:20mins</p>
+  </div><br>
+
+
+  <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
+    <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
+
+    <h4 style="margin-right: 20px;">士林夜市</h4>
+  <br><br>
+  <img src="{% static "images/bb.jpg" %}" width="110%" >
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Core theme JS-->
+    </div>
+    
+    
+  </div><br>
+  
+  <div align="center">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"style="
+	background-color:#86C6F4;
+	border-radius:15px;
+	border:hidden;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+    font-family:Times New Roman;
+	font-size:14px;
+	font-weight:bold;
+	padding:12px 16px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;margin-left:220px;" " >more...</button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>士林夜市資訊</p>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+</div>
+
+<br><br><br>
+
+
+<div style="text-align: center;">
+    <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; border: hidden;;" >Yes</button></a>
+    <a href="{% url 'ready' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; border: hidden;;">No</button></a>
+    <br><br>
+</div>
+
+
+
+
+    </div>
+
+
 </body>
+
 </html>
