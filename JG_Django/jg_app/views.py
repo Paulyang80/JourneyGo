@@ -155,6 +155,7 @@ def startDropDown(request):
             "transportation": selected_trans, 
             "members": [], 
             "vote_results": [],
+            "recommendations": [],
     }
     if selected_num and selected_time and selected_trans:
         collection.insert_one(post)
@@ -249,6 +250,11 @@ def spotvote(request):
 
     recs = basic_rec(members, duration, pref_list)
 
+    # save rec for loading.html
+    for rec in recs:
+        #print(rec['_id'])
+        db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+
     # render field data
     imgList = []
     introList = []
@@ -263,7 +269,7 @@ def spotvote(request):
         mem_vote = request.POST.getlist("mem_vote[]")
         #print(mem_vote)
         collection = db['Room_spec']
-        collection.update({"_id": latest_room[0]['_id']}, {"$push": {"vote_results": mem_vote}}) # save invited friends
+        collection.update({"_id": latest_room[0]['_id']}, {"$push": {"vote_results": mem_vote}})
         return HttpResponse(status=200)
 
     context = {
@@ -274,8 +280,15 @@ def spotvote(request):
     return render(request, 'spotvote.html', context)
 
 def loading(request):
+    context = {}
+    return render(request, 'loading.html', context)
 
-     # Calculate the Votes
+def ready(request):
+    context = {}
+    return render(request, 'ready.html', context)
+
+def map(request):
+    # Calculate the Votes
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
     vote_arr = latest_room[0]['vote_results']
@@ -294,18 +307,22 @@ def loading(request):
         sum_list[max_index] = -1
         highest_three.append(max_index)
     print(highest_three)
+    rec_ids = latest_room[0]['recommendations']
+    print(rec_ids)
 
-        
+    recs = []
+    for i in highest_three:
+        spot_id = rec_ids[i]
+        recs.append(db['Taipei_gov'].find({"_id": spot_id}))
+    print(type(recs[0]))
+    for rec in recs:
+        for r in rec:
+            print("景點:", r['name'])
 
-
-    context = {}
-    return render(request, 'loading.html', context)
-
-def ready(request):
     context = {
-
+        'recs': recs,
     }
-    return render(request, 'ready.html', context)
+    return render(request, 'map.html', context)
 
 def result(request):
     
@@ -316,12 +333,6 @@ def result(request):
         
     }
     return render(request, 'result.html', context)
-
-def map(request):
-    context = {
-
-    }
-    return render(request, 'map.html', context)
 
 def friends(request): # 大前提： 沒有重複的 first name
 
