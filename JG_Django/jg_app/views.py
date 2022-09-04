@@ -251,9 +251,10 @@ def spotvote(request):
     recs = basic_rec(members, duration, pref_list)
 
     # save rec for loading.html
+    db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
     for rec in recs:
         #print(rec['_id'])
-        db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+        db.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
 
     # render field data
     imgList = []
@@ -340,7 +341,7 @@ def result(request):
 
     # Vote result -> Google Map API
 
-    
+
     context = {
         'docs': docs,
     }
