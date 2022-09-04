@@ -251,10 +251,11 @@ def spotvote(request):
     recs = basic_rec(members, duration, pref_list)
 
     # save rec for loading.html
-    db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
+    collection = db['Room_spec']
+    collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
     for rec in recs:
         #print(rec['_id'])
-        db.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+        collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
 
     # render field data
     imgList = []
