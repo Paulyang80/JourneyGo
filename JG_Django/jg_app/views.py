@@ -287,8 +287,7 @@ def ready(request):
     context = {}
     return render(request, 'ready.html', context)
 
-def map(request):
-    # Calculate the Votes
+def calculate_vote():
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
     vote_arr = latest_room[0]['vote_results']
@@ -296,9 +295,9 @@ def map(request):
     for l in vote_arr:
         l = [int(x) for x in l]
         new_vote_arr.append(l)
-    print(new_vote_arr)
+    #print(new_vote_arr)
     sum_list = np.sum(new_vote_arr, axis = 0).tolist()
-    print("Sum of arr(axis = 0) : ", sum_list)
+    #print("Sum of arr(axis = 0) : ", sum_list)
 
     highest_three = []
     while len(highest_three) < 3:   
@@ -306,31 +305,44 @@ def map(request):
         max_index = sum_list.index(max_value)
         sum_list[max_index] = -1
         highest_three.append(max_index)
-    print(highest_three)
+    #print(highest_three)
     rec_ids = latest_room[0]['recommendations']
-    print(rec_ids)
+    #print(rec_ids)
 
     recs = []
     for i in highest_three:
         spot_id = rec_ids[i]
         recs.append(db['Taipei_gov'].find({"_id": spot_id}))
-    print(type(recs[0]))
+    #print(type(recs))
+    #print(type(recs[0])) #rec
+    #print(type(recs[0][0])) #rec[0] 
+    docs = []
     for rec in recs:
-        for r in rec:
-            print("景點:", r['name'])
+        for doc in rec: # rec is a curosr with one doc
+            docs.append(doc)
+            #print("景點:", doc['name'])
+    #print(docs)
+    return docs
+
+def map(request):
+    # get voting result
+    docs = calculate_vote()   
 
     context = {
-        'recs': recs,
+        'docs': docs,
     }
     return render(request, 'map.html', context)
 
 def result(request):
     
-    # Vote Computing 
+    # get voting result
+    docs = calculate_vote()
 
     # Vote result -> Google Map API
+
+    
     context = {
-        
+        'docs': docs,
     }
     return render(request, 'result.html', context)
 
