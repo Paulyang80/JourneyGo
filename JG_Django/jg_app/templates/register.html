@@ -2,40 +2,43 @@
 <html lang="en">
 <head>
   {% include 'base1.html' %}
+  <style>
+    .title{
+      color: #fcfcfc;
+    font-size: 2rem;
+    display: table;
+    margin: 0 auto;
+    }
+    form {
+      margin: 0 auto; 
+}
+
+
+  </style>
   <title>JourneyGo - Sign Up</title>
+
 </head>
 <body>
-  {% include 'base2.html' %}
-  REGISTER <hr>
 
-<form method="post">
-    {{ form.as_table }}
-    {% csrf_token %}
-    {% comment %} <div class="mb-3">
-      <label for="exampleInputUsername" class="form-label">Username:</label>
-      <input type="username" class="form-control" name="username" id="exampleInputUsername" aria-describedby="emailHelp">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">First name:</label>
-      <input type="firstname" class="form-control" name="firstname" id="exampleInputEmail1" >
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Last name:</label>
-      <input type="lastname" class="form-control" name="lastname" id="exampleInputEmail1" >
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address:</label>
-      <input type="email" class="form-control" name="email" id="exampleInputEmail1" >
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password:</label>
-      <input type="password" class="form-control" name="password" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword2" class="form-label">Password confirmation:</label>
-      <input type="password" class="form-control" name="passwordCon" id="exampleInputPassword2">
-    </div> {% endcomment %}
-    <input type="submit" value="Register">
+  {% include 'base2.html' %}
+  &nbsp;
+ <p>
+  <span class=title style="background-color:#A2B5BB "  >
+    REGISTER
+</span>
+</p>
+
+<form method="post" style="width:950px;">
+  {% csrf_token %}
+  
+      {{ form.as_p }}
+ 
+  <input type="submit" value="Register" class="btn btn-outline-dark" style="margin-left: 50%">
+  <br>
+
 </form>
+
+
+  
 </body>
 </html>
