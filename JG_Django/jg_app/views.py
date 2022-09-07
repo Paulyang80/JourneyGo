@@ -348,7 +348,7 @@ def map(request):
 
 # 景點排序
     docs = [docs[i] for i in route_by_name(tourist_list)]
-    for doc in docs:
+    #for doc in docs:
         #print(doc['name'])
 
 # find nearby restaurants and logdes
