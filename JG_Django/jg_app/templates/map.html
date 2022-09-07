@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    {% for doc in docs %}
+    {% for doc, res, lod in tourist_info %}
     <br><br>
     <div class="info" style="text-align:center;">
         <h2 >Do you like this schedule?</h2>
@@ -62,12 +62,19 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{ doc.name }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h4>{{ doc.name }}資訊</h4>
-            <p>介紹： {{ doc.intro }}</p>
+            <h6>附近餐廳:</h6>
+            {% for restuarants in res %}
+            <p>{{ restuarants }}</p>
+            {% endfor %}
+            <hr>
+            <h6>附近住宿:</h6>
+            {% for lodge in lod %}
+            <p>{{ lodge }}</p>
+            {% endfor %}
             <a href=""><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
           </div>
         </div>

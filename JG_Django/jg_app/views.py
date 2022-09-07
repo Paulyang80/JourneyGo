@@ -1,12 +1,12 @@
-from cgi import test
-import collections
-from gc import collect
-from hashlib import new
-from ipaddress import collapse_addresses
-from multiprocessing import context
-from operator import truediv
-from os import remove
-from unicodedata import name
+# from cgi import test
+# import collections
+# from gc import collect
+# from hashlib import new
+# from ipaddress import collapse_addresses
+# from multiprocessing import context
+# from operator import truediv
+# from os import remove
+# from unicodedata import name
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
@@ -22,7 +22,9 @@ from jg_app.forms import RegisterUserForm
 from django.contrib import messages
 from django.http import HttpResponse
 import numpy as np
-
+import pandas as pd
+import googlemaps
+import time
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
@@ -327,24 +329,93 @@ def calculate_vote():
     return docs
 
 def map(request):
-    # get voting result
-    docs = calculate_vote()   
+# get voting result
+    docs = calculate_vote()
+    tourist_list = []
+    for doc in docs:
+        tourist_list.append(doc['name'])
+
+# 景點排序
+    docs = [docs[i] for i in route_by_name(tourist_list)]
+
+# find nearby restaurants and logdes
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    # df 是台北市資料
+    df = pd.DataFrame(list(detail))
+
+    collection_res = db['Restaurants']
+    detail_res = collection_res.find({})
+    # df_res 是餐廳資料
+
+    collection_lod = db['Lodging']
+    detail_lod = collection_lod.find({})
+    # df_logding 是住宿資料
+
+    df_res = pd.DataFrame(list(detail_res))
+    df_lod = pd.DataFrame(list(detail_lod))
+
+    res_list = []
+    lod_list = []
+    for doc in docs:
+        #print(doc['name'])
+        nearby_res_list = []
+        nearby_lod_list = []
+        for res_id in find_near_by_res(doc['name']):
+            nearby_res_list.append(df_res.iloc[res_id]['name'])
+        for lod_id in find_near_by_lod(doc['name']):
+            nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
+        res_list.append(nearby_res_list)
+        lod_list.append(nearby_lod_list)
 
     context = {
-        'docs': docs,
+        'tourist_info': zip(docs, res_list, lod_list),
     }
     return render(request, 'map.html', context)
 
 def result(request):
     
-    # get voting result
+# get voting result
     docs = calculate_vote()
+    tourist_list = []
+    for doc in docs:
+        tourist_list.append(doc['name'])
 
-    # Vote result -> Google Map API
+# 景點排序
+    docs = [docs[i] for i in route_by_name(tourist_list)]
 
+# find nearby restaurants and logdes
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    # df 是台北市資料
+    df = pd.DataFrame(list(detail))
+
+    collection_res = db['Restaurants']
+    detail_res = collection_res.find({})
+    # df_res 是餐廳資料
+
+    collection_lod = db['Lodging']
+    detail_lod = collection_lod.find({})
+    # df_logding 是住宿資料
+
+    df_res = pd.DataFrame(list(detail_res))
+    df_lod = pd.DataFrame(list(detail_lod))
+
+    res_list = []
+    lod_list = []
+    for doc in docs:
+        #print(doc['name'])
+        nearby_res_list = []
+        nearby_lod_list = []
+        for res_id in find_near_by_res(doc['name']):
+            nearby_res_list.append(df_res.iloc[res_id]['name'])
+        for lod_id in find_near_by_lod(doc['name']):
+            nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
+        res_list.append(nearby_res_list)
+        lod_list.append(nearby_lod_list)
 
     context = {
-        'docs': docs,
+        'tourist_info': zip(docs, res_list, lod_list),
     }
     return render(request, 'result.html', context)
 
@@ -502,3 +573,152 @@ def test(request):
     context = {}
     return render(request, 'test.html', context)
         
+def find_near_by_res(tourist):
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    # df 是台北市資料
+    df = pd.DataFrame(list(detail))
+    collection_res = db['Restaurants']
+    detail_res = collection_res.find({})
+    # df_res 是餐廳資料
+    df_res = pd.DataFrame(list(detail_res))
+    # 輸入名稱
+    des_lat = 0
+    des_lng = 0
+    #   找經緯度
+    for i in range(len(df)):
+        if df.iloc[i]['name'] == tourist:
+            des_lat = df.iloc[i]["latitude"]
+            des_lng = df.iloc[i]["longitude"]
+    nearby = []
+    # 找相關景點
+    for i in range(len(df_res)):
+        if (abs(df_res.iloc[i]['lat'] - float(des_lat)) + abs(df_res.iloc[i]['lng'] - float(des_lng)))*1000000 < 5000:
+            nearby.append(i)
+    name_duplicate = []
+    remove_duplicate = []
+    # 移除重複
+    for i in nearby:
+        if df_res.iloc[i]['name'] not in name_duplicate:
+            name_duplicate.append(df_res.iloc[i]['name'])
+            remove_duplicate.append(i)
+    # 沒有重複的餐廳list
+    return remove_duplicate
+
+def find_near_by_lod(tourist):
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    # df 是台北市資料
+    df = pd.DataFrame(list(detail))
+    collection_lod = db['Lodging']
+    detail_lod = collection_lod.find({})
+    # df_res 是餐廳資料
+    df_lod = pd.DataFrame(list(detail_lod))
+    # 輸入名稱
+    des_lat = 0
+    des_lng = 0
+    #   找經緯度
+    for i in range(len(df)):
+        if df.iloc[i]['name'] == tourist:
+            des_lat = df.iloc[i]["latitude"]
+            des_lng = df.iloc[i]["longitude"]
+    nearby = []
+    # 找相關景點
+    for i in range(len(df_lod)):
+        if (abs(df_lod.iloc[i]['lat'] - float(des_lat)) + abs(df_lod.iloc[i]['lng'] - float(des_lng)))*1000000 < 5000:
+            nearby.append(i)
+    name_duplicate = []
+    remove_duplicate = []
+    # 移除重複
+    for i in nearby:
+        if df_lod.iloc[i]['name'] not in name_duplicate:
+            name_duplicate.append(df_lod.iloc[i]['name'])
+            remove_duplicate.append(i)
+    # 沒有重複的餐廳list
+    return remove_duplicate
+
+# 輸入的如果是[數字(在資料庫裡面的順序)]
+def route(tourist_list):
+    # 重要(我的地圖API Key)
+    gmaps = googlemaps.Client(key='AIzaSyBNTyuvWTzW7i8x7_1wRd444Wg1OFCtFFU')
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    df = pd.DataFrame(list(detail))
+    location = []
+
+    for i in range(len(tourist_list)):
+        location.append(df.iloc[i]["name"])
+    direction = []
+    for i in location:
+        travel = []
+        for j in location:
+            directions_result = gmaps.directions(i,j,mode="transit")
+            if len(directions_result) != 0:
+                travel.append(directions_result[0]['legs'][0]['duration']['value'])
+            else:
+                travel.append(0)
+        direction.append(travel)
+    k = 0
+    for i in range(len(direction)):
+        direction[i][k] = 999999
+        k += 1
+    trip = []
+    # Find the index of the minimum duration from starting line
+    first_index = direction[0].index(min(direction[0]))
+    # Set the visited place and started place and large number in order to not be selected
+    direction[first_index][0] = 999999
+    # For traveling sequence
+    trip.append(0)
+
+    start = first_index
+    trip.append(start)
+
+    # Remove the starting line and the second place which was started from the starting line
+    for i in range(len(direction)-2):
+        end = direction[start].index(min(direction[start]))
+        for i in trip:
+            direction[end][i] = 999999
+        trip.append(end)
+    # Make the last ended place become the next starting line
+        start = end
+    # The result
+    return trip
+
+# 輸入的如果是[景點名稱]
+def route_by_name(tourist_list):
+    # 重要(我的地圖API Key)
+    gmaps = googlemaps.Client(key='AIzaSyBNTyuvWTzW7i8x7_1wRd444Wg1OFCtFFU')
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    df = pd.DataFrame(list(detail))
+    location = []
+
+    direction = []
+    for i in tourist_list:
+        travel = []
+        for j in tourist_list:
+            directions_result = gmaps.directions(i,j,mode="transit")
+            if len(directions_result) != 0:
+                travel.append(directions_result[0]['legs'][0]['duration']['value'])
+            else:
+                travel.append(0)
+        direction.append(travel)
+#     print(direction)
+    k = 0
+    for i in range(len(direction)):
+        direction[i][k] = 999999
+        k += 1
+    trip = []
+    first_index = direction[0].index(min(direction[0]))
+    direction[first_index][0] = 999999
+    trip.append(0)
+    start = first_index
+    trip.append(start)
+    for i in range(len(direction)-2):
+        end = direction[start].index(min(direction[start]))
+        for i in trip:
+            direction[end][i] = 999999
+        trip.append(end)
+        start = end
+#     print(direction)
+    return trip
