@@ -235,6 +235,7 @@ def basic_rec(memberList, time, prefList):
     return angel
 
 def spotvote(request):
+    print("SPOTVOTE!")
     # Reccomandation Computing
     collection = db['Room_spec']
 
@@ -243,6 +244,7 @@ def spotvote(request):
     duration = latest_room[0]['duration']
     transportation = latest_room[0]['transportation']
 
+    # 取得group member喜好
     pref_list = []
     collection = db['User_account']
     for member in members:
@@ -250,16 +252,17 @@ def spotvote(request):
         for cat in personal_pref_list:
             pref_list.append(cat)
 
+    # 取得推薦景點
     recs = basic_rec(members, duration, pref_list)
 
-    # save rec for loading.html
+    # 儲存推薦景點
     collection = db['Room_spec']
-    collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
+    #collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
     for rec in recs:
-        #print(rec['_id'])
+        print("推薦的景點: ", rec['_id'])
         collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
 
-    # render field data
+    # render 
     imgList = []
     introList = []
     nameList = []
@@ -268,10 +271,9 @@ def spotvote(request):
         introList.append(r['intro'])
         nameList.append(r['name'])
 
-    # Save the Votes
+    # 儲存投票結果
     if request.method == "POST":
         mem_vote = request.POST.getlist("mem_vote[]")
-        #print(mem_vote)
         collection = db['Room_spec']
         collection.update({"_id": latest_room[0]['_id']}, {"$push": {"vote_results": mem_vote}})
         return HttpResponse(status=200)
@@ -292,51 +294,62 @@ def ready(request):
     return render(request, 'ready.html', context)
 
 def calculate_vote():
+    # 取得投票紀錄
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
     vote_arr = latest_room[0]['vote_results']
+
+    # str 轉 int
     new_vote_arr = []
     for l in vote_arr:
         l = [int(x) for x in l]
         new_vote_arr.append(l)
-    #print(new_vote_arr)
-    sum_list = np.sum(new_vote_arr, axis = 0).tolist()
-    #print("Sum of arr(axis = 0) : ", sum_list)
+    print(new_vote_arr)
 
+    # 投票加總
+    sum_list = np.sum(new_vote_arr, axis = 0).tolist()
+    print("Sum of arr(axis = 0) : ", sum_list)
+
+    # 擇三高
     highest_three = []
     while len(highest_three) < 3:   
         max_value = max(sum_list)
         max_index = sum_list.index(max_value)
         sum_list[max_index] = -1
         highest_three.append(max_index)
-    #print(highest_three)
-    rec_ids = latest_room[0]['recommendations']
-    #print(rec_ids)
+    print(highest_three)
 
+    # 取得推薦景點
+    rec_ids = latest_room[0]['recommendations']
+    print("儲存的景點: ", rec_ids)
+
+    # 按找票數用id抓景點
     recs = []
     for i in highest_three:
         spot_id = rec_ids[i]
         recs.append(db['Taipei_gov'].find({"_id": spot_id}))
-    #print(type(recs))
-    #print(type(recs[0])) #rec
-    #print(type(recs[0][0])) #rec[0] 
-    docs = []
+
+    # 抓景點名稱
+    docs = [] # 只有景點名稱的list
     for rec in recs:
         for doc in rec: # rec is a curosr with one doc
             docs.append(doc)
             #print("景點:", doc['name'])
-    #print(docs)
     return docs
 
 def map(request):
+
 # get voting result
     docs = calculate_vote()
     tourist_list = []
     for doc in docs:
+        #print(doc['name'])
         tourist_list.append(doc['name'])
 
 # 景點排序
     docs = [docs[i] for i in route_by_name(tourist_list)]
+    for doc in docs:
+        #print(doc['name'])
 
 # find nearby restaurants and logdes
     collection = db['Taipei_gov']
