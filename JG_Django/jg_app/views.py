@@ -380,9 +380,10 @@ def map(request):
             nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
+    ids = [1, 2, 3]
 
     context = {
-        'tourist_info': zip(docs, res_list, lod_list),
+        'tourist_info': zip(docs, res_list, lod_list, ids),
     }
     return render(request, 'map.html', context)
 
@@ -426,9 +427,10 @@ def result(request):
             nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
+    ids = [1, 2, 3] # 之後要dynamic
 
     context = {
-        'tourist_info': zip(docs, res_list, lod_list),
+        'tourist_info': zip(docs, res_list, lod_list, ids),
     }
     return render(request, 'result.html', context)
 

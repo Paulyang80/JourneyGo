@@ -20,11 +20,11 @@
   </div>
 
   <div class="info" style="text-align:center;">
-      <h2 style="margin-top:20px;">Your schedule ...</h2>
+      <h2 style="margin-top:20px;">為你安排的行程</h2>
       <br><br><br>
 
-      {% for doc, res, lod in tourist_info %}
-      <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
+      {% for doc, res, lod, id in tourist_info %}
+      <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
         <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
     
         <h4 style="margin-right: 20px;">{{ doc.name }}</h4>
@@ -39,7 +39,7 @@
       </div><br>
       
       <div align="center">
-        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"style="background-color:#86C6F4;
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#spotModal{{ id }}"style="background-color:#86C6F4;
         border-radius:15px;
         border:hidden;
         display:inline-block;
@@ -50,13 +50,12 @@
         font-weight:bold;
         padding:12px 16px;
         text-decoration:none;
-        text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >more...</button>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog">
+        text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >食宿資訊</button>
+        <div class="modal fade" id="spotModal{{ id }}" tabindex="-1" aria-labelledby="spotModal" aria-hidden="true">
+          <div class="modal-dialog" id="{{ id }}">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ doc.name }}</h5>
+                <h5 class="modal-title" id="spotModal{{ id }}">{{ doc.name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
