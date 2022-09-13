@@ -5,12 +5,14 @@
 <head>
     {% include 'base1.html' %}
     <link rel="stylesheet" href="{% static "css/index-styles.css" %}">
+    
     <title>Welcome to JourneyGo</title>
 </head>
 
 <body>
 
     {% include 'base2.html' %}
+
 
     <ul class="to-center">
         
@@ -26,10 +28,30 @@
             {% endif %}
             <br>
         </div>
+
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="1200">
+                <img src="{% static "images/08.jpg" %}"  class="d-block  mx-auto w-50"  style="max-height:75vh;" alt="...">
+              </div>
+              <div class="carousel-item" data-bs-interval="1200">
+                <img src="{% static "images/07.jpg" %}"  class="d-block mx-auto w-50" style="max-height:75vh;" alt="...">
+              </div>
+              <div class="carousel-item" data-bs-interval="1200" >
+                <img src="{% static "images/12.jpg" %}"  class="d-block mx-auto w-50"  style="max-height:75vh;" alt="...">
+              </div>
+            </div>
+          </div>
+
+          <br>            
+
         {% if user.is_authenticated %}
         <a href="{% url 'start' %}" class="btn btn-success btn-lg" tabindex="-1" role="button" aria-disabled="true">Team up!</a>
         {% endif %}
     </ul>
+   
+
+
 
 </body>
 

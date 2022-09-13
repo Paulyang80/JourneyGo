@@ -27,7 +27,7 @@
             <input type="checkbox" class="checkbox" id="alpha" name="alpha">
             <div class="option_inner facebook">
               <div class="tickmark"></div>
-              <div class="icon"><i class="fab fa-facebook-f"></i></div>
+              <div class="icon"><i class="fa-solid fa-landmark"style="font-size: 200%;"></i></div>
               <div class="name">歷史建築</div>
             </div>
           </label>
@@ -35,7 +35,7 @@
             <input type="checkbox" class="checkbox" id="beta" name="beta">
             <div class="option_inner twitter">
               <div class="tickmark"></div>
-              <div class="icon"><i class="fab fa-twitter"></i></div>
+              <div class="icon"><i class="fa-solid fa-camera" style="font-size: 200%;"></i></div>
               <div class="name">藝文館所</div>
             </div>
           </label>
@@ -43,7 +43,7 @@
             <input type="checkbox" class="checkbox" id="theta" name="theta">
             <div class="option_inner instagram">
               <div class="tickmark"></div>
-              <div class="icon"><i class="fab fa-instagram"></i></div>
+              <div class="icon"><i class="fa-solid fa-paintbrush" style="font-size: 200%;"></i></div>
               <div class="name">公共藝術</div>
             </div>
           </label>
@@ -51,16 +51,18 @@
             <input type="checkbox" class="checkbox" id="delta" name="delta">
             <div class="option_inner linkedin">
               <div class="tickmark"></div>
-              <div class="icon"><i class="fab fa-linkedin-in"></i></div>
+              <div class="icon"><i class="fa-solid fa-signs-post" style="font-size: 200%;"></i></div>
               <div class="name">主題商街</div>
             </div>
           </label>
         </div>
     </div>
 
-    <div class="btn1">
-        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left">Back</button></a>
+    <div class="d-flex justify-content-center">
+      <div class="btn1">
+        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left">返回</button></a>
         <a><button type="button" class="btn btn-outline-dark" style="float:left" onclick="validate()">確認</button></a>
+      </div>
     </div>
     
 
