@@ -231,7 +231,7 @@ def basic_rec(memberList, time, prefList):
     collection = db['Taipei_gov']
     demon = collection.find({"categories" : { "$in" : userPref}}) #all spots
     demon = list(demon)
-    angel = random.choices(demon, k=5)
+    angel = random.choices(demon, k=10)
     return angel
 
 def spotvote(request):
@@ -310,14 +310,29 @@ def calculate_vote():
     sum_list = np.sum(new_vote_arr, axis = 0).tolist()
     print("Sum of arr(axis = 0) : ", sum_list)
 
+    # 決定景點數
+    spot_num = 0
+    duration = latest_room[0]['duration']
+    print(duration)
+    if duration == "半天":
+        spot_num = 1
+    elif duration == "一天":
+        spot_num = 2
+    elif duration == "兩天一夜":
+        spot_num = 4
+    elif duration == "三天兩夜":
+        spot_num = 6
+    else: # 四天三夜
+        spot_num = 8
+
     # 擇三高
-    highest_three = []
-    while len(highest_three) < 3:   
+    highest = []
+    while len(highest) < spot_num:   
         max_value = max(sum_list)
         max_index = sum_list.index(max_value)
         sum_list[max_index] = -1
-        highest_three.append(max_index)
-    print(highest_three)
+        highest.append(max_index)
+    print("最高票景點:", highest)
 
     # 取得推薦景點
     rec_ids = latest_room[0]['recommendations']
@@ -325,7 +340,7 @@ def calculate_vote():
 
     # 按找票數用id抓景點
     recs = []
-    for i in highest_three:
+    for i in highest:
         spot_id = rec_ids[i]
         recs.append(db['Taipei_gov'].find({"_id": spot_id}))
 
@@ -334,13 +349,14 @@ def calculate_vote():
     for rec in recs:
         for doc in rec: # rec is a curosr with one doc
             docs.append(doc)
-            #print("景點:", doc['name'])
-    return docs
+            print("景點:", doc['name'])
+    return (docs, spot_num)
 
 def map(request):
 
 # get voting result
-    docs = calculate_vote()
+    docs = calculate_vote()[0]
+    spot_num = calculate_vote()[1]
     tourist_list = []
     for doc in docs:
         #print(doc['name'])
@@ -380,17 +396,29 @@ def map(request):
             nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
-    ids = [1, 2, 3]
+
+    ids = range(spot_num)
+    print(ids)
+
+    # 抓交通工具
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    trans = latest_room[0]['transportation']
+    duration = latest_room[0]['duration']
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
+        'docs': docs,
+        'transpotation': trans,
+        'duration': duration,
     }
     return render(request, 'map.html', context)
 
 def result(request):
     
 # get voting result
-    docs = calculate_vote()
+    docs = calculate_vote()[0]
+    spot_num = calculate_vote()[1]
     tourist_list = []
     for doc in docs:
         tourist_list.append(doc['name'])
@@ -427,7 +455,8 @@ def result(request):
             nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
-    ids = [1, 2, 3] # 之後要dynamic
+
+    ids =  range(spot_num)
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
