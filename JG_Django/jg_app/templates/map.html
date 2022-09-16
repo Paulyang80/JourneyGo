@@ -75,14 +75,19 @@
 </div>
 </div>
 <br>
-
-<!-- 這邊只需要出現兩次 -->
+{% with docs|last as last %} 
+{% if doc != last %}
+  <!--點到點距離-->
   <div class="line" style="text-align:center;">
     <img src="{% static "images/dotted-barline.png" %}" width="5%" >
     <p >Distance: ? KM</p>
     <p >Time: ? mins</p>
   </div><br>
-  {% endfor %}
+{% else %}
+  
+{% endif %} 
+{% endwith %}
+{% endfor %}
 
   <!--交通時間-->
   <div class="card text-center">

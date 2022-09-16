@@ -398,7 +398,7 @@ def map(request):
         lod_list.append(nearby_lod_list)
 
     ids = range(spot_num)
-    print(ids)
+    #print(ids)
 
     # 抓交通工具
     collection = db['Room_spec']
