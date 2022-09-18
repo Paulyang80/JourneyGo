@@ -409,7 +409,7 @@ def map(request):
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
         'docs': docs,
-        'transpotation': trans,
+        'trans': trans,
         'duration': duration,
     }
     return render(request, 'map.html', context)

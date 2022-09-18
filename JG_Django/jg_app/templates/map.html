@@ -81,10 +81,17 @@
   <div class="line" style="text-align:center;">
     <img src="{% static "images/dotted-barline.png" %}" width="5%" >
     <p >Distance: ? KM</p>
-    <p >Time: ? mins</p>
+    {% if trans == "機車" %}
+    <p >Time: a mins</p>
+    {% elif trans == "汽車" %}
+    <p >Time: b mins</p>
+    {% elif trans == "腳踏車" %}
+    <p >Time: c mins</p>
+    {% elif trans == "大眾運輸" %}
+    <p >Time: d mins</p>
+    {% endif %}
   </div><br>
 {% else %}
-  
 {% endif %} 
 {% endwith %}
 {% endfor %}
@@ -96,8 +103,21 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ docs.0.name}} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5>
-      <p class="card-text">{{ trans }}</p>
-      <p class="card-text">總共 ? 小時 ? 分鐘 (? 公里)</p>
+      {% comment %} {% if trans == "腳踏車" %}
+      <i class="fa-regular fa-person-biking"></i>
+      {% elif trans == "機車" %}
+      <i class="fa-solid fa-motorcycle"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
+      {% elif == "大眾運輸" %}
+      <i class="fa-solid fa-train-subway"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
+      {% elif == "汽車" %}
+      <i class="fa-duotone fa-car"></i>
+      {% endif %} {% endcomment %}
+      <p class="card-text"> 
+        {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
+        {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
+        {% elif trans == "汽車" %}<i class="fa-duotone fa-car"></i>
+        {% else %}<i class="fa-solid fa-train-subway"></i>
+        {% endif %} ? 小時 ? 分鐘 (? 公里)</p>
       <a href="#" class="btn btn-primary">使用Google Maps導航</a>
     </div>
     <div class="card-footer text-muted">
