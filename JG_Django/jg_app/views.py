@@ -232,7 +232,6 @@ def basic_rec(memberList, time, prefList):
     demon = collection.find({"categories" : { "$in" : userPref}}) #all spots
     demon = list(demon)
     angel = random.choices(demon, k=10)
-    print("推薦十個景點。")
     return angel
 
 def spotvote(request):
@@ -525,25 +524,22 @@ def searchRec(request):
         key_list = fenci(keywords).split()
         cur = collection.find({"splited_words": { "$in": key_list }}) # cur is a list of multiple dictionaries
 
-    
-    # Random Reccomendation
-    ran_list = []
-    while len(ran_list)<6:
-        rec = random.randint(0,520)
-        if rec not in ran_list:
-            ran_list.append(rec)
-        else:
-            continue
-
-    # Get Random Data by _id 
-    spots = collection.find({"_id":{"$in":ran_list}})
+    collection = db['User_account']
+    user = request.user.first_name
+    user_pref = collection.find({"firstName": user})[0]['balPref']
+    print(user_pref)
+    collection = db['Taipei_gov']
+    demon = collection.find({"categories" : { "$in" : user_pref}}) #all spots
+    demon = list(demon)
+    recs = random.choices(demon, k=6)
 
     # Render context
     context = {
-        'spots':spots, #default rec
+        'recs':recs, #default rec
         'recN': random.randrange(1, 5),
         'keywords': keywords,
         'cur': cur, #search results
+        'user_pref': user_pref,
     }
 
     return render(request, 'searchPage.html', context)

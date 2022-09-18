@@ -66,8 +66,12 @@
   
   {% else %} <!-- Default -->
     
+    <div>
+      <p>您喜歡的景點類別： {% for pref in user_pref %} {{ pref }} {% endfor %}</p>
+    </div> 
+
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for spot in spots %}
+      {% for spot in recs %}
       <div class="col">
         <div class="card h-100">
           <img src={{ spot.images.0 }} class="card-img-top" alt="...">
