@@ -134,7 +134,7 @@ def startDropDown(request):
         selected_num = request.POST.get("numbers")
 
     # 遊玩時間
-    travel_duration = ["半天", "一天", "兩天一夜", "三天兩夜"]
+    travel_duration = ["半天", "一天", "兩天一夜", "三天兩夜", "四天三夜"]
     selected_time = None
     if request.method == "POST":
         selected_time = request.POST.get("duration")
@@ -232,13 +232,13 @@ def basic_rec(memberList, time, prefList):
     demon = collection.find({"categories" : { "$in" : userPref}}) #all spots
     demon = list(demon)
     angel = random.choices(demon, k=10)
+    print("推薦十個景點。")
     return angel
 
 def spotvote(request):
-    print("SPOTVOTE!")
-    # Reccomandation Computing
-    collection = db['Room_spec']
 
+    # 取得房間資訊
+    collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
     members = latest_room[0]['members']
     duration = latest_room[0]['duration']
@@ -254,13 +254,14 @@ def spotvote(request):
 
     # 取得推薦景點
     recs = basic_rec(members, duration, pref_list)
-
     # 儲存推薦景點
     collection = db['Room_spec']
-    #collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
-    for rec in recs:
-        print("推薦的景點: ", rec['_id'])
-        collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+    
+    if request.method == "GET":
+        collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
+        for rec in recs:
+            print("推薦的景點: ", rec['_id'])
+            collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
 
     # render 
     imgList = []
@@ -273,8 +274,9 @@ def spotvote(request):
 
     # 儲存投票結果
     if request.method == "POST":
-        mem_vote = request.POST.getlist("mem_vote[]")
         collection = db['Room_spec']
+        collection.update({"_id": latest_room[0]['_id']}, {"$set": {"vote_results": []}})
+        mem_vote = request.POST.getlist("mem_vote[]")
         collection.update({"_id": latest_room[0]['_id']}, {"$push": {"vote_results": mem_vote}})
         return HttpResponse(status=200)
 
@@ -282,7 +284,7 @@ def spotvote(request):
         'imgList': imgList,
         'introList': introList,
         'nameList': nameList,
-    }
+        }
     return render(request, 'spotvote.html', context)
 
 def loading(request):
@@ -313,7 +315,6 @@ def calculate_vote():
     # 決定景點數
     spot_num = 0
     duration = latest_room[0]['duration']
-    print(duration)
     if duration == "半天":
         spot_num = 1
     elif duration == "一天":
