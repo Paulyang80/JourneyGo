@@ -65,10 +65,11 @@
 
   
   {% else %} <!-- Default -->
-    
+  {% if user.is_authenticated %} <!--login-->
     <div>
       <p>您喜歡的景點類別： {% for pref in user_pref %} {{ pref }} {% endfor %}</p>
     </div> 
+    {% endif %}
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for spot in recs %}

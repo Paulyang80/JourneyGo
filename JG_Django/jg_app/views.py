@@ -514,6 +514,7 @@ def fenci(sentence: str)->str:
 def searchRec(request):
 
     collection = db['Taipei_gov']
+    context = {}
 
     # Search Engine
     keywords = None
@@ -524,23 +525,40 @@ def searchRec(request):
         key_list = fenci(keywords).split()
         cur = collection.find({"splited_words": { "$in": key_list }}) # cur is a list of multiple dictionaries
 
-    collection = db['User_account']
-    user = request.user.first_name
-    user_pref = collection.find({"firstName": user})[0]['balPref']
-    print(user_pref)
-    collection = db['Taipei_gov']
-    demon = collection.find({"categories" : { "$in" : user_pref}}) #all spots
-    demon = list(demon)
-    recs = random.choices(demon, k=6)
+    # Personal Recommendation
+    if request.user.is_authenticated:
+        collection = db['User_account']
+        user = request.user.first_name
+        user_pref = collection.find({"firstName": user})[0]['balPref']
+        print(user_pref)
+        collection = db['Taipei_gov']
+        demon = collection.find({"categories" : { "$in" : user_pref}}) #all spots
+        demon = list(demon)
+        recs = random.choices(demon, k=6)
 
-    # Render context
-    context = {
-        'recs':recs, #default rec
-        'recN': random.randrange(1, 5),
-        'keywords': keywords,
-        'cur': cur, #search results
-        'user_pref': user_pref,
-    }
+        context = {
+            'recs':recs, #default rec
+            'recN': random.randrange(1, 5),
+            'keywords': keywords,
+            'cur': cur, #search results
+            'user_pref': user_pref,
+        }
+
+    # Random Recommendation
+    else:
+        ran = random.sample(range(0, 550), 9)
+        collection = db['Taipei_gov']
+        recs = collection.find({"_id" : { "$in" : ran}})
+        recs = list(recs)
+        context = {
+            'recs': recs,
+            'recN': random.randrange(1, 5),
+            'keywords': keywords,
+            'cur': cur, #search results
+        }
+
+
+
 
     return render(request, 'searchPage.html', context)
 
