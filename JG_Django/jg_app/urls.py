@@ -41,4 +41,5 @@ urlpatterns = [
     path('',views.base1, name='base1'),
     path('',views.base2, name='base2'),
     path('',views.test, name='test'),
+    path('',views.result_carousel, name='result_carousel'),
 ]

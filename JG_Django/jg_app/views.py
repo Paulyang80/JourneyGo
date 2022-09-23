@@ -7,6 +7,7 @@
 # from operator import truediv
 # from os import remove
 # from unicodedata import name
+from email import contentmanager
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
@@ -325,7 +326,7 @@ def calculate_vote():
     else: # 四天三夜
         spot_num = 8
 
-    # 擇三高
+    # 擇高
     highest = []
     while len(highest) < spot_num:   
         max_value = max(sum_list)
@@ -462,6 +463,54 @@ def result(request):
         'tourist_info': zip(docs, res_list, lod_list, ids),
     }
     return render(request, 'result.html', context)
+
+def result_carousel(request):
+    # get voting result
+    docs = calculate_vote()[0]
+    spot_num = calculate_vote()[1]
+    tourist_list = []
+    for doc in docs:
+        tourist_list.append(doc['name'])
+
+# 景點排序
+    docs = [docs[i] for i in route_by_name(tourist_list)]
+
+# find nearby restaurants and logdes
+    collection = db['Taipei_gov']
+    detail = collection.find({})
+    # df 是台北市資料
+    df = pd.DataFrame(list(detail))
+
+    collection_res = db['Restaurants']
+    detail_res = collection_res.find({})
+    # df_res 是餐廳資料
+
+    collection_lod = db['Lodging']
+    detail_lod = collection_lod.find({})
+    # df_logding 是住宿資料
+
+    df_res = pd.DataFrame(list(detail_res))
+    df_lod = pd.DataFrame(list(detail_lod))
+
+    res_list = []
+    lod_list = []
+    for doc in docs:
+        #print(doc['name'])
+        nearby_res_list = []
+        nearby_lod_list = []
+        for res_id in find_near_by_res(doc['name']):
+            nearby_res_list.append(df_res.iloc[res_id]['name'])
+        for lod_id in find_near_by_lod(doc['name']):
+            nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
+        res_list.append(nearby_res_list)
+        lod_list.append(nearby_lod_list)
+
+    ids =  range(spot_num)
+
+    context = {
+        'tourist_info': zip(docs, res_list, lod_list, ids),
+    }
+    return render(request, 'result_carousel.html', context)
 
 def friends(request): # 大前提： 沒有重複的 first name
 
