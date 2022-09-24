@@ -46,5 +46,4 @@ urlpatterns = [
     path('base1/', views.base1, name='base1'),
     path('base2/', views.base2, name='base2'),
     path('test/', views.test, name='test'),
-    path('result_carousel/', views.result_carousel, name='result_carousel'),
 ]

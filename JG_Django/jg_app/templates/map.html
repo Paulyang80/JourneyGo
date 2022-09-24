@@ -103,15 +103,6 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ docs.0.name}} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5>
-      {% comment %} {% if trans == "腳踏車" %}
-      <i class="fa-regular fa-person-biking"></i>
-      {% elif trans == "機車" %}
-      <i class="fa-solid fa-motorcycle"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
-      {% elif == "大眾運輸" %}
-      <i class="fa-solid fa-train-subway"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
-      {% elif == "汽車" %}
-      <i class="fa-duotone fa-car"></i>
-      {% endif %} {% endcomment %}
       <p class="card-text"> 
         {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
         {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
