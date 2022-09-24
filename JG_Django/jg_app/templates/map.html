@@ -96,26 +96,6 @@
 {% endwith %}
 {% endfor %}
 
-  <!--交通時間-->
-  <div class="card text-center">
-    <div class="card-header">
-      交通時間
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">{{ docs.0.name}} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5>
-      <p class="card-text"> 
-        {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
-        {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
-        {% elif trans == "汽車" %}<i class="fa-duotone fa-car"></i>
-        {% else %}<i class="fa-solid fa-train-subway"></i>
-        {% endif %} ? 小時 ? 分鐘 (? 公里)</p>
-      <a href="#" class="btn btn-primary">使用Google Maps導航</a>
-    </div>
-    <div class="card-footer text-muted">
-      {{ duration }}
-    </div>
-  </div><br>
-
 
 <div style="text-align: center;">
     <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; border: hidden;;" >出發！</button></a>

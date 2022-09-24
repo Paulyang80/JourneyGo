@@ -471,7 +471,7 @@ def result(request):
         'trans': trans,
         'duration': duration,
     }
-    return render(request, 'result_carousel.html', context)
+    return render(request, 'result.html', context)
 
 def friends(request): # 大前提： 沒有重複的 first name
 
