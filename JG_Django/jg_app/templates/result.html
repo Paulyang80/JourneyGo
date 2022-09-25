@@ -19,7 +19,7 @@
           {% endif %}
           {% endfor %}
         </div>
-        <div class="carousel-inner">
+        <div class="carousel-inner" style=" width:100%; height: 317.65px !important;">
           {% for doc, id in tf %}
           {% if id == 0 %}
           <div class="carousel-item active">
@@ -43,26 +43,70 @@
         </button>
       </div>
       
+      
+      
+      <div class="card-body mx-auto" style="height: auto;">
+        {% for doc, res, lod in moreInfo %}
+        {% with docs|last as last %} 
+        <!--Modal-->
+        <div style="text-align: center;">
+        <button type="button" class="btn btn-light align-self-end" data-bs-toggle="modal" data-bs-target="#exampleModal{{ doc.spotID }}">
+          {{ doc.name }}
+        </button>
+        </div>
+        <div class="modal fade" id="exampleModal{{ doc.spotID }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" id="{{ doc.spotID }}">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal{{ doc.spotID }}" >{{ doc.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <h6>附近餐廳</h6>
+                {% for r in res %} <p>{{ r }}</p> {% endfor %}
+                <hr>
+                <h6>附近住宿</h6>
+                {% for l in lod %} <p>{{ l }}</p> {% endfor %}
+                <hr>
+                <h6>景點介紹</h6>
+                <p>{{ doc.intro }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <!--箭頭icon-->
+        {% if doc != last %}
+        <div style="text-align:center;">
+        <i class="fa-regular fa-arrow-down"></i>
+        </div>
+        {% else %} {% endif %}
+
+      {% endwith %}
+      {% endfor %}
+      </div>
+
+      
+      
     </div>
 
     <!--交通時間-->
-  <div class="card text-center">
+  <div class="card mx-auto" style="text-align: center; width: 477px !important;">
     <div class="card-header">
-      交通時間
+      總交通時間
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{ docs.0.name }} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5>
-      <p class="card-text"> 
+      {% comment %} <h5 class="card-title">{{ docs.0.name }} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5> {% endcomment %}
+      <h5 class="card-text"> 
         {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
         {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
-        {% elif trans == "汽車" %}<i class="fa-duotone fa-car"></i>
+        {% elif trans == "汽車" %}<i class="fa-sharp fa-solid fa-car-side"></i>
         {% else %}<i class="fa-solid fa-train-subway"></i>
-        {% endif %} ? 小時 ? 分鐘 (? 公里)</p>
-      <a href="#" class="btn btn-primary">使用Google Maps導航</a>
+        {% endif %}
+        ? 小時 ? 分鐘 (? 公里)</h5>
+        {{ duration }} <br>
+      <a href="#" class="btn btn-primary" style="margin-top: 5px;">Google Maps導航</a>
     </div>
-    <div class="card-footer text-muted">
-      {{ duration }}
-    </div>
-  </div><br>
+  </div>
 </body>
 </html>

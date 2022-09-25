@@ -8,6 +8,7 @@
 # from os import remove
 # from unicodedata import name
 from email import contentmanager
+from symbol import lambdef_nocond
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
@@ -470,6 +471,9 @@ def result(request):
         'docs': docs,
         'trans': trans,
         'duration': duration,
+        'moreInfo': zip(docs, res_list, lod_list),
+        'res_list': res_list,
+        "lod_list": lod_list,
     }
     return render(request, 'result.html', context)
 
