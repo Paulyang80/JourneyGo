@@ -33,17 +33,17 @@
     ">Do you like this travel itinerary？</h2>
 
     {% for doc, res, lod, id in tourist_info %}
-    <div class="info" style="text-align:center;"><br><br><br>
-        <div class="wrap" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px;">
-            <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
-    
+    <div class="info mx-auto" style="text-align:center;"><br><br><br>
+      <div class="wrap mx-auto" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px; text-align:center;">
+        <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
               <h4 style="margin-right: 20px;">{{ doc.name }}</h4><br><br>
-              <img class="spot" src={{ doc.images.0 }} width="100%" >
-    
+              <img class="spot" src={{ doc.images.0 }} width="100%" style="text-align: center; border-radius:15px;">
               <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-            </div>
-        </div><br>
+        </div>
+      </div><br>
+    </div>
     
+<<<<<<< HEAD
   <div align="center">
     <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#spotModal{{ id }}"style="
       background-color:#86C6F4;
@@ -72,71 +72,80 @@
             <h6>Nearby accommodation:</h6>
             {% for l in lod %} <p>{{ l }}</p> {% endfor %}
             <a href=""><button type="button" class="btn btn-primary btn-lg" style="text-align: center; font-family: Lucida Sans;" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
+=======
+    <div align="center">
+      <button type="button" class="btn btn-light align-self-end" data-bs-toggle="modal" data-bs-target="#spotModal{{ id }}"style="
+        background-color:#86C6F4;
+        border-radius:15px;
+        border:hidden;
+        display:inline-block;
+        cursor:pointer;
+        color:#fff;
+          font-family:Times New Roman;
+        font-size:14px;
+        font-weight:bold;
+        padding:12px 16px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >食宿資訊</button>
+      <div class="modal fade" id="spotModal{{ id }}" tabindex="-1" aria-labelledby="spotModal" aria-hidden="true">
+        <div class="modal-dialog" id="{{ id }}">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="spotModal{{ id }}">{{ doc.name }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h6>附近餐廳:</h6>
+              {% for r in res %} <p>{{ r }}</p> {% endfor %}
+              <hr>
+              <h6>附近住宿:</h6>
+              {% for l in lod %} <p>{{ l }}</p> {% endfor %}
+              <a href=""><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
+            </div>
+>>>>>>> 43c2c8697a76c1aedbd8d85770a5b4d92477f103
           </div>
         </div>
       </div>
+    <!--end of modal-->
     </div>
-   
-  </div>
-</div>
-</div>
-<br>
-{% with docs|last as last %} 
-{% if doc != last %}
-  <!--點到點距離-->
-  <div class="line" style="text-align:center;">
-    <img src="{% static "images/dotted-barline.png" %}" width="5%" >
-    <p >Distance: ? KM</p>
-    {% if trans == "機車" %}
-    <p >Time: a mins</p>
-    {% elif trans == "汽車" %}
-    <p >Time: b mins</p>
-    {% elif trans == "腳踏車" %}
-    <p >Time: c mins</p>
-    {% elif trans == "大眾運輸" %}
-    <p >Time: d mins</p>
-    {% endif %}
-  </div><br>
-{% else %}
-{% endif %} 
-{% endwith %}
-{% endfor %}
-
-  <!--交通時間-->
-  <div class="card text-center">
-    <div class="card-header">
-      交通時間
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">{{ docs.0.name}} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5>
-      {% comment %} {% if trans == "腳踏車" %}
-      <i class="fa-regular fa-person-biking"></i>
-      {% elif trans == "機車" %}
-      <i class="fa-solid fa-motorcycle"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
-      {% elif == "大眾運輸" %}
-      <i class="fa-solid fa-train-subway"></i><p class="card-text"> ? 小時 ? 分鐘 (? 公里)</p>
-      {% elif == "汽車" %}
-      <i class="fa-duotone fa-car"></i>
-      {% endif %} {% endcomment %}
-      <p class="card-text"> 
-        {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
-        {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
-        {% elif trans == "汽車" %}<i class="fa-duotone fa-car"></i>
-        {% else %}<i class="fa-solid fa-train-subway"></i>
-        {% endif %} ? 小時 ? 分鐘 (? 公里)</p>
-      <a href="#" class="btn btn-primary">使用Google Maps導航</a>
-    </div>
-    <div class="card-footer text-muted">
-      {{ duration }}
-    </div>
-  </div><br>
+  
+    
+    <br>
+    {% with docs|last as last %} 
+    {% if doc != last %}
+      <!--點到點距離-->
+      <div class="line" style="text-align:center;">
+        <img src="{% static "images/dotted-barline.png" %}" width="5%" >
+        <p >Distance: ? KM</p>
+        {% if trans == "機車" %}
+        <p >Time: a mins</p>
+        {% elif trans == "汽車" %}
+        <p >Time: b mins</p>
+        {% elif trans == "腳踏車" %}
+        <p >Time: c mins</p>
+        {% elif trans == "大眾運輸" %}
+        <p >Time: d mins</p>
+        {% endif %}
+      </div><br>
+    {% else %}
+    {% endif %} 
+    {% endwith %}
+    {% endfor %}
 
 
+<<<<<<< HEAD
 <div style="text-align: center;">
     <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; font-family: Lucida Sans; border: hidden;;" >GO！</button></a>
     <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; font-family: Lucida Sans;border: hidden;;">Again</button></a>
     <br><br>
 </div>
+=======
+    <div style="text-align: center;">
+        <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; border: hidden;;" >出發！</button></a>
+        <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; border: hidden;;">再選一次</button></a>
+        <br><br>
+    </div>
+>>>>>>> 43c2c8697a76c1aedbd8d85770a5b4d92477f103
 </div>
 
 

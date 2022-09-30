@@ -7,6 +7,8 @@
 # from operator import truediv
 # from os import remove
 # from unicodedata import name
+from email import contentmanager
+from symbol import lambdef_nocond
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
@@ -325,7 +327,7 @@ def calculate_vote():
     else: # 四天三夜
         spot_num = 8
 
-    # 擇三高
+    # 擇高
     highest = []
     while len(highest) < spot_num:   
         max_value = max(sum_list)
@@ -415,8 +417,7 @@ def map(request):
     return render(request, 'map.html', context)
 
 def result(request):
-    
-# get voting result
+    # get voting result
     docs = calculate_vote()[0]
     spot_num = calculate_vote()[1]
     tourist_list = []
@@ -457,9 +458,22 @@ def result(request):
         lod_list.append(nearby_lod_list)
 
     ids =  range(spot_num)
+    # 抓交通工具
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    trans = latest_room[0]['transportation']
+    duration = latest_room[0]['duration']
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
+        'tf': zip(docs, ids),
+        'dtd': zip(docs, trans, duration),
+        'docs': docs,
+        'trans': trans,
+        'duration': duration,
+        'moreInfo': zip(docs, res_list, lod_list),
+        'res_list': res_list,
+        "lod_list": lod_list,
     }
     return render(request, 'result.html', context)
 
