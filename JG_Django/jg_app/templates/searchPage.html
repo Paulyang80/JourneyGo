@@ -15,7 +15,7 @@
   <div class="searchbox">
     <div class="input-group mb-3 input-group-lg">
       <form method="post" style="width: 100%; height: auto; padding: o;">
-        <input type="search" name="keywords" id="form1" class="form-control" placeholder="&#xf689; Search" style="font-family: Arial, 'Font Awesome 5 Free'"/>
+        <input type="search" name="keywords" id="form1" class="form-control" placeholder="&#xf689; Search" style="font-family: Lucida Sans, 'Font Awesome 5 Free'"/>
       </form>
     </div>
   </div>
@@ -38,7 +38,7 @@
                 {% if doc.county or doc.distric or doc.address %} 地址: {{ doc.county }} {{ doc.distric }} {{ doc.address }} <br> {% endif %}
                 {% if doc.tel %}電話： {{ doc.tel }} <br> {% endif %}
               </p>
-              <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ doc.spotID }}">
+              <button type="button" style="font-family: Lucida Sans;" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ doc.spotID }}">
                 Read more
               </button>
               <div class="modal fade" id="exampleModal{{ doc.spotID }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,7 +83,7 @@
               {% if spot.county or spot.distric or spot.address %} 地址: {{ spot.county }} {{ spot.distric }} {{ spot.address }} <br> {% endif %}
               {% if spot.tel %}電話： {{ spot.tel }} <br> {% endif %}
             </p>
-            <button type="button" class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ spot.spotID }}">
+            <button type="button" style="font-family: Lucida Sans;"  class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ spot.spotID }}">
               Read more
             </button>
             <div class="modal fade" id="exampleModal{{ spot.spotID }}" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">

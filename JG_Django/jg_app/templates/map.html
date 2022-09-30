@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{% static "css/room.css" %}">
     <link rel="stylesheet" href="{% static "css/decide.css" %}">
     <title>JourneyGo - Google Map Guide</title>
+    <style>
+      .modal-body{
+        font-family: Lucida Sans;
+      }
+    </style>
  
 </head>
 {% include 'base2.html' %}
@@ -24,7 +29,8 @@
 
     
     <br><br>
-    <h2 style="text-align:center;">喜歡這樣的行程嗎？</h2>
+    <h2 style="text-align:center;      font-family: Lucida Sans;
+    ">Do you like this travel itinerary？</h2>
 
     {% for doc, res, lod, id in tourist_info %}
     <div class="info" style="text-align:center;"><br><br><br>
@@ -46,12 +52,12 @@
       display:inline-block;
       cursor:pointer;
       color:#fff;
-        font-family:Times New Roman;
+      font-family: Lucida Sans;
       font-size:14px;
       font-weight:bold;
       padding:12px 16px;
       text-decoration:none;
-      text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >食宿資訊</button>
+      text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >Information</button>
     <div class="modal fade" id="spotModal{{ id }}" tabindex="-1" aria-labelledby="spotModal" aria-hidden="true">
       <div class="modal-dialog" id="{{ id }}">
         <div class="modal-content">
@@ -60,12 +66,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h6>附近餐廳:</h6>
+            <h6>Nearby restaurants:</h6>
             {% for r in res %} <p>{{ r }}</p> {% endfor %}
             <hr>
-            <h6>附近住宿:</h6>
+            <h6>Nearby accommodation:</h6>
             {% for l in lod %} <p>{{ l }}</p> {% endfor %}
-            <a href=""><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
+            <a href=""><button type="button" class="btn btn-primary btn-lg" style="text-align: center; font-family: Lucida Sans;" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
           </div>
         </div>
       </div>
@@ -127,8 +133,8 @@
 
 
 <div style="text-align: center;">
-    <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; border: hidden;;" >出發！</button></a>
-    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; border: hidden;;">再選一次</button></a>
+    <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; font-family: Lucida Sans; border: hidden;;" >GO！</button></a>
+    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; font-family: Lucida Sans;border: hidden;;">Again</button></a>
     <br><br>
 </div>
 </div>
