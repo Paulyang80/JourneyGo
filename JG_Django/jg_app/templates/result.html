@@ -78,7 +78,7 @@
       <!--箭頭icon-->
         {% if doc != last %}
         <div style="text-align:center;">
-        <i class="fa-regular fa-arrow-down"></i>
+        <i class="fa-sharp fa-solid fa-arrow-down"></i>
         </div>
         {% else %} {% endif %}
 
@@ -98,14 +98,16 @@
     <div class="card-body">
       {% comment %} <h5 class="card-title">{{ docs.0.name }} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5> {% endcomment %}
       <h5 class="card-text"> 
-        {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
+        <i class="fa-sharp fa-solid fa-car-side"></i>
+        <!-- {% if trans == "腳踏車" %}<i class="fa-regular fa-person-biking"></i>
         {% elif trans == "機車" %}<i class="fa-solid fa-motorcycle"></i>
         {% elif trans == "汽車" %}<i class="fa-sharp fa-solid fa-car-side"></i>
         {% else %}<i class="fa-solid fa-train-subway"></i>
-        {% endif %}
-        ? 小時 ? 分鐘 (? 公里)</h5>
+        {% endif %} -->
+        <!-- {{ total_HM.0 }} 小時 {{ total_HM.1 }} 27分鐘</h5> -->
+        {{ total_HM.0 }} 小時 27分鐘</h5>
         {{ duration }} <br>
-      <a href="#" class="btn btn-primary" style="margin-top: 5px;">Google Maps導航</a>
+      <a href="" class="btn btn-primary" style="margin-top: 5px;">Google Maps導航</a>
     </div>
   </div>
 </body>

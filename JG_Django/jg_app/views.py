@@ -8,7 +8,9 @@
 # from os import remove
 # from unicodedata import name
 from email import contentmanager
+from multiprocessing import context
 from symbol import lambdef_nocond
+from turtle import distance
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 import datetime
@@ -142,10 +144,10 @@ def startDropDown(request):
         selected_time = request.POST.get("duration")
 
     # 交通工具
-    transportations = ["機車", "汽車", "腳踏車", "大眾運輸"]
-    selected_trans = None
-    if request.method == "POST":
-        selected_trans = request.POST.get("trans")
+    # transportations = ["機車", "汽車", "腳踏車", "大眾運輸"]
+    # selected_trans = None
+    # if request.method == "POST":
+    #     selected_trans = request.POST.get("trans")
 
     # SAVE ROOM_RECORDS
     collection = cluster["JourneyGo_DB"]["Room_spec"]
@@ -156,12 +158,12 @@ def startDropDown(request):
     post = {"build_time": dt, 
             "member_limitation": selected_num, 
             "duration": selected_time, 
-            "transportation": selected_trans, 
+            # "transportation": selected_trans, 
             "members": [], 
             "vote_results": [],
             "recommendations": [],
     }
-    if selected_num and selected_time and selected_trans:
+    if selected_num and selected_time : # and selected_trans
         collection.insert_one(post)
         return redirect('room2')
 
@@ -171,8 +173,8 @@ def startDropDown(request):
         'selected_num': selected_num,
         'travel_duration': travel_duration,
         'selected_time': selected_time,
-        'transportations': transportations,
-        'selected_trans': selected_trans,
+        # 'transportations': transportations,
+        # 'selected_trans': selected_trans,
     }
     return render(request, 'start.html', context)
 
@@ -224,6 +226,19 @@ def room2(request):
     }
     return render(request, 'room2.html', context)
 
+def finalRoom(request):
+
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    members = []
+    for m in latest_room[0]['members']:
+         members.append(db['User_account'].find({'firstName': m})[0])
+
+    context = {
+        'members': members,
+    }
+    return render(request, 'finalRoom.html', context)
+
 def basic_rec(memberList, time, prefList):
     collection = db['User_account']
     userPref = []
@@ -243,7 +258,7 @@ def spotvote(request):
     latest_room = collection.find().sort('_id',-1).limit(1)
     members = latest_room[0]['members']
     duration = latest_room[0]['duration']
-    transportation = latest_room[0]['transportation']
+    #transportation = latest_room[0]['transportation']
 
     # 取得group member喜好
     pref_list = []
@@ -307,11 +322,11 @@ def calculate_vote():
     for l in vote_arr:
         l = [int(x) for x in l]
         new_vote_arr.append(l)
-    print(new_vote_arr)
+    #print(new_vote_arr)
 
     # 投票加總
     sum_list = np.sum(new_vote_arr, axis = 0).tolist()
-    print("Sum of arr(axis = 0) : ", sum_list)
+    #print("Sum of arr(axis = 0) : ", sum_list)
 
     # 決定景點數
     spot_num = 0
@@ -334,11 +349,11 @@ def calculate_vote():
         max_index = sum_list.index(max_value)
         sum_list[max_index] = -1
         highest.append(max_index)
-    print("最高票景點:", highest)
+    #print("最高票景點:", highest)
 
     # 取得推薦景點
     rec_ids = latest_room[0]['recommendations']
-    print("儲存的景點: ", rec_ids)
+    #print("儲存的景點: ", rec_ids)
 
     # 按找票數用id抓景點
     recs = []
@@ -351,7 +366,7 @@ def calculate_vote():
     for rec in recs:
         for doc in rec: # rec is a curosr with one doc
             docs.append(doc)
-            print("景點:", doc['name'])
+            #print("景點:", doc['name'])
     return (docs, spot_num)
 
 def map(request):
@@ -363,11 +378,13 @@ def map(request):
     for doc in docs:
         #print(doc['name'])
         tourist_list.append(doc['name'])
+    #print(tourist_list)
 
 # 景點排序
-    docs = [docs[i] for i in route_by_name(tourist_list)]
-    #for doc in docs:
-        #print(doc['name'])
+    docs = [docs[i] for i in route_by_name(tourist_list)[0]]
+    new_tourist_list = []
+    for doc in docs:
+        new_tourist_list.append(doc['name'])
 
 # find nearby restaurants and logdes
     collection = db['Taipei_gov']
@@ -405,13 +422,30 @@ def map(request):
     # 抓交通工具
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
-    trans = latest_room[0]['transportation']
+    # trans = latest_room[0]['transportation']
     duration = latest_room[0]['duration']
 
+    # 抓交通時間(點到點)
+    dir = route_by_name(new_tourist_list)[2]
+    #print("dir:", dir)
+
+    p2p_times = []
+    for i in dir:
+        hr = i // 3600
+        min = (i%3600)//60
+        p2p_times.append([hr, min])
+    #print("p2p:", p2p_times)
+
+    # 抓交通長度
+    p2p_distance = [] 
+    for d in route_by_name(new_tourist_list)[1]:
+        p2p_distance.append(round(d/1000))
+    #print("p2p_distance:", p2p_distance)
+
     context = {
-        'tourist_info': zip(docs, res_list, lod_list, ids),
+        'tourist_info': zip(docs, res_list, lod_list, ids, p2p_times, p2p_distance),
         'docs': docs,
-        'trans': trans,
+        # 'trans': trans,
         'duration': duration,
     }
     return render(request, 'map.html', context)
@@ -425,7 +459,10 @@ def result(request):
         tourist_list.append(doc['name'])
 
 # 景點排序
-    docs = [docs[i] for i in route_by_name(tourist_list)]
+    docs = [docs[i] for i in route_by_name(tourist_list)[0]]
+    new_tourist_list = []
+    for doc in docs:
+        new_tourist_list.append(doc['name'])
 
 # find nearby restaurants and logdes
     collection = db['Taipei_gov']
@@ -457,23 +494,45 @@ def result(request):
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
 
+    # 抓交通時間
+    dir = route_by_name(new_tourist_list)[2]
+    #print(dir)
+
+    p2p_times = []
+    total_time = 0
+
+    for i in dir:
+        hr = i // 3600
+        min = (i%3600)//60
+        p2p_times.append([hr, min])
+        total_time += int(i)
+    #print(p2p_times)
+    total_HM = [total_time//3600, (total_time%3600)//60]
+    #print(total_HM)
+    # 抓交通長度
+    length = route_by_name(new_tourist_list)[1]
+    #print(length)
+
     ids =  range(spot_num)
     # 抓交通工具
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
-    trans = latest_room[0]['transportation']
+    # trans = latest_room[0]['transportation']
     duration = latest_room[0]['duration']
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
         'tf': zip(docs, ids),
-        'dtd': zip(docs, trans, duration),
+        # 'dtd': zip(docs, trans, duration),
         'docs': docs,
-        'trans': trans,
+        # 'trans': trans,
         'duration': duration,
         'moreInfo': zip(docs, res_list, lod_list),
         'res_list': res_list,
         "lod_list": lod_list,
+        'total_HM': total_HM,
+        'p2p_times': p2p_times,
+        'p2p_distances':length,
     }
     return render(request, 'result.html', context)
 
@@ -713,7 +772,7 @@ def find_near_by_lod(tourist):
 # 輸入的如果是[數字(在資料庫裡面的順序)]
 def route(tourist_list):
     # 重要(我的地圖API Key)
-    gmaps = googlemaps.Client(key='AIzaSyBNTyuvWTzW7i8x7_1wRd444Wg1OFCtFFU')
+    gmaps = googlemaps.Client(key='AIzaSyD1Jg_xEQU9QpopRzjWxyHrpoCYbBjA6gE')
     collection = db['Taipei_gov']
     detail = collection.find({})
     df = pd.DataFrame(list(detail))
@@ -760,22 +819,29 @@ def route(tourist_list):
 # 輸入的如果是[景點名稱]
 def route_by_name(tourist_list):
     # 重要(我的地圖API Key)
-    gmaps = googlemaps.Client(key='AIzaSyBNTyuvWTzW7i8x7_1wRd444Wg1OFCtFFU')
+    gmaps = googlemaps.Client(key='AIzaSyD1Jg_xEQU9QpopRzjWxyHrpoCYbBjA6gE')
     collection = db['Taipei_gov']
     detail = collection.find({})
     df = pd.DataFrame(list(detail))
     location = []
+    distance =[]
+    travel_time = []
+    travel_distance = []
 
     direction = []
     for i in tourist_list:
         travel = []
+        length = []
         for j in tourist_list:
             directions_result = gmaps.directions(i,j,mode="transit")
             if len(directions_result) != 0:
                 travel.append(directions_result[0]['legs'][0]['duration']['value'])
+                length.append(directions_result[0]['legs'][0]['distance']['value'])
             else:
                 travel.append(0)
+                length.append(0)
         direction.append(travel)
+        distance.append(length)
 #     print(direction)
     k = 0
     for i in range(len(direction)):
@@ -783,6 +849,8 @@ def route_by_name(tourist_list):
         k += 1
     trip = []
     first_index = direction[0].index(min(direction[0]))
+    travel_time.append(direction[first_index][0])
+    travel_distance.append(direction[first_index][0])
     direction[first_index][0] = 999999
     trip.append(0)
     start = first_index
@@ -790,8 +858,10 @@ def route_by_name(tourist_list):
     for i in range(len(direction)-2):
         end = direction[start].index(min(direction[start]))
         for i in trip:
+            travel_time.append(direction[end][i])
+            travel_distance.append(direction[end][i])
             direction[end][i] = 999999
         trip.append(end)
         start = end
 #     print(direction)
-    return trip
+    return (trip, travel_distance[:-1],travel_time[:-1])

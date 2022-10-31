@@ -12,18 +12,14 @@
   --red:#F87474
 }
 
-.carousel-inner img{
-  box-shadow:
-    -50px -60px 0 -40px var(--red),
-    50px 60px 0 -40px var(--red);
-}
 .btn-success{
-    background-color: #3AB0FF !important;
+    background-color: #e8dfca !important;
+    border-color: #f5efe6 !important;
+    color: black !important;
 }
 .btn-success:focus, .btn-success:active:hover{
-  color: #3AB0FF;
-  background-color: #3AB0FF;
-  border-color: #3AB0FF;
+  color: black !important;
+  border-color: black !important;
 }
 
     </style>
@@ -34,12 +30,12 @@
     {% include 'base2.html' %}
 
         
-        <h1 style="text-align:center;" >JourneyGo</h1>
+        <h1 style="text-align:center; margin-top: 50px; font-size: 50px; color: #7895B2;" >JourneyGo</h1>
         <!-- <h3>Group Spots Recommender</h3> -->
         <div style="text-align:center;" >
             <br><br>
             {% if user.is_authenticated %}
-            <h3>Welcome, {{ user.username }} </h3>
+            <h3>Welcome, <span style="color: #AEBDCA;"> {{ user.username }} </span></h3>
             {% else %}
             <h3>YOU HAVE TO LOGIN TO GET YOUR CUSTOMIZED RECOMMENDATION FROM JOURNEYGO.</h3>
             {% endif %}
@@ -47,7 +43,7 @@
         </div>
        
           <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" align="center" >
-            <div class="carousel-inner" data-bs-interval="1500">
+            <div class="carousel-inner" data-bs-interval="20">
               <div class="carousel-item active">
                 <img src="{% static "images/aa.jpg" %}" class="d-block w-50" alt="...">
               </div>

@@ -1,0 +1,17 @@
+.card-img-top {
+    border-radius: 50%;
+}
+
+.row.row-cols-1.row-cols-md-4.g-4 {
+    padding-left:10%;
+    margin: 5px 10px;
+}
+
+.col {
+    padding-top: 5% !important;
+    margin: 5px;
+}
+
+.card-img-top{
+    height: 276px !important;
+  }

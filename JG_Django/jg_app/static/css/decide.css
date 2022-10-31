@@ -4,7 +4,7 @@ margin: 0;
 padding: 0;
 }
 .container{
-    background:url(image.jpg);
+    /* background:url(image.jpg); */
     background-size: cover;
     height: 150px;
     width: 100%;
@@ -47,9 +47,4 @@ padding: 0;
     {
         transform:translateX(200%);
     }
-}
-.spot{
-    -webkit-box-reflect: left 0 
-    -webkit-radial-gradient(#000 30%,transparent);
-    box-reflect: left 0 radial-gradient(#000 30%,transparent);
 }

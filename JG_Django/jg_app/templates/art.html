@@ -36,7 +36,7 @@
             <div class="option_inner twitter">
               <div class="tickmark"></div>
               <div class="icon"><i class="fa-solid fa-camera" style="font-size: 200%;"></i></div>
-              <div class="name">Art and Culture Center</div>
+              <div class="name">Art  Center</div>
             </div>
           </label>
           <label class="option_item">
@@ -47,14 +47,14 @@
               <div class="name">Public Art</div>
             </div>
           </label>
-          <label class="option_item">
+          <!-- <label class="option_item">
             <input type="checkbox" class="checkbox" id="delta" name="delta">
             <div class="option_inner linkedin">
               <div class="tickmark"></div>
               <div class="icon"><i class="fa-solid fa-signs-post" style="font-size: 200%;"></i></div>
               <div class="name">Shopping Area</div>
             </div>
-          </label>
+          </label> -->
         </div>
     </div>
 
@@ -85,9 +85,9 @@
                 if (pub_art.checked) {
                     pref.push('公共藝術');
                 } 
-                if (theme_street.checked) {
-                    pref.push('主題商街');
-                } 
+                // if (theme_street.checked) {
+                //     pref.push('主題商街');
+                // } 
                 if (pref.length == 2){
                   alert("已記錄您的喜好：" + pref);
                   data = {

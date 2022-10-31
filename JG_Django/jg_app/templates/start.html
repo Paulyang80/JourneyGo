@@ -15,7 +15,7 @@
   width:100%;
   background-image: 
   linear-gradient(to bottom, rgba(204, 210, 239, 0.6), rgba(255,252,220,0.6)),
-  url("https://images.unsplash.com/photo-1625777719130-0a8e07086117?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80");
+  /* url("https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE53jkW?ver=d461"); */
 }
 
 .quote{
@@ -54,12 +54,12 @@
                 {% endfor %}
               </select><br>
 
-              <h4>Transportation</h4> 
+              <!-- <h4>Transportation</h4> 
               <select name="trans" class="form-select" aria-label="Default select example">
                 {% for t in transportations %}
                     <option value="{{ t }}" {% if selected_trans == t %} selected="selected" {% endif %}> {{ t }} </option>
                 {% endfor %}
-              </select><br><br>
+              </select><br><br> -->
 
               <input class="hover" type="image" name="submit" src="{% static "images/start1.png" %}" border="0" alt="Submit" style="width: 150px; margin: 40px;">
 

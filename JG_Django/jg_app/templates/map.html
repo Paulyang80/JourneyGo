@@ -15,39 +15,37 @@
  
 </head>
 {% include 'base2.html' %}
-  <body style="background-color:#FDF6EC;">
+  <body >
 
     <div class="container">
       <div class="cloud">
-        <img src="{% static "images/cloud.png" %}"  >
+        <img src="{% static "images/cloud.png" %}">
         
         <div class="cloud1">
-          <img src="{% static "images/cloud.png" %}"  >
+          <img src="{% static "images/cloud.png" %}">
         </div>
       </div>
     </div>
 
     
     <br><br>
-    <h2 style="text-align:center;      font-family: Lucida Sans;
-    ">Do you like this travel itinerary？</h2>
+    <h2 style="text-align:center; font-family: Lucida Sans;">Do you like this travel itinerary？</h2>
 
-    {% for doc, res, lod, id in tourist_info %}
+    {% for doc, res, lod, id, pt, pd in tourist_info %}
     <div class="info mx-auto" style="text-align:center;"><br><br><br>
-      <div class="wrap mx-auto" style="display: flex;width: 857px;margin: 0 auto;margin-right: 60px; text-align:center;">
+      <div class="wrap mx-auto" style="display: flex; width: 800px ; margin: 0 auto;margin-right: 60px; text-align:center;">
         <div class="content" style="width: 348px;display: flex;align-items: center;justify-content: center;">
-              <h4 style="margin-right: 20px;">{{ doc.name }}</h4><br><br>
-              <img class="spot" src={{ doc.images.0 }} width="100%" style="text-align: center; border-radius:15px;">
+              <h4 style="margin-left: 200px;">{{ doc.name }}</h4>
+              <img  src={{ doc.images.0 }} width="100%" style="text-align: center; margin-left:20px; border-radius:10%;">
               <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         </div>
-      </div><br>
+      </div>
     </div>
-    
-<<<<<<< HEAD
+        
   <div align="center">
     <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#spotModal{{ id }}"style="
-      background-color:#86C6F4;
-      border-radius:15px;
+      background-color:#7895B2;
+      border-radius:20px;
       border:hidden;
       display:inline-block;
       cursor:pointer;
@@ -55,6 +53,7 @@
       font-family: Lucida Sans;
       font-size:14px;
       font-weight:bold;
+      margin-top: 5px;
       padding:12px 16px;
       text-decoration:none;
       text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >Information</button>
@@ -72,37 +71,6 @@
             <h6>Nearby accommodation:</h6>
             {% for l in lod %} <p>{{ l }}</p> {% endfor %}
             <a href=""><button type="button" class="btn btn-primary btn-lg" style="text-align: center; font-family: Lucida Sans;" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
-=======
-    <div align="center">
-      <button type="button" class="btn btn-light align-self-end" data-bs-toggle="modal" data-bs-target="#spotModal{{ id }}"style="
-        background-color:#86C6F4;
-        border-radius:15px;
-        border:hidden;
-        display:inline-block;
-        cursor:pointer;
-        color:#fff;
-          font-family:Times New Roman;
-        font-size:14px;
-        font-weight:bold;
-        padding:12px 16px;
-        text-decoration:none;
-        text-shadow:0px 1px 0px #ffffff;margin-left:220px;" >食宿資訊</button>
-      <div class="modal fade" id="spotModal{{ id }}" tabindex="-1" aria-labelledby="spotModal" aria-hidden="true">
-        <div class="modal-dialog" id="{{ id }}">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="spotModal{{ id }}">{{ doc.name }}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <h6>附近餐廳:</h6>
-              {% for r in res %} <p>{{ r }}</p> {% endfor %}
-              <hr>
-              <h6>附近住宿:</h6>
-              {% for l in lod %} <p>{{ l }}</p> {% endfor %}
-              <a href=""><button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
-            </div>
->>>>>>> 43c2c8697a76c1aedbd8d85770a5b4d92477f103
           </div>
         </div>
       </div>
@@ -116,36 +84,30 @@
       <!--點到點距離-->
       <div class="line" style="text-align:center;">
         <img src="{% static "images/dotted-barline.png" %}" width="5%" >
-        <p >Distance: ? KM</p>
-        {% if trans == "機車" %}
+        <p >Distance:  {{ pd }} Km</p>
+        <p >Time: {{ pt.0 }} hr {{ pt.1 }} min</p>
+
+        <!-- {% if trans == "機車" %}
         <p >Time: a mins</p>
         {% elif trans == "汽車" %}
-        <p >Time: b mins</p>
+        <p >Time: 27 mins</p>
         {% elif trans == "腳踏車" %}
         <p >Time: c mins</p>
         {% elif trans == "大眾運輸" %}
-        <p >Time: d mins</p>
-        {% endif %}
+        <p >Time: 10 mins</p>
+        {% endif %} -->
       </div><br>
     {% else %}
     {% endif %} 
     {% endwith %}
     {% endfor %}
 
-
-<<<<<<< HEAD
+<br>
 <div style="text-align: center;">
-    <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; font-family: Lucida Sans; border: hidden;;" >GO！</button></a>
-    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; font-family: Lucida Sans;border: hidden;;">Again</button></a>
+    <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #E8DFCA; font-family: Lucida Sans; border: hidden;;" >GO！</button></a>
+    <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #AEBDCA; font-family: Lucida Sans;border: hidden;;">Again</button></a>
     <br><br>
 </div>
-=======
-    <div style="text-align: center;">
-        <a href="{% url 'result' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #FFE162; border: hidden;;" >出發！</button></a>
-        <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #86C6F4; border: hidden;;">再選一次</button></a>
-        <br><br>
-    </div>
->>>>>>> 43c2c8697a76c1aedbd8d85770a5b4d92477f103
 </div>
 
 

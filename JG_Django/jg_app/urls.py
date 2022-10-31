@@ -26,6 +26,7 @@ urlpatterns = [
     path('',views.setting,name='setting'),
     path('',views.room,name='room'),
     path('',views.room2,name='room2'),
+    path('',views.finalRoom,name='finalRoom'),
     path('',views.spotvote,name='spotvote'),
     path('',views.ready,name='ready'),
     path('',views.loading,name='loading'),

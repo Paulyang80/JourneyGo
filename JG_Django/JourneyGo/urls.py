@@ -31,6 +31,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('room/', views.room, name='room'),
     path('room2/', views.room2, name='room2'),
+    path('finalRoom/', views.finalRoom, name='finalRoom'),
     path('spotvote/', views.spotvote, name='spotvote'),
     path('ready/', views.ready, name='ready'),
     path('loading/', views.loading, name='loading'),

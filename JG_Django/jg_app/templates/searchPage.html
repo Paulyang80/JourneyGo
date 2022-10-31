@@ -83,7 +83,7 @@
               {% if spot.county or spot.distric or spot.address %} 地址: {{ spot.county }} {{ spot.distric }} {{ spot.address }} <br> {% endif %}
               {% if spot.tel %}電話： {{ spot.tel }} <br> {% endif %}
             </p>
-            <button type="button" style="font-family: Lucida Sans;"  class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ spot.spotID }}">
+            <button type="button" style="font-family: Lucida Sans; background-color: #F5EFE6;"  class="btn btn-light align-self-end " data-bs-toggle="modal" data-bs-target="#exampleModal{{ spot.spotID }}">
               Read more
             </button>
             <div class="modal fade" id="exampleModal{{ spot.spotID }}" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">

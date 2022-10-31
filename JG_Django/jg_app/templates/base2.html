@@ -1,10 +1,16 @@
 {% load static %}
 
 <section id="title">
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding: 25px 40px 25px 30px !important">
         <!-- Nav Bar -->
         <nav class="navbar navbar-expand-lg navbar-dark">
-            <a class="navbar-brand" href="{% url 'index' %}">JourneyGo</a>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <div class="logo-image">
+                    <img src="{% static "images/JourneyGo.png" %}" class="img-fluid" width="120px" height="60px" style="margin-right: 15px;">
+                    JourneyGo
+                </div>
+                
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -22,24 +28,24 @@
                     </li>
                     <li class="nav-item">
                         {% if request.path == "/searchPage/" %}
-                        <a class="nav-link active" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+                        <a class="nav-link active" href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
                         {% else %}
-                        <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+                        <a class="nav-link " href="{% url 'searchPage' %}"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
                         {% endif %}
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         {% if request.path == "/friends/" %}
-                        <a class="nav-link active" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My Friends</a>
+                        <a class="nav-link active" href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> Friends</a>
                         {% else %}
-                        <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> My Friends</a>
+                        <a class="nav-link " href="{% url 'friends' %}"><i class="fa-solid fa-user-group"></i> Friends</a>
                         {% endif %}
                     </li>
                     <li class="nav-item">
                         {% if request.path == "/setting/" %}
-                        <a class="nav-link active" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>Settings</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i> Settings</a>
                         {% else %}
-                        <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i>Settings</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i> Settings</a>
                         {% endif %}
                     </li>
                     <li>

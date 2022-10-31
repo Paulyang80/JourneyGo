@@ -3,7 +3,7 @@ body {
 }
 
 #title {
-    background-color: #FFB562 !important; /*354259*/
+    background-color: #7895B2 !important;
     color: #E7F6F2;
 }
 
@@ -43,4 +43,12 @@ p {
 
 .btn-login {
     margin-right: 5px !important;
+}
+
+.logo-image{
+    width: 170px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -6px;
 }

@@ -21,7 +21,7 @@
                   <h1 style="text-align: center; margin-top: 20px;font-family: Lucida Sans;">YOUR ROOM</h1>
                     <ul id="todo" style="font-family: Lucida Sans;">Invited</ul><hr>
                     <ul id="done" style="font-family: Lucida Sans;">Friend List</ul><hr>
-                    <h5 style="text-align: center; font-family: Lucida Sans;">Invitation Limit: {{ mem_limit }} friends</h3>
+                    <h5 style="text-align: center; font-family: Lucida Sans;">Invitation Limit: <span style="color: #7895B2;">{{ mem_limit }}</span>  friends</h3>
                     <!--Next Step: Get FB Profile pic CDN-->
 
                     
@@ -32,7 +32,7 @@
         </div>
 
           <div align="center">
-            <button type="button" id="go1" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
+            <button type="button" id="go1" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #E8DFCA; border-color: #F5EFE6;">Go</button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
@@ -42,13 +42,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <p>Ready to go?</p>
-                    <button type="button" id="go2" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Go</button>
+                    <p style="font-size: 30px;">Ready to go?</p>
+                    <button type="button" id="go2" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #E8DFCA; border-color: #F5EFE6;">Go</button>
                   </div>
                 </div>
               </div>
             </div>
-            <a href="{% url 'start' %}"><button type="button" class="btn btn-secondary btn-lg">Cancel</button></a>
+            <a href="{% url 'start' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #AEBDCA; border-color: #F5EFE6;">Cancel</button></a>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@
                   data: data,
                   success: function (response) {
                     console.log("coooooool");
-                    window.location.href = "{% url 'spotvote' %}";
+                    window.location.href = "{% url 'finalRoom' %}";
                   }
               });
 

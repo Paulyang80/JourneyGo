@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base1.html' %}
+    <title>JourneyGo - finalRoom</title>
+</head>
+<body>
+    {% include 'base2.html' %}
+
+    <h1 style="text-align:center; margin-top: 30px;">Final Room</h1>
+
+    <div class="container" style="text-align: center !important;">
+        <div class="row row-cols-1 row-cols-md-4 g-3" style="margin-top: 20px; text-align: center;position: relative; padding-left: 110px;">
+            {% for m in members %}
+            <div class="col" style="text-align: center;">
+                <div class="card" style="width: 18rem;">
+                    <img src={{ m.pic }} class="card-img-top" style="height: 276px;">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ m.firstName }} {{ m.lastName }}</h5>
+                      <p class="card-text">{{ m.hashtag }}</p>
+                    </div>
+                  </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div align="center" style="margin-top: 30px;">
+            <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #E8DFCA; color: black ">Let's go!</button></a>
+        </div>
+    </div>
+
+</body>
+</html>
