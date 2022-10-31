@@ -13,9 +13,9 @@
         <div class="carousel-indicators">
           {% for doc, res, lod, id in tourist_info %}
           {% if id == 0 %}
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ id }}" class="active" aria-current="true" aria-label="Slide {{ id }}"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ id }}" class="active" aria-current="true" aria-label="Slide {{ id }}" style="background-color: #E8DFCA;"></button>
           {% else %}
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ id }}" aria-label="Slide {{ id }}"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ id }}" aria-label="Slide {{ id }}" style="background-color: #E8DFCA;"></button>
           {% endif %}
           {% endfor %}
         </div>
@@ -107,7 +107,7 @@
         <!-- {{ total_HM.0 }} 小時 {{ total_HM.1 }} 27分鐘</h5> -->
         {{ total_HM.0 }} 小時 27分鐘</h5>
         {{ duration }} <br>
-      <a href="" class="btn btn-primary" style="margin-top: 5px;">Google Maps導航</a>
+      <a href="{{ googleMapUrl }}" class="btn btn-primary" style="margin-top: 5px; background-color: #7895B2;">Google Maps導航</a>
     </div>
   </div>
 </body>

@@ -10,17 +10,11 @@
 <body>
     {% include 'base2.html' %}
     <br>
-    {% comment %} Hi {{ userFirstName }}, Choose 2 categories.  {% endcomment %}
-    {% comment %} <h3 style="text-align:center;">
-        {{ user.username }} Choose from 2 categories of attractions you like！
-    </h3> {% endcomment %}
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
-    <div class="wrapper">
-        <div class="title">
-          Choose from 2 categories of attractions you like！
-        </div>
+    <div class="wrapper" style="width: 625px;">
+        <div class="title" style="color: #7895B2;"> Choose 2 categories you like！</div>
       
         <div class="container">
           <label class="option_item" >
@@ -60,8 +54,8 @@
 
     <div class="d-flex justify-content-center">
       <div class="btn1">
-        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left">Back</button></a>
-        <a><button type="button" class="btn btn-outline-dark" style="float:left" onclick="validate()">Confirm</button></a>
+        <a><button type="button" class="btn btn-outline-dark" style="float:left; margin-right: 15px; margin-top: 25px; background-color: #F5EFE6;" onclick="validate()">Confirm</button></a>
+        <a href="{% url 'balancegame' %}"><button type="button" class="btn btn-outline-dark" style="float:left; margin-top: 25px; background-color: #AEBDCA;">Back</button></a>
       </div>
     </div>
     

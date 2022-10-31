@@ -431,16 +431,18 @@ def map(request):
 
     p2p_times = []
     for i in dir:
+        print("i: ", i)
         hr = i // 3600
         min = (i%3600)//60
         p2p_times.append([hr, min])
-    #print("p2p:", p2p_times)
+    print("p2p:", p2p_times)
 
     # 抓交通長度
     p2p_distance = [] 
     for d in route_by_name(new_tourist_list)[1]:
+        print("d: ", d)
         p2p_distance.append(round(d/1000))
-    #print("p2p_distance:", p2p_distance)
+    print("p2p_distance:", p2p_distance)
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids, p2p_times, p2p_distance),
@@ -520,6 +522,8 @@ def result(request):
     # trans = latest_room[0]['transportation']
     duration = latest_room[0]['duration']
 
+    googleMapUrl = dirurl(new_tourist_list)
+
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
         'tf': zip(docs, ids),
@@ -533,8 +537,16 @@ def result(request):
         'total_HM': total_HM,
         'p2p_times': p2p_times,
         'p2p_distances':length,
+        'googleMapUrl': googleMapUrl,
     }
     return render(request, 'result.html', context)
+
+def dirurl(touristList):
+    directionURL = 'https://www.google.com.tw/maps/dir/'
+    for i in touristList:
+        i = i.replace(" ","")
+        directionURL = directionURL + i + '/'
+    return directionURL
 
 def friends(request): # 大前提： 沒有重複的 first name
 

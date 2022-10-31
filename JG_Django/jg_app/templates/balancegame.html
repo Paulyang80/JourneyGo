@@ -14,10 +14,10 @@
 <body>
     {% include 'base2.html' %}
     {% if user.is_authenticated %}
-    {% comment %} Welcome, {{ user.username }}. Choose Your Preferences: <hr> {% endcomment %}
+    
     <br><br>
     <h3 style="text-align:center;">
-        嗨 {{ user.username }}，Choose a topic that interests you！
+        Hi {{ user.username }}, Choose a topic you like
     </h3>
     <br><br>
 
@@ -43,7 +43,7 @@
                 <img src="{% static "images/map.png" %}" class="card-img-top" style="display:block; margin:auto; width: 50%;">
             </a>
             <div class="card-body">
-                <h5 class="card-title">Other</h5>
+                <h5 class="card-title">Others</h5>
             </div>
         </div>
     </div>
