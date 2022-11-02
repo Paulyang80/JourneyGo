@@ -22,21 +22,17 @@
 
   {% include 'base2.html' %}
   &nbsp;
- <p>
-  <span class=title style="background-color:#A2B5BB "  >
-    REGISTER
-</span>
-</p>
+  <h1 style="text-align:center; margin-top: 20px; margin-bottom: 20px; font-size: 50px; color: #7895B2;" >JourneyGo</h1>
 
-<form method="post" style="width:950px;">
-  {% csrf_token %}
-  
+  <form method="post" style="margin-left: 30px; margin-right: 30px;">
+    <div class="row mb-3">
+      {% csrf_token %}
       {{ form.as_p }}
- 
-  <input type="submit" value="Register" class="btn btn-outline-dark" style="margin-left: 50%">
-  <br>
+    </div>
+    <input type="submit" value="Register" class="btn btn-outline-dark" style="margin-left: 50%; background-color: #7895B2; color: #fff;">
+  </form>
 
-</form>
+</body>
 
 
   

@@ -508,9 +508,10 @@ def result(request):
         min = (i%3600)//60
         p2p_times.append([hr, min])
         total_time += int(i)
-    #print(p2p_times)
+    print(total_time)
     total_HM = [total_time//3600, (total_time%3600)//60]
-    #print(total_HM)
+    print(total_HM)
+
     # 抓交通長度
     length = route_by_name(new_tourist_list)[1]
     #print(length)

@@ -8,7 +8,7 @@
 <body>
     {% include 'base2.html' %}
 
-    <h1 style="text-align:center; margin-top: 30px;">Final Room</h1>
+    <h1 style="text-align:center; margin-top: 40px;margin-bottom:40px; font-size: 50px; color: #7895B2;" >Final Group Members</h1>
 
     <div class="container" style="text-align: center !important;">
         <div class="row row-cols-1 row-cols-md-4 g-3" style="margin-top: 20px; text-align: center;position: relative; padding-left: 110px;">
@@ -27,6 +27,7 @@
 
         <div align="center" style="margin-top: 30px;">
             <a href="{% url 'spotvote' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #E8DFCA; color: black ">Let's go!</button></a>
+            <a href="{% url 'room2' %}"><button type="button" class="btn btn-secondary btn-lg" style="background-color: #AEBDCA; border-color: black;">Cancel</button></a>
         </div>
     </div>
 
