@@ -17,18 +17,6 @@
 {% include 'base2.html' %}
   <body >
 
-    <div class="container">
-      <div class="cloud">
-        <img src="{% static "images/cloud.png" %}">
-        
-        <div class="cloud1">
-          <img src="{% static "images/cloud.png" %}">
-        </div>
-      </div>
-    </div>
-
-    
-    <br><br>
     <h1 style="text-align:center; margin-top: 40px; font-size: 40px; color: #7895B2;" >Like This Journey?</h1>
 
     {% for doc, res, lod, id, pt, pd in tourist_info %}
@@ -65,12 +53,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h6>Nearby restaurants:</h6>
-            {% for r in res %} <p>{{ r }}</p> {% endfor %}
+            <h5>Nearby restaurants in 1/3/5 km:</h5>
+            {% for km_res in res %} 
+              <p>------</p>
+              {% for r in km_res %} 
+                <p>{{ r }}</p> 
+              {% endfor %} 
+            {% endfor %}
             <hr>
-            <h6>Nearby accommodation:</h6>
-            {% for l in lod %} <p>{{ l }}</p> {% endfor %}
-            <a href=""><button type="button" class="btn btn-primary btn-lg" style="text-align: center; font-family: Lucida Sans; background-color: #7895B2;" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a>
+            <h5>Nearby accommodations in 1/3/5 km:</h5>
+            {% for km_lod in lod %} 
+            <p>------</p>
+              {% for l in km_lod %} 
+                <p>{{ l }}</p> 
+              {% endfor %} 
+            {% endfor %}
+            {% comment %} <a href=""><button type="button" class="btn btn-primary btn-lg" style="text-align: center; font-family: Lucida Sans; background-color: #7895B2;" data-bs-toggle="modal" data-bs-target="#exampleModal">Google map</button></a> {% endcomment %}
           </div>
         </div>
       </div>

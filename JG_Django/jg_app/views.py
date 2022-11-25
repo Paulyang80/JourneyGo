@@ -28,7 +28,8 @@ from django.http import HttpResponse
 import numpy as np
 import pandas as pd
 import googlemaps
-import time
+import requests
+import json
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
@@ -138,7 +139,7 @@ def startDropDown(request):
         selected_num = request.POST.get("numbers")
 
     # 遊玩時間
-    travel_duration = ["半天", "一天", "兩天一夜", "三天兩夜", "四天三夜"]
+    travel_duration = ["Half Day", "One Day", "Two Days", "Three Days", "Four Days"]
     selected_time = None
     if request.method == "POST":
         selected_time = request.POST.get("duration")
@@ -331,13 +332,13 @@ def calculate_vote():
     # 決定景點數
     spot_num = 0
     duration = latest_room[0]['duration']
-    if duration == "半天":
+    if duration == "Half Day":
         spot_num = 1
-    elif duration == "一天":
+    elif duration == "One Day":
         spot_num = 2
-    elif duration == "兩天一夜":
+    elif duration == "Two Days":
         spot_num = 4
-    elif duration == "三天兩夜":
+    elif duration == "Three Days":
         spot_num = 6
     else: # 四天三夜
         spot_num = 8
@@ -385,6 +386,10 @@ def map(request):
     new_tourist_list = []
     for doc in docs:
         new_tourist_list.append(doc['name'])
+    
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    collection.update({"_id": latest_room[0]['_id']}, {"$push": {"new_tourist_list": new_tourist_list}}) # save recs
 
 # find nearby restaurants and logdes
     collection = db['Taipei_gov']
@@ -409,12 +414,23 @@ def map(request):
         #print(doc['name'])
         nearby_res_list = []
         nearby_lod_list = []
-        for res_id in find_near_by_res(doc['name']):
-            nearby_res_list.append(df_res.iloc[res_id]['name'])
-        for lod_id in find_near_by_lod(doc['name']):
-            nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
+
+        for i in range(0,3):
+            km_res_list = []
+            km_lod_list = []
+            for res_id in find_near_by_res(doc['name'])[i]:
+                km_res_list.append(df_res.iloc[res_id]['name'])
+            for lod_id in find_near_by_lod(doc['name'])[i]:
+                km_lod_list.append(df_lod.iloc[lod_id]['name'])
+            
+            nearby_res_list.append(km_res_list)
+            nearby_lod_list.append(km_lod_list)
+        
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
+
+    # print(res_list)
+    # print(lod_list)
 
     ids = range(spot_num)
     #print(ids)
@@ -431,18 +447,22 @@ def map(request):
 
     p2p_times = []
     for i in dir:
-        print("i: ", i)
+        #print("i: ", i)
         hr = i // 3600
         min = (i%3600)//60
         p2p_times.append([hr, min])
-    print("p2p:", p2p_times)
+    #print("p2p:", p2p_times)
 
     # 抓交通長度
     p2p_distance = [] 
     for d in route_by_name(new_tourist_list)[1]:
-        print("d: ", d)
+        #print("d: ", d)
         p2p_distance.append(round(d/1000))
-    print("p2p_distance:", p2p_distance)
+    #print("p2p_distance:", p2p_distance)
+
+    km_signs = ["1km", "3km", "5km"]
+    rrr = zip(res_list, km_signs)
+    lll = zip(lod_list, km_signs)
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids, p2p_times, p2p_distance),
@@ -489,10 +509,18 @@ def result(request):
         #print(doc['name'])
         nearby_res_list = []
         nearby_lod_list = []
-        for res_id in find_near_by_res(doc['name']):
-            nearby_res_list.append(df_res.iloc[res_id]['name'])
-        for lod_id in find_near_by_lod(doc['name']):
-            nearby_lod_list.append(df_lod.iloc[lod_id]['name'])
+
+        for i in range(0,3):
+            km_res_list = []
+            km_lod_list = []
+            for res_id in find_near_by_res(doc['name'])[i]:
+                km_res_list.append(df_res.iloc[res_id]['name'])
+            for lod_id in find_near_by_lod(doc['name'])[i]:
+                km_lod_list.append(df_lod.iloc[lod_id]['name'])
+            
+            nearby_res_list.append(km_res_list)
+            nearby_lod_list.append(km_lod_list)
+        
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
 
@@ -508,22 +536,23 @@ def result(request):
         min = (i%3600)//60
         p2p_times.append([hr, min])
         total_time += int(i)
-    print(total_time)
     total_HM = [total_time//3600, (total_time%3600)//60]
-    print(total_HM)
+
 
     # 抓交通長度
     length = route_by_name(new_tourist_list)[1]
     #print(length)
 
     ids =  range(spot_num)
-    # 抓交通工具
+    # 抓 room spec
     collection = db['Room_spec']
     latest_room = collection.find().sort('_id',-1).limit(1)
     # trans = latest_room[0]['transportation']
     duration = latest_room[0]['duration']
 
     googleMapUrl = dirurl(new_tourist_list)
+
+    weather_imgUrl = weather()
 
     context = {
         'tourist_info': zip(docs, res_list, lod_list, ids),
@@ -539,6 +568,7 @@ def result(request):
         'p2p_times': p2p_times,
         'p2p_distances':length,
         'googleMapUrl': googleMapUrl,
+        'weather_imgUrl': weather_imgUrl,
     }
     return render(request, 'result.html', context)
 
@@ -643,18 +673,11 @@ def searchRec(request):
             'cur': cur, #search results
         }
 
-
-
-
     return render(request, 'searchPage.html', context)
 
 
 def setting(request):
-    collection = db['User_account']
-    user = collection.find_one({"_id": 0})
-
-    context = {
-    }
+    context = {}
     return render(request, 'setting.html', context)
 
 def balancegame(request):
@@ -671,9 +694,7 @@ def art(request):
         for p in pref:
             collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
-    context = {
-        
-    }
+    context = {}
     return render(request, 'art.html', context)    
 
 def health(request):
@@ -686,9 +707,7 @@ def health(request):
         for p in pref:
             collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
-    context = {
-        
-    }
+    context = {}
     return render(request, 'health.html', context)
 
 def other(request):
@@ -701,9 +720,7 @@ def other(request):
         for p in pref:
             collection.update({"firstName": userFirstName}, {"$push": {"balPref": p}})
 
-    context = {
-        
-    }
+    context = {}
     return render(request, 'other.html', context)
 
 def base1(request):
@@ -717,6 +734,24 @@ def base2(request):
 def test(request):
     context = {}
     return render(request, 'test.html', context)
+
+def feedback(request):
+    collection = db['Room_spec']
+    latest_room = collection.find().sort('_id',-1).limit(1)
+    spots = latest_room[0]['new_tourist_list']
+
+    img_list = []
+    collection = db['Taipei_gov']
+    for spot in spots[0]:
+        img_list.append(collection.find_one({"name": spot})['images'][0])
+    
+    print(img_list)
+
+    context = {
+        'spots': spots[0],
+        'img_list': img_list,
+    }
+    return render(request, 'feedback.html', context)
         
 def find_near_by_res(tourist):
     collection = db['Taipei_gov']
@@ -735,20 +770,43 @@ def find_near_by_res(tourist):
         if df.iloc[i]['name'] == tourist:
             des_lat = df.iloc[i]["latitude"]
             des_lng = df.iloc[i]["longitude"]
-    nearby = []
+    nearby1 = []
+    nearby2 = []
+    nearby3 = []
     # 找相關景點
     for i in range(len(df_res)):
-        if (abs(df_res.iloc[i]['lat'] - float(des_lat)) + abs(df_res.iloc[i]['lng'] - float(des_lng)))*1000000 < 5000:
-            nearby.append(i)
-    name_duplicate = []
-    remove_duplicate = []
+        distance = (abs(df_res.iloc[i]['lat'] - float(des_lat)) + abs(df_res.iloc[i]['lng'] - float(des_lng)))*1000000
+        if distance < 1000:
+            nearby1.append(i)
+        if distance >= 1000 and distance < 3000:
+            nearby2.append(i)
+        if distance >= 3000 and distance < 5000:
+            nearby3.append(i)
+
     # 移除重複
-    for i in nearby:
-        if df_res.iloc[i]['name'] not in name_duplicate:
-            name_duplicate.append(df_res.iloc[i]['name'])
-            remove_duplicate.append(i)
+    name_duplicate1 = []
+    remove_duplicate1 = []
+    for i in nearby1:
+        if df_res.iloc[i]['name'] not in name_duplicate1:
+            name_duplicate1.append(df_res.iloc[i]['name'])
+            remove_duplicate1.append(i)
+
+    name_duplicate2 = []
+    remove_duplicate2 = []
+    for i in nearby2:
+        if df_res.iloc[i]['name'] not in name_duplicate2:
+            name_duplicate2.append(df_res.iloc[i]['name'])
+            remove_duplicate2.append(i)
+
+    name_duplicate3 = []
+    remove_duplicate3 = []
+    for i in nearby3:
+        if df_res.iloc[i]['name'] not in name_duplicate3:
+            name_duplicate3.append(df_res.iloc[i]['name'])
+            remove_duplicate3.append(i)
+        
     # 沒有重複的餐廳list
-    return remove_duplicate
+    return [remove_duplicate1, remove_duplicate2, remove_duplicate3]
 
 def find_near_by_lod(tourist):
     collection = db['Taipei_gov']
@@ -767,20 +825,43 @@ def find_near_by_lod(tourist):
         if df.iloc[i]['name'] == tourist:
             des_lat = df.iloc[i]["latitude"]
             des_lng = df.iloc[i]["longitude"]
-    nearby = []
+    nearby1 = []
+    nearby2 = []
+    nearby3 = []
     # 找相關景點
     for i in range(len(df_lod)):
-        if (abs(df_lod.iloc[i]['lat'] - float(des_lat)) + abs(df_lod.iloc[i]['lng'] - float(des_lng)))*1000000 < 5000:
-            nearby.append(i)
-    name_duplicate = []
-    remove_duplicate = []
+        distance = (abs(df_lod.iloc[i]['lat'] - float(des_lat)) + abs(df_lod.iloc[i]['lng'] - float(des_lng)))*1000000
+        if distance < 1000:
+            nearby1.append(i)
+        if distance >= 1000 and distance < 3000:
+            nearby2.append(i)
+        if distance >= 3000 and distance < 5000:
+            nearby3.append(i)
+
     # 移除重複
-    for i in nearby:
-        if df_lod.iloc[i]['name'] not in name_duplicate:
-            name_duplicate.append(df_lod.iloc[i]['name'])
-            remove_duplicate.append(i)
+    name_duplicate1 = []
+    remove_duplicate1 = [] 
+    for i in nearby1:
+        if df_lod.iloc[i]['name'] not in name_duplicate1:
+            name_duplicate1.append(df_lod.iloc[i]['name'])
+            remove_duplicate1.append(i)
+
+    name_duplicate2 = []
+    remove_duplicate2 = [] 
+    for i in nearby2:
+        if df_lod.iloc[i]['name'] not in name_duplicate2:
+            name_duplicate2.append(df_lod.iloc[i]['name'])
+            remove_duplicate2.append(i)
+
+    name_duplicate3 = []
+    remove_duplicate3 = [] 
+    for i in nearby3:
+        if df_lod.iloc[i]['name'] not in name_duplicate3:
+            name_duplicate3.append(df_lod.iloc[i]['name'])
+            remove_duplicate3.append(i)
+    
     # 沒有重複的餐廳list
-    return remove_duplicate
+    return [remove_duplicate1, remove_duplicate2, remove_duplicate3]
 
 # 輸入的如果是[數字(在資料庫裡面的順序)]
 def route(tourist_list):
@@ -878,3 +959,13 @@ def route_by_name(tourist_list):
         start = end
 #     print(direction)
     return (trip, travel_distance[:-1],travel_time[:-1])
+
+def weather():
+    # api get real time weather
+    w = requests.get("https://api.openweathermap.org/data/2.5/weather?q=Taipei&appid=67f257f406fd0a609b06aebb3e9e5814")
+    data = w.json()
+    print(data)
+    icon = data.get('weather')[0].get('icon')
+    imageUrl = "http://openweathermap.org/img/w/" + icon + ".png"
+    
+    return imageUrl

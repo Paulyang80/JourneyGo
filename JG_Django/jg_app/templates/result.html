@@ -62,13 +62,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <h6>附近餐廳</h6>
-                {% for r in res %} <p>{{ r }}</p> {% endfor %}
+                <h5>Nearby restaurants in 1/3/5 km:</h5>
+                {% for km_res in res %} 
+                  <p>------</p>
+                  {% for r in km_res %} 
+                    <p>{{ r }}</p> 
+                  {% endfor %} 
+                {% endfor %}
                 <hr>
-                <h6>附近住宿</h6>
-                {% for l in lod %} <p>{{ l }}</p> {% endfor %}
+                <h5>Nearby accommodations in 1/3/5 km:</h5>
+                {% for km_lod in lod %} 
+                <p>------</p>
+                  {% for l in km_lod %} 
+                    <p>{{ l }}</p> 
+                  {% endfor %} 
+                {% endfor %}
                 <hr>
-                <h6>景點介紹</h6>
+                <h5>Introduction</h5>
                 <p>{{ doc.intro }}</p>
               </div>
             </div>
@@ -93,7 +103,7 @@
     <!--交通時間-->
   <div class="card mx-auto" style="text-align: center; width: 477px !important;">
     <div class="card-header">
-      總交通時間
+      Total Time
     </div>
     <div class="card-body">
       {% comment %} <h5 class="card-title">{{ docs.0.name }} <i class="fa-regular fa-arrow-right"></i>  <i class="fa-solid fa-ellipsis"></i>  <i class="fa-regular fa-arrow-right"></i> {% with docs|last as last %} {{ last.name }} {% endwith %}</h5> {% endcomment %}
@@ -105,9 +115,13 @@
         {% else %}<i class="fa-solid fa-train-subway"></i>
         {% endif %} -->
         <!-- {{ total_HM.0 }} 小時 {{ total_HM.1 }} 27分鐘</h5> -->
-        {{ total_HM.0 }} 小時 27分鐘</h5>
+        {{ total_HM.0 }} Hours 27 Minutes</h5>
+        <div class="weather">
+          <img src={{ weather_imgUrl }} alt="weather icon">
+        </div>
         {{ duration }} <br>
-      <a href="{{ googleMapUrl }}" class="btn btn-primary" style="margin-top: 5px; background-color: #7895B2;">Google Maps導航</a>
+      <a href="{{ googleMapUrl }}" class="btn btn-primary" style="margin-top: 5px; background-color: #7895B2;">Google Maps</a>
+      <a href={% url 'feedback' %} class="btn btn-primary" style="margin-top: 5px; background-color: #7895B2;">Rate/Review</a>
     </div>
   </div>
 </body>
