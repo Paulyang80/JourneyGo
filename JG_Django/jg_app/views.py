@@ -30,12 +30,31 @@ import pandas as pd
 import googlemaps
 import requests
 import json
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+#from sklearn.decomposition import PCA
 
 # Make MongoDB connection with Pymongo
 cluster = MongoClient("mongodb+srv://Tang:108306058@journeygo.yhfdrry.mongodb.net/?retryWrites=true&w=majority")
 db = cluster['JourneyGo_DB']
 
-# Views
+collection = db['Taipei_gov']
+detail = collection.find({})
+df = pd.DataFrame(list(detail))
+data = df[['name','intro','categories']]
+
+X = np.array(data.intro)
+
+# 用bert作詞向量 模型二
+text_data = X
+model = SentenceTransformer('all-mpnet-base-v2')
+embeddings = model.encode(text_data, show_progress_bar=True)
+embed_data = embeddings
+
+X = np.array(embed_data)
+
+# 計算餘弦向量
+cos_sim_data = pd.DataFrame(cosine_similarity(X))
 
 #register
 def register(request):
@@ -54,11 +73,11 @@ def register(request):
                 collection = db['User_account']
                 if collection.count() == 0:
                     post = {"_id": 0, "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": "", "pic": "", "friendList": [], "intro": ""}
+                        "hashtag": "new", "pic": "https://en.pimg.jp/062/473/818/1/62473818.jpg", "friendList": [], "intro": ""}
                     collection.insert_one(post)
                 else:
                     post = {"_id": int(collection.count()), "firstName": user.first_name, "lastName": user.last_name, "email": user.email, "password": user.password,
-                        "hashtag": "", "pic": "", "friendList": [], "intro": ""}
+                        "hashtag": "new", "pic": "https://en.pimg.jp/062/473/818/1/62473818.jpg", "friendList": [], "intro": ""}
                     #print(collection.count(), user.first_name, user.last_name, user.email, user.password)
                     collection.insert_one(post)
             return redirect('balancegame')
@@ -181,9 +200,7 @@ def startDropDown(request):
 
 # room 
 def room(request):
-    context = {
-       
-    }
+    context = {}
     return render(request, 'room.html', context)
 
 def room2(request):
@@ -240,6 +257,34 @@ def finalRoom(request):
     }
     return render(request, 'finalRoom.html', context)
 
+## 進階推薦
+def give_recommendations(index, print_recommendation = False, print_recommendation_plots= False, print_genres =False):
+    index_recomm = cos_sim_data.loc[index].sort_values(ascending=False).index.tolist()[1:11]
+    spots_recomm =  data['name'].loc[index_recomm].values
+    result = {'Spots':spots_recomm,'Index':index_recomm}
+    if print_recommendation==True:
+        #print('The visited spot: %s \n'%(data['name'].loc[index]))
+        k=1
+        for spot in spots_recomm:
+            #print('The number %i recommended spot is this one: %s \n'%(k,spot))
+            k = k+1
+    if print_recommendation_plots==True:
+        #print('The plot of the visited spot is this one:\n %s \n'%(data['intro'].loc[index]))
+        k=1
+        for q in range(len(spots_recomm)):
+            plot_q = data['intro'].loc[index_recomm[q]]
+            #print('The plot of the number %i recommended spot is this one:\n %s \n'%(k,plot_q))
+            k=k+1
+    if print_genres==True:
+        #print('The categories of the visited spot is this one:\n %s \n'%(data['categories'].loc[index]))
+        k=1
+        for q in range(len(spots_recomm)):
+            plot_q = data['categories'].loc[index_recomm[q]]
+            #print('The plot of the number %i recommended spot is this one:\n %s \n'%(k,plot_q))
+            k=k+1
+    return result
+
+## 基本推薦
 def basic_rec(memberList, time, prefList):
     collection = db['User_account']
     userPref = []
@@ -268,17 +313,34 @@ def spotvote(request):
         personal_pref_list = collection.find({"firstName": member})[0]['balPref']
         for cat in personal_pref_list:
             pref_list.append(cat)
+    pref_list = list(dict.fromkeys(pref_list))
+    random_category = random.choices(pref_list)
 
-    # 取得推薦景點
-    recs = basic_rec(members, duration, pref_list)
-    # 儲存推薦景點
-    collection = db['Room_spec']
+    # # 取得推薦景點
+    # recs = basic_rec(members, duration, pref_list)
+
+    # # 儲存推薦景點
+    # collection = db['Room_spec']
     
+    # if request.method == "GET":
+    #     collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
+    #     for rec in recs:
+    #         # print("推薦的景點: ", rec['_id'])
+    #         collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+
+    collection = db['Taipei_gov']
+    base_index = collection.find_one({"categories": { "$in": random_category}})['_id']
+    recomm_i = give_recommendations(base_index)
+    print(recomm_i)
+    recomm_list = recomm_i['Index']
+    print("New Recommendations: ", recomm_list)
+
     if request.method == "GET":
-        collection.update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
-        for rec in recs:
-            print("推薦的景點: ", rec['_id'])
-            collection.update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": rec['_id']}}) # save recs
+        db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$set": {"recommendations": []}})
+        for i in recomm_list:
+            db['Room_spec'].update({"_id": latest_room[0]['_id']}, {"$push": {"recommendations": i}}) # save recs
+
+    recs = list(collection.find({"_id" : { "$in" : recomm_list}}))
 
     # render 
     imgList = []
@@ -411,7 +473,6 @@ def map(request):
     res_list = []
     lod_list = []
     for doc in docs:
-        #print(doc['name'])
         nearby_res_list = []
         nearby_lod_list = []
 
@@ -428,9 +489,6 @@ def map(request):
         
         res_list.append(nearby_res_list)
         lod_list.append(nearby_lod_list)
-
-    # print(res_list)
-    # print(lod_list)
 
     ids = range(spot_num)
     #print(ids)

@@ -13,10 +13,10 @@
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
-    <div class="wrapper" style="width: 625px;">
-        <div class="title" style="color: #7895B2;"> Choose 2 categories you like！</div>
+    <div class="wrapper mx-auto" style=" text-align: center;">
+        <h3 class="mx-auto" style="color: #7895B2;"> Choose 2 categories you like！</h3>
       
-        <div class="container">
+        <div class="container" style="margin-right: 120px; margin-left:0;">
           <label class="option_item" >
             <input type="checkbox" class="checkbox" id="alpha" name="alpha">
             <div class="option_inner facebook">
@@ -41,14 +41,14 @@
               <div class="name">Public Art</div>
             </div>
           </label>
-          <!-- <label class="option_item">
+          <label class="option_item">
             <input type="checkbox" class="checkbox" id="delta" name="delta">
             <div class="option_inner linkedin">
               <div class="tickmark"></div>
               <div class="icon"><i class="fa-solid fa-signs-post" style="font-size: 200%;"></i></div>
               <div class="name">Shopping Area</div>
             </div>
-          </label> -->
+          </label>
         </div>
     </div>
 
@@ -79,9 +79,9 @@
                 if (pub_art.checked) {
                     pref.push('公共藝術');
                 } 
-                // if (theme_street.checked) {
-                //     pref.push('主題商街');
-                // } 
+                if (theme_street.checked) {
+                    pref.push('主題商街');
+                } 
                 if (pref.length == 2){
                   //alert("已記錄您的喜好：" + pref);
                   data = {
